@@ -1,0 +1,20 @@
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include layout="@layout/toolbar" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:tabIndicatorColor="@color/primaryblue"
+        app:tabSelectedTextColor="@color/primaryblue"
+        app:tabTextColor="#FFFFFF"
+        app:tabGravity="fill"/>
+
+</android.support.design.widget.AppBarLayout>
