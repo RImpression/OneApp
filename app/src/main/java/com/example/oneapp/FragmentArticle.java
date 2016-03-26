@@ -11,15 +11,22 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.entity.ArticleEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by RImpression on 2016/3/20 0020.
  */
 public class FragmentArticle extends Fragment {
 
-    private String url = "http://v3.wufazhuce.com:8000/api/movie/list/0?";
+    private String url = "http://v3.wufazhuce.com:8000/api/reading/index/0?";
     private Button btnClick;
 
     @Nullable
@@ -57,6 +64,7 @@ public class FragmentArticle extends Fragment {
         new MyRequest(getContext().getApplicationContext()).getRequest(url, new HttpListener() {
             @Override
             public void onSuccess(String result) {
+                parse2Json(result);
                 Log.i("articleData",result);
             }
 
@@ -66,5 +74,30 @@ public class FragmentArticle extends Fragment {
                 Log.i("articleData",volleyError.toString());
             }
         });
+    }
+
+    private void parse2Json(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                ArticleEntity articleEntity = new ArticleEntity();
+                JSONObject jsb = jsonArray.getJSONObject(i);
+                articleEntity.setDate(jsb.getString("date"));
+                JSONArray jaItem = jsb.getJSONArray("items");
+                for (int j=0;j<jaItem.length();j++){
+                    JSONObject joItem = jaItem.getJSONObject(j);
+                    //articleEntity.setTime(new String[]{joItem.getString("time")});
+                    //Log.i("json", "444" + articleEntity.getTime());
+                }
+            }
+
+
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

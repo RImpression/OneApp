@@ -12,8 +12,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.entity.ExtractEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 
@@ -40,7 +45,7 @@ public class FragmentExtract extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i("lifeResult", "onCreateView");
-        view = inflater.inflate(R.layout.fragment_extract,container,false);
+        view = inflater.inflate(R.layout.fragment_extract, container, false);
         return view;
     }
 
@@ -74,18 +79,46 @@ public class FragmentExtract extends Fragment {
      * @param param2 POST参数的值
      */
     private void getExtractRequest(String Url, String[] param1, String[] param2) {
-        new MyRequest(getContext().getApplicationContext()).postRequest(Url,param1,param2, new HttpListener() {
+        new MyRequest(getContext().getApplicationContext()).postRequest(Url, param1, param2, new HttpListener() {
             @Override
             public void onSuccess(String result) {
-                Log.i("ExtractResult",result);
+                //parse2Jason(result);
+                Log.i("ExtractResult", result);
             }
 
             @Override
             public void onError(VolleyError volleyError) {
-                Toast.makeText(getContext().getApplicationContext(),"数据请求失败",Toast.LENGTH_SHORT).show();
-                Log.i("ExtractResult",volleyError.toString());
+                Toast.makeText(getContext().getApplicationContext(), "数据请求失败", Toast.LENGTH_SHORT).show();
+                Log.i("ExtractResult", volleyError.toString());
             }
         });
+    }
+
+
+    /**
+     * json解析
+     * @param result
+     */
+    public ExtractEntity parse2Jason(String result){
+        try {
+            ExtractEntity extractEntity = new ExtractEntity();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject object = jsonObject.getJSONObject("hpEntity");
+            extractEntity.setStrLastUpdateDate(object.getString("strLastUpdateDate"));
+            extractEntity.setStrHpId(object.getString("strHpId"));
+            extractEntity.setHpTitle(object.getString("strHpTitle"));
+            extractEntity.setStrThumbnailUrl(object.getString("strThumbnailUrl"));
+            extractEntity.setStrAuthor(object.getString("strAuthor"));
+            extractEntity.setStrContent(object.getString("strContent"));
+            extractEntity.setStrMarketTime(object.getString("strMarketTime"));
+            extractEntity.setStrPn(object.getString("strPn"));
+            return extractEntity;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
