@@ -1,7 +1,6 @@
 package com.example.entity;
 
-import org.json.JSONArray;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,9 +11,9 @@ public class ArticleEntity {
     //发布显示日期
     private String date;
     //时间
-    private String[] time;
+    private List<String> time = new ArrayList<>();
     //类型，1=短片，2=连载，3=问答
-    private int[] type;
+    private List<Integer> type = new ArrayList<>() ;
 
     //以下为类型3
     //问题ID
@@ -73,12 +72,12 @@ public class ArticleEntity {
         this.date = date;
     }
 
-    public String[] getTime() {
+    public List<String> getTime() {
         return time;
     }
 
-    public void setTime(String[] time) {
-        this.time = time;
+    public void setTime(String time) {
+        this.time.add(time);
     }
 
     public String getQuestion_id() {
@@ -89,12 +88,12 @@ public class ArticleEntity {
         this.question_id = question_id;
     }
 
-    public int[] getType() {
+    public List<Integer> getType() {
         return type;
     }
 
-    public void setType(int[] type) {
-        this.type = type;
+    public void setType(int type) {
+        this.type.add(type);
     }
 
     public String getQuestion_title() {
