@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new FragmentExtract());
         fragments.add(new FragmentArticle());
-        fragments.add(new FragmentMovie());
+        fragments.add(new FragmentMusic());
         fragments.add(new FragmentMovie());
 
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager(),fragments,titles);

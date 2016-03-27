@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.entity.ArticleEntity;
+import com.example.entity.GuideReadingEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
 
@@ -27,8 +28,10 @@ import java.util.List;
  */
 public class FragmentArticle extends Fragment {
 
-    private String url = "http://v3.wufazhuce.com:8000/api/reading/index/0?";
+    private String URL_ARITICLE = "http://v3.wufazhuce.com:8000/api/reading/index/0?";
+    private String URL_PHTOT = "http://v3.wufazhuce.com:8000/api/reading/carousel/?";
     private Button btnClick;
+    private Button btnPhoto;
 
     @Nullable
     @Override
@@ -49,12 +52,70 @@ public class FragmentArticle extends Fragment {
                 getArticleRequest();
             }
         });
+        btnPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPhotoRequest();
+            }
+        });
 
     }
 
+
+
     private void initView() {
         btnClick = (Button) getView().findViewById(R.id.btnClick);
+        btnPhoto = (Button) getView().findViewById(R.id.btnPhoto);
+    }
 
+    /**
+     * 请求轮播图片数据
+     */
+    private void getPhotoRequest() {
+        new MyRequest(getContext().getApplicationContext()).getRequest(URL_PHTOT, new HttpListener() {
+            @Override
+            public void onSuccess(String result) {
+                parse2PhotoJson(result);
+            }
+
+            @Override
+            public void onError(VolleyError volleyError) {
+                Log.i("photoRequest",volleyError.toString());
+            }
+        });
+
+    }
+
+
+    /**
+     * 解析轮播图片数据
+     * @param result
+     */
+    private List<GuideReadingEntity> parse2PhotoJson(String result) {
+        List<GuideReadingEntity> entitiyList = null;
+        GuideReadingEntity guideEntity = null;
+        try {
+            entitiyList = new ArrayList<>();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                guideEntity = new GuideReadingEntity();
+                JSONObject object = jsonArray.getJSONObject(i);
+                guideEntity.setId(object.getString("id"));
+                guideEntity.setTitle(object.getString("title"));
+                guideEntity.setCover(object.getString("cover"));
+                guideEntity.setBottom_text(object.getString("bottom_text"));
+                guideEntity.setBgcolor(object.getString("bgcolor"));
+                guideEntity.setPv_url(object.getString("pv_url"));
+                Log.i("json",guideEntity.getTitle());
+                entitiyList.add(guideEntity);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return entitiyList;
     }
 
 
@@ -62,7 +123,7 @@ public class FragmentArticle extends Fragment {
      * 请求阅读文章数据
      */
     private void getArticleRequest() {
-        new MyRequest(getContext().getApplicationContext()).getRequest(url, new HttpListener() {
+        new MyRequest(getContext().getApplicationContext()).getRequest(URL_ARITICLE, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 parse2Json(result);
@@ -79,7 +140,7 @@ public class FragmentArticle extends Fragment {
 
 
     /**
-     * 数据解析
+     * 文章数据解析
      * @param result
      * @return
      */
@@ -119,14 +180,13 @@ public class FragmentArticle extends Fragment {
                         articleEntity.setRead_num(joContent.getString("read_num"));
                         articleEntity.setMaketime(joContent.getString("maketime"));
                         articleEntity.setHas_audio(joContent.getBoolean("has_audio"));
-                        JSONArray jaAuthor = joContent.getJSONArray("author");
-                        for (int m=0;m<jaAuthor.length();m++){
-                            JSONObject joAuthor = jaAuthor.getJSONObject(m);
-                            articleEntity.setUser_id(joAuthor.getString("user_id"));
-                            articleEntity.setUser_name(joAuthor.getString("user_name"));
-                            articleEntity.setWeb_url(joAuthor.getString("web_url"));
-                            articleEntity.setDesc(joAuthor.getString("desc"));
-                        }
+
+                        JSONObject joAuthor = joContent.getJSONObject("author");
+                        articleEntity.setUser_id(joAuthor.getString("user_id"));
+                        articleEntity.setUser_name(joAuthor.getString("user_name"));
+                        articleEntity.setWeb_url(joAuthor.getString("web_url"));
+                        articleEntity.setDesc(joAuthor.getString("desc"));
+
 
                     } else if (articleEntity.getType().get(j) == 1){  //类型1
                         JSONObject joContent = joItem.getJSONObject("content");
@@ -146,7 +206,7 @@ public class FragmentArticle extends Fragment {
                         }
 
                     }
-                    //Log.i("json", String.valueOf(articleEntity.getType().get(j)));
+                    Log.i("json", articleEntity.getDate());
                 }
                 articleEntityList.add(articleEntity);
             }
