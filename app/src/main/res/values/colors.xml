@@ -4,5 +4,7 @@
     <color name="primary_dark">#7B1FA2</color>
     <color name="primaryblue">#03A9F4</color>
     <color name="primaryblue_dark">#0288D1</color>
+    <color name="text_gray">#d8d0d9</color>
+    <color name="black">#000000</color>
     
 </resources>

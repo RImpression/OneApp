@@ -13,6 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.adapter.FragmentAdapter;
+import com.example.oneapp.fragment.FragmentArticle;
+import com.example.oneapp.fragment.FragmentExtract;
+import com.example.oneapp.fragment.FragmentMovie;
+import com.example.oneapp.fragment.FragmentMusic;
 
 import java.util.ArrayList;
 import java.util.List;
