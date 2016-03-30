@@ -6,5 +6,7 @@
     <color name="primaryblue_dark">#0288D1</color>
     <color name="text_gray">#d8d0d9</color>
     <color name="black">#000000</color>
+    <color name="write">#FFFFFF</color>
+    <color name="DateBackground">#f0f2f4</color>
     
 </resources>

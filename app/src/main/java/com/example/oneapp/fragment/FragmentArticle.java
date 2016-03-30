@@ -3,6 +3,8 @@ package com.example.oneapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.adapter.RecyclerAdapter;
 import com.example.entity.ArticleEntity;
 import com.example.entity.GuideReadingEntity;
 import com.example.https.MyRequest;
@@ -31,9 +34,11 @@ public class FragmentArticle extends Fragment {
 
     private String URL_ARITICLE = "http://v3.wufazhuce.com:8000/api/reading/index/0?";
     private String URL_PHTOT = "http://v3.wufazhuce.com:8000/api/reading/carousel/?";
-    private Button btnClick;
-    private Button btnPhoto;
     private Boolean isFirst = true;
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerAdapter recyclerAdapter;
+    private List<ArticleEntity> mDataList = null;
 
 
     @Override
@@ -56,14 +61,16 @@ public class FragmentArticle extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
-
+        if (isFirst == false){
+            loadRecycleView(mDataList);
+        }
 
     }
 
 
 
     private void initView() {
-
+        mRecyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
     }
 
     /**
@@ -125,8 +132,9 @@ public class FragmentArticle extends Fragment {
             @Override
             public void onSuccess(String result) {
                 isFirst = false;
-                parse2Json(result);
-                Log.i("articleData", result);
+                mDataList = parse2Json(result);
+                loadRecycleView(mDataList);//装载RecycleView
+                //Log.i("articleData", result);
             }
 
             @Override
@@ -136,6 +144,15 @@ public class FragmentArticle extends Fragment {
                 Log.i("articleData", volleyError.toString());
             }
         });
+    }
+
+    private void loadRecycleView(List<ArticleEntity> mDataList) {
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerAdapter = new RecyclerAdapter(mDataList);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setAdapter(recyclerAdapter);
+        //添加分割线
+        //mRecyclerView.addItemDecoration();
     }
 
 
@@ -206,7 +223,7 @@ public class FragmentArticle extends Fragment {
                         }
 
                     }
-                    Log.i("json", articleEntity.getDate());
+                    //Log.i("json", articleEntity.getDate());
                 }
                 articleEntityList.add(articleEntity);
             }

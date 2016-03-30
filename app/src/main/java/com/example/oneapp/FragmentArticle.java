@@ -64,8 +64,7 @@ public class FragmentArticle extends Fragment {
 
 
     private void initView() {
-        btnClick = (Button) getView().findViewById(R.id.btnClick);
-        btnPhoto = (Button) getView().findViewById(R.id.btnPhoto);
+
     }
 
     /**

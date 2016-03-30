@@ -69,7 +69,7 @@ public class FragmentExtract extends Fragment {
 
 
     private void initViews() {
-        btnExtract = (Button) getView().findViewById(R.id.btnExtract);
+
     }
 
     /**
