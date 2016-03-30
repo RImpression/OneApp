@@ -33,6 +33,16 @@ public class FragmentArticle extends Fragment {
     private String URL_PHTOT = "http://v3.wufazhuce.com:8000/api/reading/carousel/?";
     private Button btnClick;
     private Button btnPhoto;
+    private Boolean isFirst = true;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (isFirst == true){
+            getArticleRequest();
+        }
+    }
 
     @Nullable
     @Override
@@ -47,26 +57,13 @@ public class FragmentArticle extends Fragment {
         super.onActivityCreated(savedInstanceState);
         initView();
 
-        btnClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getArticleRequest();
-            }
-        });
-        btnPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getPhotoRequest();
-            }
-        });
 
     }
 
 
 
     private void initView() {
-        btnClick = (Button) getView().findViewById(R.id.btnClick);
-        btnPhoto = (Button) getView().findViewById(R.id.btnPhoto);
+
     }
 
     /**
@@ -127,12 +124,14 @@ public class FragmentArticle extends Fragment {
         new MyRequest(getContext().getApplicationContext()).getRequest(URL_ARITICLE, new HttpListener() {
             @Override
             public void onSuccess(String result) {
+                isFirst = false;
                 parse2Json(result);
                 Log.i("articleData", result);
             }
 
             @Override
             public void onError(VolleyError volleyError) {
+                isFirst = true;
                 Toast.makeText(getContext().getApplicationContext(), "Request Error", Toast.LENGTH_SHORT).show();
                 Log.i("articleData", volleyError.toString());
             }
