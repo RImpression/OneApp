@@ -33,6 +33,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
     @Override
     public void onBindViewHolder(RecyclerAdapter.RecyclerViewHoder holder, int position) {
+
         ArticleEntity entity = mArticleList.get(position);
         typeList = entity.getType();
         holder.tvDateList.setText(entity.getDate());
@@ -61,6 +62,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
             }
         }
     }
+
 
     @Override
     public int getItemCount() {

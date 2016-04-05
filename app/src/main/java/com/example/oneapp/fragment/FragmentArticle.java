@@ -2,10 +2,8 @@ package com.example.oneapp.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,12 +15,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.adapter.MyAdapter;
 import com.example.adapter.RecyclerAdapter;
 import com.example.entity.ArticleEntity;
 import com.example.entity.GuideReadingEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
 import com.example.oneapp.R;
+import com.example.utils.MyLinearLayoutManager;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -44,7 +44,7 @@ public class FragmentArticle extends Fragment {
     private String URL_PHTOT = "http://v3.wufazhuce.com:8000/api/reading/carousel/?";
     private Boolean isFirst = true;
     private RecyclerView mRecyclerView;
-    private LinearLayoutManager linearLayoutManager;
+    private MyLinearLayoutManager linearLayoutManager;
     private RecyclerAdapter recyclerAdapter;
     private List<ArticleEntity> mDataList = null;
 
@@ -56,15 +56,7 @@ public class FragmentArticle extends Fragment {
 
     private int currentItem = 0; // 当前图片的索引号
     // 定义的五个指示点
-    private View dot0;
-    private View dot1;
-    private View dot2;
-    private View dot3;
-    private View dot4;
-    private View dot5;
-    private View dot6;
-    private View dot7;
-    private View dot8;
+    private View dot0,dot1,dot2,dot3,dot4,dot5,dot6,dot7,dot8;
 
     // 定时任务
     private ScheduledExecutorService scheduledExecutorService;
@@ -100,24 +92,17 @@ public class FragmentArticle extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
 
         initView();
         startAd();
         if (isFirst == false){
             loadRecycleView(mDataList);
-            adViewPager.setAdapter(new MyAdapter());// 设置填充ViewPager页面的适配器
-            // 设置一个监听器，当ViewPager中的页面改变时调用
-            adViewPager.setOnPageChangeListener(new MyPageChangeListener());
-            addDynamicView();
+            loadViewPager();
         }
-
     }
 
-
-
     private void initView() {
-
+        mRecyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
         imageViews = new ArrayList<ImageView>();
         // 点
         dots = new ArrayList<View>();
@@ -142,8 +127,6 @@ public class FragmentArticle extends Fragment {
         dots.add(dot8);
 
         adViewPager = (ViewPager) getView().findViewById(R.id.vp);
-
-
     }
 
     private void addDynamicView() {
@@ -152,7 +135,7 @@ public class FragmentArticle extends Fragment {
         for (int i = 0; i < adList.size(); i++) {
             ImageView imageView = new ImageView(getContext());
             // 异步加载图片
-            Picasso.with(getContext()).load(adList.get(i).getCover()).resize(250,113).centerCrop().into(imageView);
+            Picasso.with(getContext()).load(adList.get(i).getCover()).into(imageView);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageViews.add(imageView);
             dots.get(i).setVisibility(View.VISIBLE);
@@ -161,12 +144,18 @@ public class FragmentArticle extends Fragment {
 
     }
 
+
+    /**
+     * 定时任务，5s更换一次
+     */
     private void startAd() {
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         // 当Activity显示出来后，每两秒切换一次图片显示
         scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 5,
                 TimeUnit.SECONDS);
     }
+
+
 
     private class ScrollTask implements Runnable {
 
@@ -211,81 +200,6 @@ public class FragmentArticle extends Fragment {
         }
     }
 
-    private class MyAdapter extends PagerAdapter {
-
-//        private List<ImageView> imageViews = new ArrayList<>();
-//        private List<GuideReadingEntity> adList = new ArrayList<>();
-//
-//
-//        public MyAdapter(List<ImageView> imageViews,List<GuideReadingEntity> adList){
-//            this.imageViews = imageViews;
-//            this.adList = adList;
-//        }
-
-        @Override
-        public int getCount() {
-            return adList.size();
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Log.i("adList",adList.get(0).getTitle()+"444444444444"+position);
-            Log.i("adList",imageViews.toString()+"444444444444"+position);
-            ImageView iv = imageViews.get(position);
-            ((ViewPager) container).addView(iv);
-            final GuideReadingEntity adDomain = adList.get(position);
-            // 在这个方法里面设置图片的点击事件
-            iv.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // 处理跳转逻辑
-                }
-            });
-            return iv;
-        }
-
-
-
-        @Override
-        public void destroyItem(View arg0, int arg1, Object arg2) {
-            ((ViewPager) arg0).removeView((View) arg2);
-        }
-
-        @Override
-        public boolean isViewFromObject(View arg0, Object arg1) {
-            return arg0 == arg1;
-        }
-
-        @Override
-        public void restoreState(Parcelable arg0, ClassLoader arg1) {
-
-        }
-
-        @Override
-        public Parcelable saveState() {
-            return null;
-        }
-
-        @Override
-        public void startUpdate(View arg0) {
-
-        }
-
-        @Override
-        public void finishUpdate(View arg0) {
-
-        }
-
-    }
-
-
-
-
-
-
-
-
 
     /**
      * 请求轮播图片数据
@@ -295,11 +209,7 @@ public class FragmentArticle extends Fragment {
             @Override
             public void onSuccess(String result) {
                 adList = parse2PhotoJson(result);
-                addDynamicView();
-                adViewPager.setAdapter(new MyAdapter());// 设置填充ViewPager页面的适配器
-                // 设置一个监听器，当ViewPager中的页面改变时调用
-                adViewPager.setOnPageChangeListener(new MyPageChangeListener());
-
+                loadViewPager();
             }
 
             @Override
@@ -366,12 +276,21 @@ public class FragmentArticle extends Fragment {
     }
 
     private void loadRecycleView(List<ArticleEntity> mDataList) {
-        linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager = new MyLinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setSmoothScrollbarEnabled(false);
         recyclerAdapter = new RecyclerAdapter(mDataList);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
         //添加分割线
         //mRecyclerView.addItemDecoration();
+    }
+
+    private void loadViewPager() {
+        addDynamicView();
+        adViewPager.setAdapter(new MyAdapter(adList, imageViews));// 设置填充ViewPager页面的适配器
+        // 设置一个监听器，当ViewPager中的页面改变时调用
+        adViewPager.setOnPageChangeListener(new MyPageChangeListener());
     }
 
 
