@@ -3,6 +3,8 @@ package com.example.oneapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.adapter.RecyclerAdapter2Movie;
 import com.example.entity.MovieEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
@@ -29,14 +32,30 @@ import java.util.List;
 public class FragmentMovie extends Fragment {
 
     View view;
-    private Button btnMovie;
-    private String URL_MOVIE = "http://v3.wufazhuce.com:8000/api/movie/list/0?";
+    private static final String URL_MOVIE = "http://v3.wufazhuce.com:8000/api/movie/list/0?";
+    private boolean isFirst = true;
+    private RecyclerView movieRecycleView = null;
+    private List<MovieEntity> mDataList = null;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerAdapter2Movie adapter2Movie;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (isFirst == true) {
+            getMovieRequest();
+        }
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         initViews();
+        if (isFirst == false){
+            loadRecyclerView(mDataList);
+        }
 
     }
 
@@ -51,14 +70,7 @@ public class FragmentMovie extends Fragment {
 
 
     private void initViews() {
-        btnMovie = (Button) getView().findViewById(R.id.btnMovie);
-        btnMovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getMovieRequest();
-            }
-        });
-
+        movieRecycleView = (RecyclerView) getView().findViewById(R.id.movieRecycle);
     }
 
     private void getMovieRequest() {
@@ -66,7 +78,8 @@ public class FragmentMovie extends Fragment {
             @Override
             public void onSuccess(String result) {
                 Log.i("movieResult",result);
-                parse2Json(result);
+                mDataList = parse2Json(result);
+                loadRecyclerView(mDataList);
             }
 
             @Override
@@ -75,6 +88,15 @@ public class FragmentMovie extends Fragment {
                 Log.i("movieResult",volleyError.toString());
             }
         });
+    }
+
+    private void loadRecyclerView(List<MovieEntity> mDataList) {
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setSmoothScrollbarEnabled(false);
+        adapter2Movie = new RecyclerAdapter2Movie(getContext(),mDataList);
+        movieRecycleView.setLayoutManager(linearLayoutManager);
+        movieRecycleView.setAdapter(adapter2Movie);
     }
 
     /**
