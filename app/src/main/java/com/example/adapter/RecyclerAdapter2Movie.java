@@ -43,10 +43,12 @@ public class RecyclerAdapter2Movie extends RecyclerView.Adapter<RecyclerAdapter2
         final MovieEntity entity = movieList.get(position);
         Picasso.with(mContext).load(entity.getCover()).into(holder.imgMovie);
         if (entity.getScore() == "null") {
-            holder.tvScore.setTextSize(15);
-            holder.tvScore.setTextColor(Color.BLACK);
-            holder.tvScore.setText(R.string.movie_text);
+            holder.tvScore.setVisibility(View.GONE);
+            holder.tvText.setVisibility(View.VISIBLE);
+            holder.tvText.setText(R.string.movie_text);
         } else {
+            holder.tvScore.setVisibility(View.VISIBLE);
+            holder.tvText.setVisibility(View.GONE);
             holder.tvScore.setText(entity.getScore());
         }
 
@@ -67,13 +69,14 @@ public class RecyclerAdapter2Movie extends RecyclerView.Adapter<RecyclerAdapter2
 
     public class RecyclerViewHoder extends RecyclerView.ViewHolder {
         private ImageView imgMovie;
-        private TextView tvScore;
+        private TextView tvScore,tvText;
         private RelativeLayout rlMovieItem;
 
         public RecyclerViewHoder(View itemView) {
             super(itemView);
             imgMovie = (ImageView) itemView.findViewById(R.id.imgMovie);
             tvScore = (TextView) itemView.findViewById(R.id.tvScore);
+            tvText = (TextView) itemView.findViewById(R.id.tvText);
             rlMovieItem = (RelativeLayout) itemView.findViewById(R.id.rlMovieItem);
         }
     }

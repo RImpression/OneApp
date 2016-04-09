@@ -7,4 +7,7 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="movie_text">即将上映</string>
+    <string name="question">问题</string>
+    <string name="essay">短篇</string>
+    <string name="serialize">连载</string>
 </resources>

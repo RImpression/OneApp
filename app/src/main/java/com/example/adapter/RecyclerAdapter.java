@@ -1,5 +1,8 @@
 package com.example.adapter;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,9 +11,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.entity.ArticleEntity;
+import com.example.oneapp.BaseActivity;
+import com.example.oneapp.EssayActivity;
+import com.example.oneapp.QuestionActivity;
 import com.example.oneapp.R;
+import com.example.oneapp.SerializeActivity;
 
 import java.util.List;
+
 
 /**
  * Created by lcr on 16/3/30.
@@ -19,10 +27,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
     private List<ArticleEntity> mArticleList;
     private List<Integer> typeList;
+    private Context mContext;
 
 
-    public RecyclerAdapter(List<ArticleEntity> mList){
+    public RecyclerAdapter(List<ArticleEntity> mList,Context context){
         this.mArticleList = mList;
+        this.mContext = context;
     }
 
     @Override
@@ -34,7 +44,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     @Override
     public void onBindViewHolder(RecyclerAdapter.RecyclerViewHoder holder, int position) {
 
-        ArticleEntity entity = mArticleList.get(position);
+        final ArticleEntity entity = mArticleList.get(position);
         typeList = entity.getType();
         holder.tvDateList.setText(entity.getDate());
         for (int i=0;i<typeList.size();i++){
@@ -44,6 +54,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
                 holder.tvQuestTitle.setText(entity.getQuestion_title());
                 holder.tvAnswerTitle.setText(entity.getAnswer_title());
                 holder.tvAnswerContent.setText(entity.getAnswer_content());
+                holder.cardView3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        intentView(entity.getQuestion_id(),QuestionActivity.class);
+                    }
+                });
 
             }else if (typeList.get(i) == 2){
                 holder.cardView2.setVisibility(View.VISIBLE);
@@ -51,6 +67,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
                 holder.tvTitle.setText(entity.getTitle());
                 holder.tvUserName.setText(entity.getUser_name());
                 holder.tvExcerpt.setText(entity.getExcerpt());
+                holder.cardView2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        intentView(entity.getId(), SerializeActivity.class);
+                    }
+                });
 
             } else if (typeList.get(i) == 1){
                 holder.cardView1.setVisibility(View.VISIBLE);
@@ -58,9 +80,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
                 holder.tvHPTitle.setText(entity.getHp_title());
                 holder.tvUserName1.setText(entity.getUser_name());
                 holder.tvGuideWord.setText(entity.getGuide_word());
-
+                holder.cardView1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        intentView(entity.getContent_id(), EssayActivity.class);
+                    }
+                });
             }
         }
+    }
+
+    private void intentView(String id, Class<?> activityClass) {
+        Intent intent = new Intent();
+        intent.putExtra("ID",id);
+        intent.setClass(mContext,activityClass);
+        mContext.startActivity(intent);
     }
 
 
@@ -68,6 +102,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     public int getItemCount() {
         return mArticleList.size();
     }
+
+
+
+
 
     public class RecyclerViewHoder extends RecyclerView.ViewHolder {
         protected TextView tvType1,tvType2,tvType3;

@@ -241,7 +241,7 @@ public class FragmentArticle extends Fragment {
                 guideEntity.setBottom_text(object.getString("bottom_text"));
                 guideEntity.setBgcolor(object.getString("bgcolor"));
                 guideEntity.setPv_url(object.getString("pv_url"));
-                Log.i("json",guideEntity.getTitle());
+                //Log.i("json",guideEntity.getTitle());
                 entitiyList.add(guideEntity);
             }
 
@@ -279,7 +279,7 @@ public class FragmentArticle extends Fragment {
         linearLayoutManager = new MyLinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.setSmoothScrollbarEnabled(false);
-        recyclerAdapter = new RecyclerAdapter(mDataList);
+        recyclerAdapter = new RecyclerAdapter(mDataList,getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
         //添加分割线

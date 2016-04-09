@@ -33,7 +33,7 @@ public class BaseActivity extends AppCompatActivity {
      * @param title 标题
      * @param isShow
      */
-    public void initToolbar(String title,Boolean isShow) {
+    public void initToolbar(int title,Boolean isShow) {
         if (toolbar == null) {
             toolbar = (Toolbar) findViewById(R.id.toolbar);
         }
