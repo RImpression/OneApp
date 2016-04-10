@@ -16,11 +16,20 @@
         <item name="android:layout_marginRight">1.5dip</item>
     </style>
 
+    <!--字体行距样式-->
     <style name="text_content">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:lineSpacingExtra">3dp</item>
 
+    </style>
+
+    <!--评论底部样式-->
+    <style name="bottom_view">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:drawablePadding">5dp</item>
     </style>
 
 </resources>

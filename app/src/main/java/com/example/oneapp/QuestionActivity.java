@@ -2,8 +2,10 @@ package com.example.oneapp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -14,15 +16,17 @@ import com.example.interfaces.HttpListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * Created by lcr on 16/4/9.
  */
-public class QuestionActivity extends BaseActivity {
+public class QuestionActivity extends BaseActivity implements View.OnClickListener {
     private static final String URL_QUESTION = "http://v3.wufazhuce.com:8000/api/question/";
     private String URL_QUESTION_CONTENT;
     private QuestionEntity questionEntity = null;
     private TextView tvQuestionTitle,tvQuestionContent,tvAnswerTitle,tvDate,tvAnswerContent,tvEditor;
     private String ID;
+    private TextView tvPraise,tvComment,tvShare;
 
 
     @Override
@@ -44,6 +48,12 @@ public class QuestionActivity extends BaseActivity {
         tvAnswerContent = (TextView) findViewById(R.id.tvAnswerContent);
         tvDate = (TextView) findViewById(R.id.tvDate);
         tvEditor = (TextView) findViewById(R.id.tvEditor);
+        tvPraise = (TextView) findViewById(R.id.tvPraise);
+        tvComment = (TextView) findViewById(R.id.tvComment);
+        tvShare = (TextView) findViewById(R.id.tvShare);
+        tvPraise.setOnClickListener(this);
+        tvComment.setOnClickListener(this);
+        tvShare.setOnClickListener(this);
     }
 
 
@@ -77,6 +87,9 @@ public class QuestionActivity extends BaseActivity {
         tvAnswerContent.setText(Html.fromHtml(questionEntity.getAnswer_content()));
         tvDate.setText(questionEntity.getQuestion_makettime());
         tvEditor.setText(questionEntity.getCharge_edit());
+        tvPraise.setText(String.valueOf(questionEntity.getPraisenum()));
+        tvComment.setText(String.valueOf(questionEntity.getCommentnum()));
+        tvShare.setText(String.valueOf(questionEntity.getSharenum()));
     }
 
     /**
@@ -109,5 +122,21 @@ public class QuestionActivity extends BaseActivity {
         }
 
         return null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tvPraise:
+                ShowToast("功能未开发");
+                break;
+            case R.id.tvComment:
+                ShowToast("功能未开发");
+                break;
+            case R.id.tvShare:
+                ShowToast("功能未开发");
+                break;
+        }
+
     }
 }

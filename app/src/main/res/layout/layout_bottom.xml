@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/boder">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tvPraise"
+            style="@style/bottom_view"
+            android:drawableLeft="@drawable/icon_dianzan"/>
+
+    </RelativeLayout>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:background="@color/text_gray"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tvComment"
+            style="@style/bottom_view"
+            android:drawableLeft="@drawable/icon_comment"/>
+    </LinearLayout>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:background="@color/text_gray"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tvShare"
+            style="@style/bottom_view"
+            android:drawableLeft="@drawable/icon_share"/>
+    </LinearLayout>
+
+</LinearLayout>

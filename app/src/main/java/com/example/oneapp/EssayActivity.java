@@ -2,14 +2,18 @@ package com.example.oneapp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.example.entity.EssayEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,12 +22,14 @@ import org.json.JSONObject;
 /**
  * Created by lcr on 16/4/9.
  */
-public class EssayActivity extends BaseActivity {
-    private Button btnClick;
+public class EssayActivity extends BaseActivity implements View.OnClickListener {
     private static final String URL_ESSAY = "http://v3.wufazhuce.com:8000/api/essay/";
     private String URL_ESSAY_CONTENT;
     private String ID;
     private EssayEntity essayEntity = null;
+    private TextView tvEssayTitle,tvEssayContent;
+    private TextView tvAuthorName,tvAuthorTime,tvEditor,tvPraise,tvComment,tvShare;
+    private ImageView imgAuthor;
 
 
     @Override
@@ -33,17 +39,25 @@ public class EssayActivity extends BaseActivity {
         initToolbar(R.string.essay,true);
         ID = getIntent().getStringExtra("ID");
         URL_ESSAY_CONTENT = URL_ESSAY+ID+"?";
+        requestEssayData();
         initViews();
     }
 
     private void initViews() {
-        btnClick = (Button) findViewById(R.id.btnClick);
-        btnClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestEssayData();
-            }
-        });
+        tvEssayTitle = (TextView) findViewById(R.id.tvEssayTtile);
+        tvEssayContent = (TextView) findViewById(R.id.tvEssayContent);
+        tvAuthorName = (TextView) findViewById(R.id.tvAuthorname);
+        tvAuthorTime = (TextView) findViewById(R.id.tvAuthorTime);
+        tvPraise = (TextView) findViewById(R.id.tvPraise);
+        tvComment = (TextView) findViewById(R.id.tvComment);
+        tvShare = (TextView) findViewById(R.id.tvShare);
+        tvEditor = (TextView) findViewById(R.id.tvEditor);
+        imgAuthor = (ImageView) findViewById(R.id.imgAuthor);
+
+        imgAuthor.setOnClickListener(this);
+        tvPraise.setOnClickListener(this);
+        tvComment.setOnClickListener(this);
+        tvShare.setOnClickListener(this);
 
     }
 
@@ -54,8 +68,9 @@ public class EssayActivity extends BaseActivity {
         new MyRequest(this).getRequest(URL_ESSAY_CONTENT, new HttpListener() {
             @Override
             public void onSuccess(String result) {
-                Log.i("result",result.toString());
+                //Log.i("result",result.toString());
                 parse2Json(result);
+                loadView();
             }
 
             @Override
@@ -65,6 +80,21 @@ public class EssayActivity extends BaseActivity {
             }
         });
 
+    }
+
+    /**
+     * 加载布局
+     */
+    private void loadView() {
+        tvAuthorName.setText(essayEntity.getUser_name());
+        tvAuthorTime.setText(essayEntity.getLast_update_date());
+        tvEssayTitle.setText(essayEntity.getHp_title());
+        tvEssayContent.setText(Html.fromHtml(essayEntity.getHp_content()));
+        tvEditor.setText(essayEntity.getHp_author_introduce());
+        tvPraise.setText(String.valueOf(essayEntity.getPraisenum()));
+        tvComment.setText(String.valueOf(essayEntity.getCommentnum()));
+        tvShare.setText(String.valueOf(essayEntity.getSharenum()));
+        Picasso.with(this).load(essayEntity.getWeb_url()).into(imgAuthor);
     }
 
 
@@ -108,5 +138,26 @@ public class EssayActivity extends BaseActivity {
         }
 
         return null;
+    }
+
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imgAuthor:
+                ShowToast("功能未开发");
+                break;
+            case R.id.tvPraise:
+                ShowToast("功能未开发");
+                break;
+            case R.id.tvComment:
+                ShowToast("功能未开发");
+                break;
+            case R.id.tvShare:
+                ShowToast("功能未开发");
+                break;
+        }
+
     }
 }

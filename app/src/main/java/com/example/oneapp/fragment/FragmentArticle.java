@@ -357,7 +357,7 @@ public class FragmentArticle extends Fragment {
                             articleEntity.setWeb_url(joAuthor.getString("web_url"));
                             articleEntity.setDesc(joAuthor.getString("desc"));
                             articleEntity.setWb_name(joAuthor.getString("wb_name"));
-                            Log.i("json",joAuthor.toString());
+                            //Log.i("json",joAuthor.toString());
                         }
 
                     }

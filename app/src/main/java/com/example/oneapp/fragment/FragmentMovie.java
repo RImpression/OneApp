@@ -123,7 +123,7 @@ public class FragmentMovie extends Fragment {
                 movieEntity.setReleasetime(object.getString("releasetime"));
                 movieEntity.setScoretime(object.getString("scoretime"));
                 movieEntity.setCover(object.getString("cover"));
-                Log.i("json",movieEntity.getTitle());
+                //Log.i("json",movieEntity.getTitle());
                 movieList.add(movieEntity);
             }
 
