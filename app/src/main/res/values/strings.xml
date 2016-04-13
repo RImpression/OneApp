@@ -10,4 +10,5 @@
     <string name="question">问题</string>
     <string name="essay">短篇</string>
     <string name="serialize">连载</string>
+    <string name="title_activity_about_author">AboutAuthorActivity</string>
 </resources>
