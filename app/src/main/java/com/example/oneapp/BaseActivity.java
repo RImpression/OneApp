@@ -49,6 +49,27 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * 初始化TOOLBA，带返回键
+     * isShow=true时默认返回点击时间为finish()
+     * @param title 标题
+     * @param isShow
+     */
+    public void initToolbar(String title,Boolean isShow) {
+        if (toolbar == null) {
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+        }
+        toolbar.setTitle(title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(isShow);//显示返回按键
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    /**
      * 显示Toast
      * @param text 提示文字
      */

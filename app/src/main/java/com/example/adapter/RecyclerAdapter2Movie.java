@@ -1,6 +1,7 @@
 package com.example.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.entity.MovieEntity;
+import com.example.oneapp.MovieDetailActivitty;
 import com.example.oneapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -56,6 +58,9 @@ public class RecyclerAdapter2Movie extends RecyclerView.Adapter<RecyclerAdapter2
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext,entity.getTitle(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                intent.setClass(mContext, MovieDetailActivitty.class);
+                mContext.startActivity(intent);
             }
         });
     }

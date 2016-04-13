@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity {
         toolbar.setTitle("ONE");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_index);
+        actionBar.setHomeAsUpIndicator(R.mipmap.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 

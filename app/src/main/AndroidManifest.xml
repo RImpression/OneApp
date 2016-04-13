@@ -29,6 +29,8 @@
             android:label="@string/title_activity_about_author" >
 
         </activity>
+        <activity android:name=".MovieDetailActivitty">
+        </activity>
     </application>
 
 </manifest>

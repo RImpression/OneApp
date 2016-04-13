@@ -77,7 +77,7 @@ public class FragmentMovie extends Fragment {
         new MyRequest(getContext().getApplicationContext()).getRequest(URL_MOVIE, new HttpListener() {
             @Override
             public void onSuccess(String result) {
-                Log.i("movieResult",result);
+                //Log.i("movieResult",result);
                 mDataList = parse2Json(result);
                 loadRecyclerView(mDataList);
             }
