@@ -57,8 +57,9 @@ public class RecyclerAdapter2Movie extends RecyclerView.Adapter<RecyclerAdapter2
         holder.rlMovieItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,entity.getTitle(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext,entity.getTitle(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
+                intent.putExtra("movieID",entity.getId());
                 intent.setClass(mContext, MovieDetailActivitty.class);
                 mContext.startActivity(intent);
             }

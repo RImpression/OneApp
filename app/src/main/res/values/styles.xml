@@ -20,7 +20,7 @@
     <style name="text_content">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:lineSpacingExtra">3dp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
 
     </style>
 

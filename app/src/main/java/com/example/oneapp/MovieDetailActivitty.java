@@ -24,8 +24,8 @@ import org.json.JSONObject;
  * Created by lcr on 16/4/13.
  */
 public class MovieDetailActivitty extends BaseActivity implements View.OnClickListener {
-    private static final String URL_MOVIEDETAIL = "http://v3.wufazhuce.com:8000/api/movie/detail/47?";
-    private static final String URL_MOVIESTORY = "http://v3.wufazhuce.com:8000/api/movie/47/story/1/0?";
+    private static final String URL_MOVIEDETAIL = "http://v3.wufazhuce.com:8000/api/movie/detail/";
+    private static final String URL_MOVIESTORY = "http://v3.wufazhuce.com:8000/api/movie/";
     private String URL_MOVIEDETAIL_ALL;
     private String URL_MOVIESTORY_ALL;
     private MovieDetailEntity movieDetailEntity = null;
@@ -40,8 +40,11 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        requestMovieStoryData();
-        requestMovieDetailData();
+        String ID = getIntent().getStringExtra("movieID");
+        URL_MOVIEDETAIL_ALL = URL_MOVIEDETAIL + ID + "?";
+        URL_MOVIESTORY_ALL = URL_MOVIESTORY + ID + "/story/1/0?";
+        requestMovieStoryData(URL_MOVIESTORY_ALL);
+        requestMovieDetailData(URL_MOVIEDETAIL_ALL);
         initToolbar("movie",true);
         initViews();
     }
@@ -74,6 +77,9 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
         tvStoryTitle.setText(movieStoryEntity.getTitle());
         tvStoryContent.setText(Html.fromHtml(movieStoryEntity.getContent()));
         tvAuthorPraise.setText(String.valueOf(movieStoryEntity.getPraisenum()));
+        if (movieDetailEntity.getScore() == "null") {
+            tvUserScore.setText(R.string.user_score);
+        }
 
     }
 
@@ -81,8 +87,8 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
     /**
      * 请求电影故事数据
      */
-    private void requestMovieStoryData() {
-        new MyRequest(this).getRequest(URL_MOVIESTORY, new HttpListener() {
+    private void requestMovieStoryData(String url) {
+        new MyRequest(this).getRequest(url, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("result",result);
@@ -140,8 +146,8 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
     /**
      * 请求电影详情数据
      */
-    private void requestMovieDetailData() {
-        new MyRequest(this).getRequest(URL_MOVIEDETAIL, new HttpListener() {
+    private void requestMovieDetailData(String url) {
+        new MyRequest(this).getRequest(url, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("result",result);
