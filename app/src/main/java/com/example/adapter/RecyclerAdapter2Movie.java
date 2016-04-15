@@ -60,6 +60,7 @@ public class RecyclerAdapter2Movie extends RecyclerView.Adapter<RecyclerAdapter2
                 //Toast.makeText(mContext,entity.getTitle(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.putExtra("movieID",entity.getId());
+                intent.putExtra("movieTitle",entity.getTitle());
                 intent.setClass(mContext, MovieDetailActivitty.class);
                 mContext.startActivity(intent);
             }

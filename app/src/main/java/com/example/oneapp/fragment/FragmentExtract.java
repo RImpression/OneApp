@@ -32,7 +32,6 @@ import java.text.SimpleDateFormat;
  * Created by RImpression on 2016/3/20 0020.
  */
 public class FragmentExtract extends Fragment implements View.OnClickListener {
-    View view;
     private String mDate = null;
     private String mNum = "1";
     private String url = "http://rest.wufazhuce.com/OneForWeb/one/getHp_N";
@@ -42,6 +41,7 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
     private TextView tvHpTitle,tvAuthor,tvContent;
     private TextView tvBook,tvZan,tvShare;
     private ImageView imgShow;
+    private View view;
 
 
 
@@ -63,7 +63,9 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i("lifeResult", "onCreateView");
-        view = inflater.inflate(R.layout.fragment_extract, container, false);
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_extract, container, false);
+        }
         return view;
     }
 
@@ -104,7 +106,7 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
                 mExtract = parse2Jason(result);
                 isFirst = false;
                 setDataWithView();
-                Log.i("lifeRestlt", result);
+                //Log.i("lifeRestlt", result);
             }
 
             @Override

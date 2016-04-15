@@ -63,6 +63,7 @@ public class FragmentArticle extends Fragment {
 
     // 轮播banner的数据
     private List<GuideReadingEntity> adList = null;
+    private View view;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -84,9 +85,10 @@ public class FragmentArticle extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_article, container, false);
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_article, container, false);
+        }
         return view;
-
     }
 
     @Override
@@ -288,7 +290,7 @@ public class FragmentArticle extends Fragment {
 
     private void loadViewPager() {
         addDynamicView();
-        adViewPager.setAdapter(new MyAdapter(adList, imageViews));// 设置填充ViewPager页面的适配器
+        adViewPager.setAdapter(new MyAdapter(getContext(),adList, imageViews));// 设置填充ViewPager页面的适配器
         // 设置一个监听器，当ViewPager中的页面改变时调用
         adViewPager.setOnPageChangeListener(new MyPageChangeListener());
     }

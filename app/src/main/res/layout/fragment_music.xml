@@ -1,12 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnMusic"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="music request"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <ImageView
+                android:id="@+id/imgMusic"
+                android:layout_width="match_parent"
+                android:layout_height="380dp"
+                android:scaleType="fitXY"
+                android:background="@color/primaryblue"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tvWord"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="match_parent"
+                        android:text="音乐故事"
+                        android:textColor="@color/text_gray"
+                        android:gravity="bottom"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="5dp"
+                        android:textSize="18sp"/>
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:layout_marginRight="10dp">
+                        <ImageButton
+                            android:id="@+id/imgbStory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@mipmap/ic_menu"
+                            android:layout_alignParentLeft="true"/>
+                        <ImageButton
+                            android:id="@+id/imgbLyric"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@mipmap/ic_menu"
+                            android:layout_centerInParent="true"/>
+                        <ImageButton
+                            android:id="@+id/imgbInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@mipmap/ic_menu"
+                            android:layout_alignParentRight="true"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/text_gray"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
+            <LinearLayout
+                android:id="@+id/layoutStory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvStoryTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="有关告别"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/tvStoryAuthor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="孙燕姿"
+                    android:textColor="@color/primaryblue"
+                    android:layout_marginTop="10dp"/>
+                <TextView
+                    android:id="@+id/tvStoryContent"
+                    style="@style/text_content"
+                    android:text="孙燕姿终于发乐新歌孙燕姿终于发乐新歌孙燕姿终于发乐新歌孙燕姿终于发乐新歌"
+                    android:layout_marginTop="10dp"/>
+                <TextView
+                    android:id="@+id/tvEditor1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="（责任编辑：丁无味）"
+                    android:textColor="@color/text_gray"
+                    android:layout_marginTop="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutLyric"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/tvLyric"
+                    style="@style/text_content"
+                    android:text="djfsjlkjslkfjlksjlfjlffdjfjk"/>
+                <TextView
+                    android:id="@+id/tvEditor2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="（责任编辑：丁无味）"
+                    android:textColor="@color/text_gray"
+                    android:layout_marginTop="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/tvMusicInfo"
+                    style="@style/text_content" />
+                <TextView
+                    android:id="@+id/tvEditor3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="（责任编辑：丁无味）"
+                    android:textColor="@color/text_gray"
+                    android:layout_marginTop="20dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            layout="@layout/layout_music_card"
+            android:layout_marginTop="350dp"/>
+
+    </RelativeLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

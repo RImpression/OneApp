@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class FragmentMovie extends Fragment {
 
-    View view;
+    private View view;
     private static final String URL_MOVIE = "http://v3.wufazhuce.com:8000/api/movie/list/0?";
     private boolean isFirst = true;
     private RecyclerView movieRecycleView = null;
@@ -64,7 +64,9 @@ public class FragmentMovie extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_movie,container,false);
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_movie,container,false);
+        }
         return view;
     }
 

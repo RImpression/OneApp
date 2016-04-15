@@ -1,5 +1,6 @@
 package com.example.adapter;
 
+import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.entity.GuideReadingEntity;
 
@@ -19,10 +21,12 @@ public class MyAdapter extends PagerAdapter {
 
     private List<GuideReadingEntity> DataList;
     private List<ImageView> imageList;
+    private Context mContext;
 
-    public MyAdapter(List<GuideReadingEntity> adList,List<ImageView> imageViews){
+    public MyAdapter(Context context,List<GuideReadingEntity> adList,List<ImageView> imageViews){
         this.DataList = adList;
         this.imageList = imageViews;
+        this.mContext = context;
     }
 
     @Override
@@ -42,6 +46,7 @@ public class MyAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 // 处理跳转逻辑
+                Toast.makeText(mContext,adDomain.getTitle(),Toast.LENGTH_SHORT).show();
             }
         });
         return iv;

@@ -41,11 +41,12 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_movie_detail);
 
         String ID = getIntent().getStringExtra("movieID");
+        String MovieTitle = getIntent().getStringExtra("movieTitle");
         URL_MOVIEDETAIL_ALL = URL_MOVIEDETAIL + ID + "?";
         URL_MOVIESTORY_ALL = URL_MOVIESTORY + ID + "/story/1/0?";
         requestMovieStoryData(URL_MOVIESTORY_ALL);
         requestMovieDetailData(URL_MOVIEDETAIL_ALL);
-        initToolbar("movie",true);
+        initToolbar(MovieTitle,true);
         initViews();
     }
 
@@ -61,6 +62,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
         tvStoryTitle = (TextView) findViewById(R.id.tvStoryTitle);
         tvStoryContent = (TextView) findViewById(R.id.tvStoryContent);
         tvAuthorPraise = (TextView) findViewById(R.id.tvAuthorPraise);
+        imgAuthor.setOnClickListener(this);
         imgbVideo.setOnClickListener(this);
         imgbShare.setOnClickListener(this);
         tvUserScore.setOnClickListener(this);
@@ -68,19 +70,20 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
     }
 
 
-    private void loadView() {
-        Picasso.with(this).load(movieDetailEntity.getDetailcover()).into(imgMovie);
-
+    private void loadStoryView() {
         Picasso.with(this).load(movieStoryEntity.getWeb_url()).into(imgAuthor);
         tvAuthorName.setText(movieStoryEntity.getUser_name());
         tvAuthorTime.setText(movieStoryEntity.getInput_date());
         tvStoryTitle.setText(movieStoryEntity.getTitle());
         tvStoryContent.setText(Html.fromHtml(movieStoryEntity.getContent()));
         tvAuthorPraise.setText(String.valueOf(movieStoryEntity.getPraisenum()));
+    }
+
+    private void loadDetailView() {
+        Picasso.with(this).load(movieDetailEntity.getDetailcover()).into(imgMovie);
         if (movieDetailEntity.getScore() == "null") {
             tvUserScore.setText(R.string.user_score);
         }
-
     }
 
 
@@ -93,6 +96,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
             public void onSuccess(String result) {
                 //Log.i("result",result);
                 movieStoryEntity = parseStory2Json(result);
+                loadStoryView();
             }
 
             @Override
@@ -152,7 +156,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
             public void onSuccess(String result) {
                 //Log.i("result",result);
                 movieDetailEntity = parseDetail2Json(result);
-                loadView();
+                loadDetailView();
             }
 
             @Override
@@ -162,8 +166,6 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
             }
         });
     }
-
-
 
     /**
      * 解析电影详情数据
@@ -229,6 +231,9 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
                 ShowToast("功能未开发");
                 break;
             case R.id.tvAuthorPraise:
+                ShowToast("功能未开发");
+                break;
+            case R.id.imgAuthor:
                 ShowToast("功能未开发");
                 break;
         }

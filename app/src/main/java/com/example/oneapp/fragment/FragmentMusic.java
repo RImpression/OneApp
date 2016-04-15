@@ -4,11 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -16,6 +21,7 @@ import com.example.entity.MusicEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
 import com.example.oneapp.R;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,20 +33,39 @@ import java.util.List;
 /**
  * Created by RImpression on 2016/3/21 0021.
  */
-public class FragmentMusic extends Fragment {
+public class FragmentMusic extends Fragment implements View.OnClickListener {
 
     private String URL_MUSICLIST = "http://v3.wufazhuce.com:8000/api/music/idlist/0?";
     //不完整链接，格式URL_MUSIC+333+?
-    private String URL_MUSIC = "http://v3.wufazhuce.com:8000/api/music/detail/";
+    private String URL_MUSIC = "http://v3.wufazhuce.com:8000/api/music/detail/422?";
     private Context mContext;
     private List<String> musicList;
+    private ImageView imgMusic,imgAuthor;
+    private ImageButton imgbPlay,imgbStory,imgbLyric,imgbInfo;
+    private TextView tvAuthorName,tvAuthorInfo,tvMusicTitle,tvMusicTime;
+    private TextView tvWord,tvStoryTitle,tvStoryAuthor,tvStoryContent,tvEditor1,tvLyric,tvEditor2,tvMusicInfo,tvEditor3;
+    private LinearLayout layoutStory,layoutLyric,layoutInfo;
+    private boolean isFirst = true;
+    private MusicEntity musicEntity;
     View view;
-    private Button btnmusic;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (isFirst == true) {
+           // getMusicList();
+            getMusicRequest();
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_music,container,false);
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_music,container,false);
+
+        }
         return view;
     }
 
@@ -48,8 +73,62 @@ public class FragmentMusic extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getContext().getApplicationContext();
-        getMusicList();
+
         initView();
+        if (isFirst == false) {
+            loadMusicView(musicEntity);
+        }
+    }
+
+
+    private void initView() {
+        imgMusic = (ImageView) getView().findViewById(R.id.imgMusic);
+        imgAuthor = (ImageView) getView().findViewById(R.id.imgStoryAuthor);
+        imgbPlay = (ImageButton) getView().findViewById(R.id.imgbPlay);
+        imgbStory = (ImageButton) getView().findViewById(R.id.imgbStory);
+        imgbLyric = (ImageButton) getView().findViewById(R.id.imgbLyric);
+        imgbInfo = (ImageButton) getView().findViewById(R.id.imgbInfo);
+        tvAuthorName = (TextView) getView().findViewById(R.id.tvAuthorName);
+        tvAuthorInfo = (TextView) getView().findViewById(R.id.tvAuthorInfo);
+        tvMusicTime = (TextView) getView().findViewById(R.id.tvMusicTime);
+        tvMusicTitle = (TextView) getView().findViewById(R.id.tvMusicTitle);
+        tvWord = (TextView) getView().findViewById(R.id.tvWord);
+        tvStoryTitle = (TextView) getView().findViewById(R.id.tvStoryTitle);
+        tvStoryAuthor = (TextView) getView().findViewById(R.id.tvStoryAuthor);
+        tvStoryContent = (TextView) getView().findViewById(R.id.tvStoryContent);
+        tvLyric = (TextView) getView().findViewById(R.id.tvLyric);
+        tvEditor1 = (TextView) getView().findViewById(R.id.tvEditor1);
+        tvEditor2 = (TextView) getView().findViewById(R.id.tvEditor2);
+        tvEditor3 = (TextView) getView().findViewById(R.id.tvEditor3);
+        tvMusicInfo = (TextView) getView().findViewById(R.id.tvMusicInfo);
+        layoutStory = (LinearLayout) getView().findViewById(R.id.layoutStory);
+        layoutLyric = (LinearLayout) getView().findViewById(R.id.layoutLyric);
+        layoutInfo = (LinearLayout) getView().findViewById(R.id.layoutInfo);
+        imgAuthor.setOnClickListener(this);
+        imgbPlay.setOnClickListener(this);
+        imgbStory.setOnClickListener(this);
+        imgbLyric.setOnClickListener(this);
+        imgbInfo.setOnClickListener(this);
+
+
+    }
+
+    private void loadMusicView(MusicEntity musicEntity) {
+        Picasso.with(mContext).load(musicEntity.getCover()).into(imgMusic);
+        Picasso.with(mContext).load(musicEntity.getAuthor_url()).into(imgAuthor);
+        tvAuthorName.setText(musicEntity.getUser_name());
+        tvAuthorInfo.setText(musicEntity.getDesc());
+        tvMusicTitle.setText(musicEntity.getTitle());
+        tvMusicTime.setText(musicEntity.getMaketime());
+        tvStoryTitle.setText(musicEntity.getStory_title());
+        tvStoryAuthor.setText(musicEntity.getStory_author_name());
+        tvStoryContent.setText(Html.fromHtml(musicEntity.getStory()));
+        tvEditor1.setText(musicEntity.getCharge_edit());
+        tvEditor2.setText(musicEntity.getCharge_edit());
+        tvEditor3.setText(musicEntity.getCharge_edit());
+        tvLyric.setText(Html.fromHtml(musicEntity.getLyric()));
+        tvMusicInfo.setText(Html.fromHtml(musicEntity.getInfo()));
+
     }
 
     /**
@@ -88,27 +167,18 @@ public class FragmentMusic extends Fragment {
         }
     }
 
-    private void initView() {
-        btnmusic = (Button) getView().findViewById(R.id.btnMusic);
-        btnmusic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                getMusicRequest();
-            }
-        });
-
-    }
 
 
     /**
      * 请求音乐数据
      */
     private void getMusicRequest() {
-        new MyRequest(mContext).getRequest(URL_MUSIC + musicList.get(0) + "?", new HttpListener() {
+        new MyRequest(getContext().getApplicationContext()).getRequest(URL_MUSIC, new HttpListener() {
             @Override
             public void onSuccess(String result) {
-                parse2JsonMusic(result);
+                musicEntity = parse2JsonMusic(result);
+                loadMusicView(musicEntity);
             }
 
             @Override
@@ -155,10 +225,11 @@ public class FragmentMusic extends Fragment {
             JSONObject joAuthor = joData.getJSONObject("author");
             musicEntity.setUser_id(joAuthor.getString("user_id"));
             musicEntity.setUser_name(joAuthor.getString("user_name"));
+            musicEntity.setAuthor_url(joAuthor.getString("web_url"));
             musicEntity.setDesc(joAuthor.getString("desc"));
 
             if (!joData.getString("story_author").equals("null")) {
-                Log.i("joData","ddddd"+joData.getString("story_author"));
+                //Log.i("joData","ddddd"+joData.getString("story_author"));
                 JSONObject joStoryAuthor = joData.getJSONObject("story_author");
                 musicEntity.setStory_author_id(joStoryAuthor.getString("user_id"));
                 musicEntity.setStory_author_name(joStoryAuthor.getString("user_name"));
@@ -172,5 +243,34 @@ public class FragmentMusic extends Fragment {
         }
         return musicEntity;
 
+    }
+
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imgAuthor:
+
+                break;
+            case R.id.imgbPlay:
+
+                break;
+            case R.id.imgbStory:
+                layoutStory.setVisibility(View.VISIBLE);
+                layoutLyric.setVisibility(View.GONE);
+                layoutInfo.setVisibility(View.GONE);
+                break;
+            case R.id.imgbLyric:
+                layoutLyric.setVisibility(View.VISIBLE);
+                layoutStory.setVisibility(View.GONE);
+                layoutInfo.setVisibility(View.GONE);
+                break;
+            case R.id.imgbInfo:
+                layoutInfo.setVisibility(View.VISIBLE);
+                layoutStory.setVisibility(View.GONE);
+                layoutLyric.setVisibility(View.GONE);
+                break;
+        }
     }
 }

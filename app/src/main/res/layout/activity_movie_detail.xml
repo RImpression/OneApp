@@ -42,7 +42,7 @@
                     android:id="@+id/imgbVideo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_dianzan"
+                    android:src="@mipmap/ic_movie_player"
                     android:background="@null"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="20dp"/>
