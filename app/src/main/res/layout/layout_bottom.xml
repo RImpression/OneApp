@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="45dp"
     android:gravity="center"
     android:orientation="horizontal"
     android:layout_alignParentBottom="true"
@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/tvPraise"
             style="@style/bottom_view"
-            android:drawableLeft="@drawable/icon_dianzan"/>
+            android:drawableLeft="@mipmap/icon_parise_nomal"/>
 
     </RelativeLayout>
     <View
@@ -31,7 +31,7 @@
         <TextView
             android:id="@+id/tvComment"
             style="@style/bottom_view"
-            android:drawableLeft="@drawable/icon_comment"/>
+            android:drawableLeft="@mipmap/icon_comment"/>
     </LinearLayout>
     <View
         android:layout_width="1dp"
@@ -46,7 +46,7 @@
         <TextView
             android:id="@+id/tvShare"
             style="@style/bottom_view"
-            android:drawableLeft="@drawable/icon_share"/>
+            android:drawableLeft="@mipmap/icon_share"/>
     </LinearLayout>
 
 </LinearLayout>

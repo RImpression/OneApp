@@ -1,6 +1,5 @@
 package com.example.oneapp.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,11 +15,9 @@ import com.android.volley.VolleyError;
 import com.example.entity.ExtractEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
-import com.example.oneapp.BaseActivity;
 import com.example.oneapp.R;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,7 +50,6 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
         mPara2 = new String[]{mDate,mNum};
         if (isFirst == true) {
             Log.i("lifeResult","onCreat");
-
             getExtractRequest(url,mPara1,mPara2);
         }
     }
@@ -152,6 +147,7 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
 
         return null;
     }
+
 
     @Override
     public void onResume() {

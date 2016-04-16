@@ -15,11 +15,10 @@
                 android:id="@+id/imgMusic"
                 android:layout_width="match_parent"
                 android:layout_height="380dp"
-                android:scaleType="fitXY"
-                android:background="@color/primaryblue"/>
+                android:scaleType="fitXY"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="150dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
                 <LinearLayout
@@ -47,20 +46,23 @@
                         <ImageButton
                             android:id="@+id/imgbStory"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@mipmap/ic_menu"
-                            android:layout_alignParentLeft="true"/>
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@mipmap/ic_music_story_press"/>
                         <ImageButton
                             android:id="@+id/imgbLyric"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@mipmap/ic_menu"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:background="@mipmap/ic_lyric_normal"
                             android:layout_centerInParent="true"/>
                         <ImageButton
                             android:id="@+id/imgbInfo"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@mipmap/ic_menu"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/ic_musicinfo_normal"
+                            android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -82,26 +84,23 @@
                     android:id="@+id/tvStoryTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="有关告别"
-                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textSize="18sp"/>
                 <TextView
                     android:id="@+id/tvStoryAuthor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="孙燕姿"
                     android:textColor="@color/primaryblue"
                     android:layout_marginTop="10dp"/>
                 <TextView
                     android:id="@+id/tvStoryContent"
                     style="@style/text_content"
-                    android:text="孙燕姿终于发乐新歌孙燕姿终于发乐新歌孙燕姿终于发乐新歌孙燕姿终于发乐新歌"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_marginTop="10dp"/>
                 <TextView
                     android:id="@+id/tvEditor1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="（责任编辑：丁无味）"
                     android:textColor="@color/text_gray"
                     android:layout_marginTop="20dp"/>
             </LinearLayout>
@@ -115,12 +114,11 @@
                 <TextView
                     android:id="@+id/tvLyric"
                     style="@style/text_content"
-                    android:text="djfsjlkjslkfjlksjlfjlffdjfjk"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
                 <TextView
                     android:id="@+id/tvEditor2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="（责任编辑：丁无味）"
                     android:textColor="@color/text_gray"
                     android:layout_marginTop="20dp"/>
             </LinearLayout>
@@ -133,22 +131,23 @@
                 android:visibility="gone">
                 <TextView
                     android:id="@+id/tvMusicInfo"
-                    style="@style/text_content" />
+                    style="@style/text_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
                 <TextView
                     android:id="@+id/tvEditor3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="（责任编辑：丁无味）"
                     android:textColor="@color/text_gray"
                     android:layout_marginTop="20dp"/>
             </LinearLayout>
+            <include layout="@layout/layout_bottom"/>
         </LinearLayout>
 
         <include
             android:layout_width="match_parent"
             android:layout_height="140dp"
             layout="@layout/layout_music_card"
-            android:layout_marginTop="350dp"/>
+            android:layout_marginTop="340dp"/>
 
     </RelativeLayout>
 

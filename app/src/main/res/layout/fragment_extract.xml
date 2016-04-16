@@ -38,14 +38,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textColor="@color/text_gray"
-                android:textSize="14sp"/>
+                android:textSize="12sp"/>
             <TextView
                 android:id="@+id/tvContent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/text_content"
                 android:layout_below="@id/tvHpTitle"
                 android:layout_marginTop="10dp"
-                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/black"/>
         </RelativeLayout>
 
@@ -64,25 +63,27 @@
             android:layout_height="wrap_content"
             android:text="小记"
             android:textSize="14sp"
+            android:gravity="center"
             android:layout_alignParentLeft="true"
-            android:drawableLeft="@drawable/icon_book"/>
+            android:drawableLeft="@mipmap/icon_book"/>
         <TextView
             android:id="@+id/tvZan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="28254"
             android:textSize="14sp"
             android:layout_centerInParent="true"
             android:layout_alignBottom="@id/tvBook"
-            android:drawableLeft="@drawable/icon_dianzan"/>
+            android:gravity="center"
+            android:drawableLeft="@mipmap/icon_parise_nomal"/>
         <TextView
             android:id="@+id/tvShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="分享"
             android:textSize="14sp"
+            android:gravity="center"
             android:layout_alignParentRight="true"
-            android:drawableLeft="@drawable/icon_share"/>
+            android:drawableLeft="@mipmap/icon_share"/>
 
     </RelativeLayout>
 

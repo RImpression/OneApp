@@ -50,16 +50,18 @@
                     android:id="@+id/tvUserScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/icon_book"
+                    android:drawableLeft="@mipmap/ic_movie_score"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="60dp"
                     android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:text="@string/user_score_normal"
                     android:textColor="@color/text_gray"/>
                 <ImageButton
                     android:id="@+id/imgbShare"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_share"
+                    android:src="@mipmap/icon_share"
                     android:background="@null"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"/>

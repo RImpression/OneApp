@@ -43,15 +43,13 @@
                         android:id="@+id/tvAuthorName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/primaryblue"
-                        android:text="孙燕姿"/>
+                        android:textColor="@color/primaryblue"/>
                     <TextView
                         android:id="@+id/tvAuthorInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/text_gray"
-                        android:text="新加波歌手"/>
+                        android:textColor="@color/text_gray"/>
 
                 </LinearLayout>
 
@@ -66,7 +64,7 @@
                         android:layout_height="match_parent"
                         android:padding="10dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_music_player"/>
+                        android:background="@mipmap/ic_music_player"/>
                 </LinearLayout>
             </LinearLayout>
             <RelativeLayout
@@ -77,15 +75,13 @@
                     android:id="@+id/tvMusicTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="在，也不见"
-                    android:textStyle="bold"
                     android:textSize="20sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:gravity="center"/>
                 <TextView
                     android:id="@+id/tvMusicTime"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Apr 14.2016"
                     android:layout_alignParentRight="true"
                     android:textSize="16sp"/>
             </RelativeLayout>

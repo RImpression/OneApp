@@ -8,9 +8,8 @@
         android:id="@+id/tvDateList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="2016-03-30"
         android:padding="5dp"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textColor="@color/primaryblue"
         android:background="@color/DateBackground"/>
 
@@ -34,7 +33,6 @@
                 android:id="@+id/tvType3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="问答"
                 android:textSize="14sp"
                 android:padding="10dp"/>
 
@@ -42,10 +40,9 @@
                 android:id="@+id/tvQuestionTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="为什么感情专栏的作家总劝人分手？"
                 android:textSize="16sp"
-                android:paddingLeft="10dp"
-                android:textStyle="bold"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:paddingLeft="10dp"/>
 
             <TextView
                 android:id="@+id/tvAnswerTitle"
@@ -55,17 +52,15 @@
                 android:paddingRight="10dp"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
-                android:text="答混大力："
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/tvAnserContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="我有一个朋友是情感专栏作家，她文风清新彪悍，对于咨询上门的善男善女，无不给予.."
+                style="@style/text_content"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:lineSpacingExtra="3dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="12sp"/>
         </LinearLayout>
 
@@ -91,7 +86,6 @@
                 android:id="@+id/tvType2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="问答"
                 android:textSize="14sp"
                 android:padding="10dp"/>
 
@@ -99,10 +93,9 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="为什么感情专栏的作家总劝人分手？"
                 android:textSize="16sp"
                 android:paddingLeft="10dp"
-                android:textStyle="bold"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
             <TextView
                 android:id="@+id/tvUserName"
@@ -112,17 +105,15 @@
                 android:paddingRight="10dp"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
-                android:text="答混大力："
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/tvExcerpt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="我有一个朋友是情感专栏作家，她文风清新彪悍，对于咨询上门的善男善女，无不给予.."
+                style="@style/text_content"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:lineSpacingExtra="3dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="12sp"/>
         </LinearLayout>
 
@@ -148,7 +139,6 @@
                 android:id="@+id/tvType1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="问答"
                 android:textSize="14sp"
                 android:padding="10dp"/>
 
@@ -156,10 +146,9 @@
                 android:id="@+id/tvHPTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="为什么感情专栏的作家总劝人分手？"
                 android:textSize="16sp"
                 android:paddingLeft="10dp"
-                android:textStyle="bold"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
             <TextView
                 android:id="@+id/tvUserName1"
@@ -169,17 +158,15 @@
                 android:paddingRight="10dp"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
-                android:text="答混大力："
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/tvGuideWord"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="我有一个朋友是情感专栏作家，她文风清新彪悍，对于咨询上门的善男善女，无不给予.."
+                style="@style/text_content"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:lineSpacingExtra="3dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="12sp"/>
         </LinearLayout>
 

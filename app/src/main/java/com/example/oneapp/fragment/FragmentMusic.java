@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,18 +34,19 @@ import java.util.List;
  */
 public class FragmentMusic extends Fragment implements View.OnClickListener {
 
-    private String URL_MUSICLIST = "http://v3.wufazhuce.com:8000/api/music/idlist/0?";
+    private static final String URL_MUSICLIST = "http://v3.wufazhuce.com:8000/api/music/idlist/0?";
     //不完整链接，格式URL_MUSIC+333+?
-    private String URL_MUSIC = "http://v3.wufazhuce.com:8000/api/music/detail/422?";
+    private static final String URL_MUSIC = "http://v3.wufazhuce.com:8000/api/music/detail/";
     private Context mContext;
-    private List<String> musicList;
     private ImageView imgMusic,imgAuthor;
     private ImageButton imgbPlay,imgbStory,imgbLyric,imgbInfo;
     private TextView tvAuthorName,tvAuthorInfo,tvMusicTitle,tvMusicTime;
     private TextView tvWord,tvStoryTitle,tvStoryAuthor,tvStoryContent,tvEditor1,tvLyric,tvEditor2,tvMusicInfo,tvEditor3;
     private LinearLayout layoutStory,layoutLyric,layoutInfo;
+    private TextView tvShare,tvPraise,tvComment;
     private boolean isFirst = true;
     private MusicEntity musicEntity;
+    private List<String> musicList;
     View view;
 
 
@@ -54,8 +54,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (isFirst == true) {
-           // getMusicList();
-            getMusicRequest();
+            getMusicList();
         }
     }
 
@@ -73,7 +72,6 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getContext().getApplicationContext();
-
         initView();
         if (isFirst == false) {
             loadMusicView(musicEntity);
@@ -104,6 +102,12 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
         layoutStory = (LinearLayout) getView().findViewById(R.id.layoutStory);
         layoutLyric = (LinearLayout) getView().findViewById(R.id.layoutLyric);
         layoutInfo = (LinearLayout) getView().findViewById(R.id.layoutInfo);
+        tvShare = (TextView) getView().findViewById(R.id.tvShare);
+        tvComment = (TextView) getView().findViewById(R.id.tvComment);
+        tvPraise = (TextView) getView().findViewById(R.id.tvPraise);
+        tvShare.setOnClickListener(this);
+        tvComment.setOnClickListener(this);
+        tvPraise.setOnClickListener(this);
         imgAuthor.setOnClickListener(this);
         imgbPlay.setOnClickListener(this);
         imgbStory.setOnClickListener(this);
@@ -126,55 +130,25 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
         tvEditor1.setText(musicEntity.getCharge_edit());
         tvEditor2.setText(musicEntity.getCharge_edit());
         tvEditor3.setText(musicEntity.getCharge_edit());
-        tvLyric.setText(Html.fromHtml(musicEntity.getLyric()));
-        tvMusicInfo.setText(Html.fromHtml(musicEntity.getInfo()));
+        tvLyric.setText(musicEntity.getLyric());
+        tvMusicInfo.setText(musicEntity.getInfo());
+        tvShare.setText(musicEntity.getSharenum());
+        tvPraise.setText(musicEntity.getPraisenum());
+        tvComment.setText(musicEntity.getCommentnum());
 
     }
 
-    /**
-     * 请求音乐列表ID数据
-     */
-    private void getMusicList() {
-        new MyRequest(mContext).getRequest(URL_MUSICLIST, new HttpListener() {
-            @Override
-            public void onSuccess(String result) {
-                parse2JsonMusicList(result);
-            }
 
-            @Override
-            public void onError(VolleyError volleyError) {
-                Log.i("musicList",volleyError.toString());
-            }
-        });
-    }
-
-    /**
-     * 解析音乐列表并添加到MUSUCLIST中
-     * @param result
-     */
-    private void parse2JsonMusicList(String result) {
-        try {
-            musicList = new ArrayList<>();
-            JSONObject jsonObject = new JSONObject(result);
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (int i=0;i<jsonArray.length();i++) {
-                musicList.add(jsonArray.getString(i));
-                //Log.i("musicList",musicList.toString()+"");
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 
 
     /**
      * 请求音乐数据
+     * @param s
      */
-    private void getMusicRequest() {
-        new MyRequest(getContext().getApplicationContext()).getRequest(URL_MUSIC, new HttpListener() {
+    private void getMusicRequest(String s) {
+        new MyRequest(getContext().getApplicationContext()).getRequest(URL_MUSIC+s+"?", new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 musicEntity = parse2JsonMusic(result);
@@ -235,8 +209,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
                 musicEntity.setStory_author_name(joStoryAuthor.getString("user_name"));
                 musicEntity.setStory_author_url(joStoryAuthor.getString("web_url"));
             }
-
-            Log.i("json",musicEntity.getStory_title());
+            //Log.i("json",musicEntity.getStory_title());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -245,6 +218,43 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
 
     }
 
+
+    /**
+     * 请求音乐列表ID数据
+     */
+    private void getMusicList() {
+        new MyRequest(getContext().getApplicationContext()).getRequest(URL_MUSICLIST, new HttpListener() {
+            @Override
+            public void onSuccess(String result) {
+                parse2JsonMusicList(result);
+                getMusicRequest(musicList.get(0));
+            }
+
+            @Override
+            public void onError(VolleyError volleyError) {
+                Log.i("musicList", volleyError.toString());
+            }
+        });
+    }
+
+    /**
+     * 解析音乐列表并添加到MUSUCLIST中
+     * @param result
+     */
+    private void parse2JsonMusicList(String result) {
+        try {
+            musicList = new ArrayList<>();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                musicList.add(jsonArray.getString(i));
+                //Log.i("musicList",musicList.toString()+"");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @Override
@@ -260,16 +270,34 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
                 layoutStory.setVisibility(View.VISIBLE);
                 layoutLyric.setVisibility(View.GONE);
                 layoutInfo.setVisibility(View.GONE);
+                imgbStory.setBackground(getResources().getDrawable(R.mipmap.ic_music_story_press));
+                imgbLyric.setBackground(getResources().getDrawable(R.mipmap.ic_lyric_normal));
+                imgbInfo.setBackground(getResources().getDrawable(R.mipmap.ic_musicinfo_normal));
                 break;
             case R.id.imgbLyric:
                 layoutLyric.setVisibility(View.VISIBLE);
                 layoutStory.setVisibility(View.GONE);
                 layoutInfo.setVisibility(View.GONE);
+                imgbStory.setBackground(getResources().getDrawable(R.mipmap.ic_story_normal));
+                imgbLyric.setBackground(getResources().getDrawable(R.mipmap.ic_lyric_press));
+                imgbInfo.setBackground(getResources().getDrawable(R.mipmap.ic_musicinfo_normal));
                 break;
             case R.id.imgbInfo:
                 layoutInfo.setVisibility(View.VISIBLE);
                 layoutStory.setVisibility(View.GONE);
                 layoutLyric.setVisibility(View.GONE);
+                imgbStory.setBackground(getResources().getDrawable(R.mipmap.ic_story_normal));
+                imgbLyric.setBackground(getResources().getDrawable(R.mipmap.ic_lyric_normal));
+                imgbInfo.setBackground(getResources().getDrawable(R.mipmap.ic_musicinfo_press));
+                break;
+            case R.id.tvPraise:
+                Toast.makeText(getContext().getApplicationContext(),"功能未开发",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tvShare:
+                Toast.makeText(getContext().getApplicationContext(),"功能未开发",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tvComment:
+                Toast.makeText(getContext().getApplicationContext(),"功能未开发",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
