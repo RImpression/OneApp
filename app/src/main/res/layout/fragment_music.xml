@@ -19,6 +19,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:background="@color/write"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
                 <LinearLayout
@@ -78,6 +79,7 @@
                 android:id="@+id/layoutStory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/write"
                 android:padding="16dp"
                 android:orientation="vertical">
                 <TextView

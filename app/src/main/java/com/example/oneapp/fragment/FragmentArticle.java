@@ -40,8 +40,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class FragmentArticle extends Fragment {
 
-    private String URL_ARITICLE = "http://v3.wufazhuce.com:8000/api/reading/index/0?";
-    private String URL_PHTOT = "http://v3.wufazhuce.com:8000/api/reading/carousel/?";
+    private static final String URL_ARITICLE = "http://v3.wufazhuce.com:8000/api/reading/index/0?";
+    private static final String URL_PHTOT = "http://v3.wufazhuce.com:8000/api/reading/carousel/?";
     private Boolean isFirst = true;
     private RecyclerView mRecyclerView;
     private MyLinearLayoutManager linearLayoutManager;
