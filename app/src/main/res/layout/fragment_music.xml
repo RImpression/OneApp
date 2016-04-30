@@ -112,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:orientation="vertical"
+                android:background="@color/write"
                 android:visibility="gone">
                 <TextView
                     android:id="@+id/tvLyric"
@@ -130,6 +131,7 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:orientation="vertical"
+                android:background="@color/write"
                 android:visibility="gone">
                 <TextView
                     android:id="@+id/tvMusicInfo"
