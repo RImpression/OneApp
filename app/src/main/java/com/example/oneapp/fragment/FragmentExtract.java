@@ -117,7 +117,7 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
         tvHpTitle.setText(mExtract.getHpTitle());
         tvAuthor.setText(mExtract.getStrAuthor());
         tvContent.setText(mExtract.getStrContent());
-        Picasso.with(getContext()).load(mExtract.getStrThumbnailUrl()).resize(250,188).centerCrop().into(imgShow);
+        Picasso.with(getContext()).load(mExtract.getStrThumbnailUrl()).into(imgShow);
 
     }
 

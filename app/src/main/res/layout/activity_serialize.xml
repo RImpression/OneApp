@@ -23,6 +23,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/idTop"
         android:layout_above="@id/idBottom"
+        android:background="@color/write"
         android:orientation="vertical">
         <ScrollView
             android:layout_width="match_parent"

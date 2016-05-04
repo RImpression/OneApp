@@ -23,6 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            android:background="@color/write"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -74,6 +75,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/write"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="0dp"
