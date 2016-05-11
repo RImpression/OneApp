@@ -14,17 +14,17 @@
             <ImageView
                 android:id="@+id/imgMusic"
                 android:layout_width="match_parent"
-                android:layout_height="380dp"
+                android:layout_height="@dimen/music_image_height"
                 android:scaleType="fitXY"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="@dimen/music_icon_bar_height"
                 android:background="@color/write"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="@dimen/music_icon_height"
                     android:layout_alignParentBottom="true"
                     android:orientation="horizontal">
                     <TextView
@@ -32,12 +32,12 @@
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="音乐故事"
+                        android:text="@string/music_story"
                         android:textColor="@color/text_gray"
                         android:gravity="bottom"
                         android:paddingBottom="5dp"
                         android:paddingLeft="5dp"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/music_text_musicstory"/>
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_weight="3"
@@ -149,7 +149,7 @@
 
         <include
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="@dimen/music_card"
             layout="@layout/layout_music_card"
             android:layout_marginTop="340dp"/>
 

@@ -112,6 +112,8 @@ public class MainActivity extends BaseActivity {
                 }
                 else if (itemId == R.id.star) {
                     //frag = new Fragment2();
+                    ShowToast("you click!");
+                    drawerLayout.closeDrawers();
                 }
                 if (frag != null) {
 //                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

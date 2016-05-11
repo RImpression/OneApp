@@ -6,13 +6,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/movie_story_height"
         android:gravity="center_vertical"
         android:background="@color/text_gray">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="电影故事"
+            android:text="@string/movie_story"
             android:padding="10dp"/>
     </LinearLayout>
 
@@ -22,7 +22,7 @@
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="@dimen/movie_story_author_height"
             android:background="@color/write"
             android:orientation="horizontal">
 

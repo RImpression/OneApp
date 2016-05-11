@@ -17,7 +17,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="180dp">
+                android:layout_height="@dimen/movie_image_height">
                 <ImageView
                     android:id="@+id/imgMovie"
                     android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                     android:id="@+id/tvScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="20dp"
+                    android:padding="@dimen/movie_image_text_padding"
                     android:textColor="@color/write"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"/>
@@ -36,7 +36,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/movie_icon_bar_height"
                 android:background="@color/write"
                 android:gravity="center_vertical">
                 <ImageButton
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@mipmap/ic_movie_score"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="60dp"
+                    android:layout_marginRight="@dimen/movie_score_text_marginright"
                     android:drawablePadding="5dp"
                     android:gravity="center"
                     android:text="@string/user_score_normal"
@@ -65,7 +65,7 @@
                     android:src="@mipmap/icon_share"
                     android:background="@null"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"/>
+                    android:layout_marginRight="@dimen/movie_share_imagebutton_marginright"/>
 
 
             </RelativeLayout>

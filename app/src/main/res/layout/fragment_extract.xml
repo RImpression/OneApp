@@ -32,14 +32,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:textColor="@color/text_gray"
-                android:textSize="14sp"/>
+                android:textSize="@dimen/extract_text_hptitle"/>
             <TextView
                 android:id="@+id/tvAuthor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textColor="@color/text_gray"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/extract_text_author"/>
             <TextView
                 android:id="@+id/tvContent"
                 style="@style/text_content"
@@ -62,8 +62,8 @@
             android:id="@+id/tvBook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="小记"
-            android:textSize="14sp"
+            android:text="@string/extract_book"
+            android:textSize="@dimen/extract_text_icon"
             android:gravity="center"
             android:layout_alignParentLeft="true"
             android:drawableLeft="@mipmap/icon_book"/>
@@ -71,7 +71,7 @@
             android:id="@+id/tvZan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="@dimen/extract_text_icon"
             android:layout_centerInParent="true"
             android:layout_alignBottom="@id/tvBook"
             android:gravity="center"
@@ -80,8 +80,8 @@
             android:id="@+id/tvShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="分享"
-            android:textSize="14sp"
+            android:text="@string/extract_share"
+            android:textSize="@dimen/extract_text_icon"
             android:gravity="center"
             android:layout_alignParentRight="true"
             android:drawableLeft="@mipmap/icon_share"/>
