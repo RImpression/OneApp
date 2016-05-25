@@ -64,6 +64,7 @@
 
                 </LinearLayout>
 
+                <include layout="@layout/listview_comment"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

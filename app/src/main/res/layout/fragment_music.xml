@@ -9,6 +9,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/write"
             android:orientation="vertical">
 
             <ImageView
@@ -145,6 +146,8 @@
                     android:layout_marginTop="20dp"/>
             </LinearLayout>
             <include layout="@layout/layout_bottom"/>
+            <!--Comment List -->
+            <include layout="@layout/listview_comment"/>
         </LinearLayout>
 
         <include

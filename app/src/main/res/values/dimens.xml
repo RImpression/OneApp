@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_header_avatar">70dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="nav_header_height">200dp</dimen>
     <dimen name="movie_image_height">180dp</dimen>
     <dimen name="movie_image_text_padding">20dp</dimen>
     <dimen name="movie_icon_bar_height">40dp</dimen>
@@ -25,4 +25,5 @@
     <dimen name="extract_text_author">12sp</dimen>
     <dimen name="extract_text_icon">14sp</dimen>
     <dimen name="music_text_musicstory">18sp</dimen>
+    <dimen name="author_avatar_hight">70dp</dimen>
 </resources>

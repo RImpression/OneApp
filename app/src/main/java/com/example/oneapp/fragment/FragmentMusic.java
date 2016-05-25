@@ -12,10 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.adapter.CommentListAdapter;
+import com.example.entity.CommentEntity;
 import com.example.entity.MusicEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
@@ -35,8 +38,10 @@ import java.util.List;
 public class FragmentMusic extends Fragment implements View.OnClickListener {
 
     private static final String URL_MUSICLIST = "http://v3.wufazhuce.com:8000/api/music/idlist/0?";
+    private static final String URL_COMMENT = "http://v3.wufazhuce.com:8000/api/comment/praiseandtime/music/561/0?";
     //不完整链接，格式URL_MUSIC+333+?
     private static final String URL_MUSIC = "http://v3.wufazhuce.com:8000/api/music/detail/";
+    private  String URL_COMMENT_ALL;
     private Context mContext;
     private ImageView imgMusic,imgAuthor;
     private ImageButton imgbPlay,imgbStory,imgbLyric,imgbInfo;
@@ -47,6 +52,9 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
     private boolean isFirst = true;
     private MusicEntity musicEntity;
     private List<String> musicList;
+    private List<CommentEntity> commentList;
+    private ListView lvComment;
+    private CommentListAdapter commentAdapter;
     View view;
 
 
@@ -105,6 +113,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
         tvShare = (TextView) getView().findViewById(R.id.tvShare);
         tvComment = (TextView) getView().findViewById(R.id.tvComment);
         tvPraise = (TextView) getView().findViewById(R.id.tvPraise);
+        lvComment = (ListView) getView().findViewById(R.id.lvComment);
         tvShare.setOnClickListener(this);
         tvComment.setOnClickListener(this);
         tvPraise.setOnClickListener(this);
@@ -228,6 +237,8 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
             public void onSuccess(String result) {
                 parse2JsonMusicList(result);
                 getMusicRequest(musicList.get(0));
+                URL_COMMENT_ALL = URL_COMMENT+musicList.get(0)+"/0?";
+                requestCommentData(URL_COMMENT_ALL);
             }
 
             @Override
@@ -235,6 +246,71 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
                 Log.i("musicList", volleyError.toString());
             }
         });
+    }
+
+    /**
+     * 请求评论数据
+     * @param urlComment API
+     */
+    private void requestCommentData(String urlComment) {
+        new MyRequest(mContext).getRequest(urlComment, new HttpListener() {
+            @Override
+            public void onSuccess(String result) {
+                //Log.i("result",result);
+                commentList = parse2Json4Comment(result);
+                loadCommentListView(commentList);
+            }
+
+            @Override
+            public void onError(VolleyError volleyError) {
+                Toast.makeText(mContext,"数据请求错误",Toast.LENGTH_SHORT).show();
+                Log.i("result",volleyError.toString());
+            }
+        });
+    }
+
+    private void loadCommentListView(List<CommentEntity> commentList) {
+        commentAdapter = new CommentListAdapter(mContext,commentList);
+        lvComment.setAdapter(commentAdapter);
+    }
+
+    /**
+     * 解析评论数据
+     * @param result
+     * @return commentList
+     */
+    private List<CommentEntity> parse2Json4Comment(String result) {
+        List<CommentEntity> commentList = null;
+        CommentEntity entity = null;
+        try {
+            commentList = new ArrayList<>();
+
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject object = jsonObject.getJSONObject("data");
+            JSONArray jsonArray = object.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                entity = new CommentEntity();
+                entity.setCount(object.getInt("count"));
+                JSONObject commentObject = jsonArray.getJSONObject(i);
+                entity.setId(commentObject.getString("id"));
+                entity.setQuote(commentObject.getString("quote"));
+                entity.setContent(commentObject.getString("content"));
+                entity.setPraisenum(commentObject.getInt("praisenum"));
+                entity.setInput_date(commentObject.getString("input_date"));
+                entity.setTouser(commentObject.getString("touser"));
+                entity.setType(commentObject.getString("type"));
+                JSONObject userObject = commentObject.getJSONObject("user");
+                entity.setUser_id(userObject.getString("user_id"));
+                entity.setUser_name(userObject.getString("user_name"));
+                entity.setWeb_url(userObject.getString("web_url"));
+                //Log.i("json",entity.getUser_name());
+                commentList.add(entity);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return commentList;
     }
 
     /**

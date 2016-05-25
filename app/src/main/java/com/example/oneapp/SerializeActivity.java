@@ -6,28 +6,40 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.example.adapter.CommentListAdapter;
+import com.example.entity.CommentEntity;
 import com.example.entity.SerializeEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lcr on 16/4/9.
  */
 public class SerializeActivity extends BaseActivity implements View.OnClickListener {
 
-    private static final String URL_SERIALIZE= "http://v3.wufazhuce.com:8000/api/serialcontent/";
+    private static final String URL_SERIALIZE = "http://v3.wufazhuce.com:8000/api/serialcontent/";
+    private static final String URL_COMMENT = "http://v3.wufazhuce.com:8000/api/comment/praiseandtime/serial/113/0?";
     private String URL_SERIALIZE_CONTENT;
+    private String URL_COMMENT_ALL;
     private String ID;
     private SerializeEntity serializeEntity = null;
     private TextView tvAuthorName,tvAuthorTime,tvSerlTitle,tvSerlContent,tvPraise,tvComment,tvShare,tvEditor;
     private ImageView imgAuthor;
+    private List<CommentEntity> commentList;
+    private ListView lvComment;
+    private CommentListAdapter commentAdapter;
 
 
     @Override
@@ -37,9 +49,13 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
         initToolbar(R.string.serialize,true);
         ID = getIntent().getStringExtra("ID");
         URL_SERIALIZE_CONTENT = URL_SERIALIZE+ID+"?";
+        URL_COMMENT_ALL = URL_COMMENT+ID+"/0?";
         requestSerializeData();
+        requestCommentData(URL_COMMENT_ALL);
         initViews();
     }
+
+
 
     private void initViews() {
         tvAuthorName = (TextView) findViewById(R.id.tvAuthorname);
@@ -51,6 +67,7 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
         tvComment = (TextView) findViewById(R.id.tvComment);
         tvShare = (TextView) findViewById(R.id.tvShare);
         imgAuthor = (ImageView) findViewById(R.id.imgAuthor);
+        lvComment = (ListView) findViewById(R.id.lvComment);
 
         tvPraise.setOnClickListener(this);
         tvComment.setOnClickListener(this);
@@ -77,6 +94,71 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
+    }
+
+    /**
+     * 请求评论数据
+     * @param urlComment API
+     */
+    private void requestCommentData(String urlComment) {
+        new MyRequest(this).getRequest(urlComment, new HttpListener() {
+            @Override
+            public void onSuccess(String result) {
+                //Log.i("result",result);
+                commentList = parse2Json4Comment(result);
+                loadCommentListView(commentList);
+            }
+
+            @Override
+            public void onError(VolleyError volleyError) {
+                ShowToast("数据请求错误");
+                Log.i("result",volleyError.toString());
+            }
+        });
+    }
+
+    private void loadCommentListView(List<CommentEntity> commentList) {
+        commentAdapter = new CommentListAdapter(this,commentList);
+        lvComment.setAdapter(commentAdapter);
+    }
+
+    /**
+     * 解析评论数据
+     * @param result
+     * @return commentList
+     */
+    private List<CommentEntity> parse2Json4Comment(String result) {
+        List<CommentEntity> commentList = null;
+        CommentEntity entity = null;
+        try {
+            commentList = new ArrayList<>();
+
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject object = jsonObject.getJSONObject("data");
+            JSONArray jsonArray = object.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                entity = new CommentEntity();
+                entity.setCount(object.getInt("count"));
+                JSONObject commentObject = jsonArray.getJSONObject(i);
+                entity.setId(commentObject.getString("id"));
+                entity.setQuote(commentObject.getString("quote"));
+                entity.setContent(commentObject.getString("content"));
+                entity.setPraisenum(commentObject.getInt("praisenum"));
+                entity.setInput_date(commentObject.getString("input_date"));
+                entity.setTouser(commentObject.getString("touser"));
+                entity.setType(commentObject.getString("type"));
+                JSONObject userObject = commentObject.getJSONObject("user");
+                entity.setUser_id(userObject.getString("user_id"));
+                entity.setUser_name(userObject.getString("user_name"));
+                entity.setWeb_url(userObject.getString("web_url"));
+                //Log.i("json",entity.getUser_name());
+                commentList.add(entity);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return commentList;
     }
 
     /**

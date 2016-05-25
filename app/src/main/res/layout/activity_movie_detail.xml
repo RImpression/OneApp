@@ -72,6 +72,7 @@
 
             <include layout="@layout/layout_movie_story"/>
 
+            <include layout="@layout/listview_comment"/>
         </LinearLayout>
 
     </ScrollView>

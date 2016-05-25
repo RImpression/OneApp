@@ -6,15 +6,22 @@ import android.support.annotation.StringDef;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.example.adapter.CommentListAdapter;
+import com.example.entity.CommentEntity;
 import com.example.entity.QuestionEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -22,12 +29,17 @@ import org.json.JSONObject;
  */
 public class QuestionActivity extends BaseActivity implements View.OnClickListener {
     private static final String URL_QUESTION = "http://v3.wufazhuce.com:8000/api/question/";
+    private static final String URL_COMMENT = "http://v3.wufazhuce.com:8000/api/comment/praiseandtime/question/";
     private String URL_QUESTION_CONTENT;
+    private String URL_COMMENT_ALL;
     private QuestionEntity questionEntity = null;
     private TextView tvQuestionTitle,tvQuestionContent,tvAnswerTitle,tvDate,tvAnswerContent,tvEditor;
     private String ID;
     private TextView tvPraise,tvComment,tvShare;
-
+    private List<CommentEntity> commentList = null;
+    //评论
+    private ListView lvComment;
+    private CommentListAdapter commentAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,10 +48,14 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         initToolbar(R.string.question,true);
         ID = getIntent().getStringExtra("ID");
         URL_QUESTION_CONTENT = URL_QUESTION+ID+"?";
+        URL_COMMENT_ALL = URL_COMMENT+ID+"/0?";
         //Log.i("ID",ID);
         requestQuestionData(URL_QUESTION_CONTENT);
+        requestCommentData(URL_COMMENT_ALL);
         initViews();
     }
+
+
 
     private void initViews() {
         tvQuestionTitle = (TextView) findViewById(R.id.tvQuestionTitle);
@@ -51,6 +67,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         tvPraise = (TextView) findViewById(R.id.tvPraise);
         tvComment = (TextView) findViewById(R.id.tvComment);
         tvShare = (TextView) findViewById(R.id.tvShare);
+        lvComment = (ListView) findViewById(R.id.lvComment);
         tvPraise.setOnClickListener(this);
         tvComment.setOnClickListener(this);
         tvShare.setOnClickListener(this);
@@ -77,6 +94,71 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
+    }
+
+    /**
+     * 请求评论数据
+     * @param urlComment API
+     */
+    private void requestCommentData(String urlComment) {
+        new MyRequest(this).getRequest(urlComment, new HttpListener() {
+            @Override
+            public void onSuccess(String result) {
+                //Log.i("result",result);
+                commentList = parse2Json4Comment(result);
+                loadCommentListView(commentList);
+            }
+
+            @Override
+            public void onError(VolleyError volleyError) {
+                ShowToast("数据请求错误");
+                Log.i("result",volleyError.toString());
+            }
+        });
+    }
+
+    private void loadCommentListView(List<CommentEntity> commentList) {
+        commentAdapter = new CommentListAdapter(this,commentList);
+        lvComment.setAdapter(commentAdapter);
+    }
+
+    /**
+     * 解析评论数据
+     * @param result
+     * @return commentList
+     */
+    private List<CommentEntity> parse2Json4Comment(String result) {
+        List<CommentEntity> commentList = null;
+        CommentEntity entity = null;
+        try {
+            commentList = new ArrayList<>();
+
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject object = jsonObject.getJSONObject("data");
+            JSONArray jsonArray = object.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                entity = new CommentEntity();
+                entity.setCount(object.getInt("count"));
+                JSONObject commentObject = jsonArray.getJSONObject(i);
+                entity.setId(commentObject.getString("id"));
+                entity.setQuote(commentObject.getString("quote"));
+                entity.setContent(commentObject.getString("content"));
+                entity.setPraisenum(commentObject.getInt("praisenum"));
+                entity.setInput_date(commentObject.getString("input_date"));
+                entity.setTouser(commentObject.getString("touser"));
+                entity.setType(commentObject.getString("type"));
+                JSONObject userObject = commentObject.getJSONObject("user");
+                entity.setUser_id(userObject.getString("user_id"));
+                entity.setUser_name(userObject.getString("user_name"));
+                entity.setWeb_url(userObject.getString("web_url"));
+                //Log.i("json",entity.getUser_name());
+                commentList.add(entity);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return commentList;
     }
 
     //加载布局
