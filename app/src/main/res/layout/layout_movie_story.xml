@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/movie_story_height"
         android:gravity="center_vertical"
-        android:background="@color/text_gray">
+        android:background="@color/gray">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

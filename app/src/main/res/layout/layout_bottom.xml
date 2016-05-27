@@ -21,7 +21,7 @@
     <View
         android:layout_width="1dp"
         android:layout_height="@dimen/layout_bottom_view_height"
-        android:background="@color/text_gray"/>
+        android:background="@color/gray"/>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_weight="1"
@@ -36,7 +36,7 @@
     <View
         android:layout_width="1dp"
         android:layout_height="@dimen/layout_bottom_view_height"
-        android:background="@color/text_gray"/>
+        android:background="@color/gray"/>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_weight="1"

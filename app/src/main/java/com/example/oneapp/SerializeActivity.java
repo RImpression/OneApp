@@ -118,6 +118,7 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void loadCommentListView(List<CommentEntity> commentList) {
+        lvComment.setFocusable(false);
         commentAdapter = new CommentListAdapter(this,commentList);
         lvComment.setAdapter(commentAdapter);
     }

@@ -133,6 +133,7 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
 
 
     private void loadCommentListView(List<CommentEntity> commentList) {
+        lvComment.setFocusable(false);
         commentAdapter = new CommentListAdapter(this,commentList);
         lvComment.setAdapter(commentAdapter);
     }

@@ -222,8 +222,8 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
                 //JSONObject photoObject = jsonArray.getJSONObject(i);
                 detailEntity.setPhoto(String.valueOf(jsonArray.get(i)));
             }
-            Log.i("jsonphoto",detailEntity.getPhoto().toString());
-            Log.i("json",detailEntity.toString());
+            //Log.i("jsonphoto",detailEntity.getPhoto().toString());
+            //Log.i("json",detailEntity.toString());
             return detailEntity;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -254,6 +254,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
     }
 
     private void loadCommentListView(List<CommentEntity> commentList) {
+        lvComment.setFocusable(false);
         commentAdapter = new CommentListAdapter(this,commentList);
         lvComment.setAdapter(commentAdapter);
     }

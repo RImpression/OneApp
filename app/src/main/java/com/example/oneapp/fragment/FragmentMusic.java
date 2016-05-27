@@ -270,6 +270,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
     }
 
     private void loadCommentListView(List<CommentEntity> commentList) {
+        lvComment.setFocusable(false);
         commentAdapter = new CommentListAdapter(mContext,commentList);
         lvComment.setAdapter(commentAdapter);
     }

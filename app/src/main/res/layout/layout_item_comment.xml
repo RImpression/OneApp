@@ -69,12 +69,13 @@
             android:layout_marginLeft="87dp"
             android:paddingRight="16dp"
             android:textSize="14sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:lineSpacingExtra="5dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:textColor="@color/black"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
-        android:background="@color/text_gray"/>
+        android:background="@color/gray"/>
 </LinearLayout>

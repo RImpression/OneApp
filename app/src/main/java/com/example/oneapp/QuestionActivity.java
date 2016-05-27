@@ -50,7 +50,9 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         URL_QUESTION_CONTENT = URL_QUESTION+ID+"?";
         URL_COMMENT_ALL = URL_COMMENT+ID+"/0?";
         //Log.i("ID",ID);
+        //请求问答数据
         requestQuestionData(URL_QUESTION_CONTENT);
+        //请求评论数据
         requestCommentData(URL_COMMENT_ALL);
         initViews();
     }
@@ -118,6 +120,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void loadCommentListView(List<CommentEntity> commentList) {
+        lvComment.setFocusable(false);
         commentAdapter = new CommentListAdapter(this,commentList);
         lvComment.setAdapter(commentAdapter);
     }
@@ -172,6 +175,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         tvPraise.setText(String.valueOf(questionEntity.getPraisenum()));
         tvComment.setText(String.valueOf(questionEntity.getCommentnum()));
         tvShare.setText(String.valueOf(questionEntity.getSharenum()));
+
     }
 
     /**
