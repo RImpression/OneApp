@@ -1,10 +1,13 @@
 package com.example.entity;
 
+
+import java.io.Serializable;
+
 /**
  * Created by lcr on 16/3/27.
  * 轮播图片类
  */
-public class GuideReadingEntity {
+public class GuideReadingEntity implements Serializable {
 
     //轮播ID
     private String id;
@@ -66,4 +69,5 @@ public class GuideReadingEntity {
     public void setTitle(String title) {
         this.title = title;
     }
+
 }

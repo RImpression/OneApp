@@ -1,6 +1,7 @@
 package com.example.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.entity.GuideReadingEntity;
+import com.example.oneapp.AuthorImageDetailActivity;
 
 import java.util.List;
 
@@ -36,7 +38,6 @@ public class MyAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        //Log.i("adList", DataList.get(0).getTitle() + "444444444444" + position);
         ImageView iv = imageList.get(position);
         ((ViewPager) container).addView(iv);
         final GuideReadingEntity adDomain = DataList.get(position);
@@ -46,7 +47,11 @@ public class MyAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 // 处理跳转逻辑
-                Toast.makeText(mContext,adDomain.getTitle(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext,adDomain.getTitle(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                intent.putExtra("data", adDomain);
+                intent.setClass(mContext, AuthorImageDetailActivity.class);
+                mContext.startActivity(intent);
             }
         });
         return iv;
