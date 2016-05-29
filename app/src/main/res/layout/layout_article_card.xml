@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         card_view:cardCornerRadius="5dp">
 
         <LinearLayout
@@ -72,6 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         card_view:cardCornerRadius="5dp">
 
         <LinearLayout
@@ -124,6 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         card_view:cardCornerRadius="5dp">
 
         <LinearLayout

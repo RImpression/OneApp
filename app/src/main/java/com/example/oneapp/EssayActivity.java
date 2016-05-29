@@ -16,6 +16,7 @@ import com.example.entity.CommentEntity;
 import com.example.entity.EssayEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -41,6 +42,7 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
     private List<CommentEntity> commentList;
     private ListView lvComment;
     private CommentListAdapter commentAdapter;
+    private Boolean isClick = false;
 
 
 
@@ -106,6 +108,7 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
                 //Log.i("result",result);
                 commentList = parse2Json4Comment(result);
                 loadCommentListView(commentList);
+
             }
 
             @Override
@@ -226,7 +229,7 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
                 ShowToast("功能未开发");
                 break;
             case R.id.tvPraise:
-                ShowToast("功能未开发");
+                isClick = new PariseUtil().PariseClick(this,tvPraise,isClick);
                 break;
             case R.id.tvComment:
                 ShowToast("功能未开发");

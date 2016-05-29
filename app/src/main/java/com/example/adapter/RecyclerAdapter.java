@@ -48,13 +48,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
         typeList = entity.getType();
         holder.tvDateList.setText(entity.getDate());
         for (int i=0;i<typeList.size();i++){
-            if (typeList.size() == 2) {
-                holder.cardView2.setVisibility(View.GONE);
-            } else {
-                holder.cardView2.setVisibility(View.VISIBLE);
-            }
             if (typeList.get(i) == 3){
-                //holder.cardView3.setVisibility(View.VISIBLE);
+                holder.cardView3.setVisibility(View.VISIBLE);
                 holder.tvType3.setText("问答");
                 holder.tvQuestTitle.setText(entity.getQuestion_title());
                 holder.tvAnswerTitle.setText(entity.getAnswer_title());
@@ -67,7 +62,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
                 });
 
             }else if (typeList.get(i) == 2){
-                //holder.cardView2.setVisibility(View.VISIBLE);
+                holder.cardView2.setVisibility(View.VISIBLE);
                 holder.tvType2.setText("连载");
                 holder.tvTitle.setText(entity.getTitle());
                 holder.tvUserName.setText(entity.getUser_name());
@@ -80,7 +75,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
                 });
 
             } else if (typeList.get(i) == 1){
-                //holder.cardView1.setVisibility(View.VISIBLE);
+                holder.cardView1.setVisibility(View.VISIBLE);
                 holder.tvType1.setText("短篇");
                 holder.tvHPTitle.setText(entity.getHp_title());
                 holder.tvUserName1.setText(entity.getUser_name());

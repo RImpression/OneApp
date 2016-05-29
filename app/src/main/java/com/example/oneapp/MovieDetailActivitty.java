@@ -18,6 +18,7 @@ import com.example.entity.MovieDetailEntity;
 import com.example.entity.MovieStoryEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -45,6 +46,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
     private List<CommentEntity> commentList;
     private ListView lvComment;
     private CommentListAdapter commentAdapter;
+    private Boolean isClick = false;
 
 
     @Override
@@ -313,7 +315,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
                 ShowToast("功能未开发");
                 break;
             case R.id.tvAuthorPraise:
-                ShowToast("功能未开发");
+                isClick = new PariseUtil().PariseClick(this,tvAuthorPraise,isClick);
                 break;
             case R.id.imgAuthor:
                 ShowToast("功能未开发");

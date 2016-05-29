@@ -15,6 +15,7 @@ import com.example.entity.CommentEntity;
 import com.example.entity.SerializeEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -40,6 +41,7 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
     private List<CommentEntity> commentList;
     private ListView lvComment;
     private CommentListAdapter commentAdapter;
+    private Boolean isClick = false;
 
 
     @Override
@@ -226,7 +228,7 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
                 ShowToast("功能未开发");
                 break;
             case R.id.tvPraise:
-                ShowToast("功能未开发");
+                isClick = new PariseUtil().PariseClick(this,tvPraise,isClick);
                 break;
             case R.id.tvComment:
                 ShowToast("功能未开发");

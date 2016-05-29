@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.entity.CommentEntity;
 import com.example.oneapp.R;
+import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class CommentListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final Boolean[] isClick = {false};
         CommentEntity entity = commentList.get(position);
         //Log.i("resultEn",entity.getUser_name());
         ViewHolder holder = null;
@@ -62,7 +64,6 @@ public class CommentListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
         Picasso.with(mContext).load(entity.getWeb_url()).into(holder.imgAuthor);
         holder.tvAuthorName.setText(entity.getUser_name());
         holder.tvAuthorTime.setText(entity.getInput_date());
@@ -75,6 +76,14 @@ public class CommentListAdapter extends BaseAdapter {
         } else {
             holder.tvAuthorScore.setVisibility(View.GONE);
         }
+
+        final ViewHolder finalHolder = holder;
+        holder.tvAuthorPraise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isClick[0] = new PariseUtil().PariseClick(mContext, finalHolder.tvAuthorPraise, isClick[0]);
+            }
+        });
 
 
         return convertView;

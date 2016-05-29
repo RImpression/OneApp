@@ -15,6 +15,7 @@ import com.example.entity.CommentEntity;
 import com.example.entity.QuestionEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+import com.example.utils.PariseUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
     //评论
     private ListView lvComment;
     private CommentListAdapter commentAdapter;
+    private Boolean isClick = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -214,7 +216,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvPraise:
-                ShowToast("功能未开发");
+                isClick = new PariseUtil().PariseClick(this,tvPraise,isClick);
                 break;
             case R.id.tvComment:
                 ShowToast("功能未开发");

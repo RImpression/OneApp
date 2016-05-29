@@ -1,5 +1,6 @@
 package com.example.oneapp.fragment;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import com.example.entity.ExtractEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
 import com.example.oneapp.R;
+import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -38,6 +40,7 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
     private TextView tvBook,tvZan,tvShare;
     private ImageView imgShow;
     private View view;
+    private Boolean isClick = false;
 
 
 
@@ -175,7 +178,7 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.tvZan:
-                Toast.makeText(getContext(),"功能未开放",Toast.LENGTH_SHORT).show();
+                isClick = new PariseUtil().PariseClick(getContext(),tvZan,isClick);
                 break;
 
             case R.id.tvShare:
