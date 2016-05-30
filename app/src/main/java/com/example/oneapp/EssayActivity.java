@@ -16,6 +16,7 @@ import com.example.entity.CommentEntity;
 import com.example.entity.EssayEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+import com.example.utils.DateFormatUtil;
 import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
 
@@ -124,7 +125,7 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
      */
     private void loadView() {
         tvAuthorName.setText(essayEntity.getUser_name());
-        tvAuthorTime.setText(essayEntity.getLast_update_date());
+        tvAuthorTime.setText(new DateFormatUtil().setDataFormat(essayEntity.getLast_update_date()));
         tvEssayTitle.setText(essayEntity.getHp_title());
         tvEssayContent.setText(Html.fromHtml(essayEntity.getHp_content()));
         tvEditor.setText(essayEntity.getHp_author_introduce());

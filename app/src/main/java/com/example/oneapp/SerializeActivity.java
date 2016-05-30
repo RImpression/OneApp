@@ -15,6 +15,7 @@ import com.example.entity.CommentEntity;
 import com.example.entity.SerializeEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+import com.example.utils.DateFormatUtil;
 import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
 
@@ -169,7 +170,7 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
      */
     private void loadView() {
         tvAuthorName.setText(serializeEntity.getUser_name());
-        tvAuthorTime.setText(serializeEntity.getMaketime());
+        tvAuthorTime.setText(new DateFormatUtil().setDataFormat(serializeEntity.getMaketime()));
         tvSerlTitle.setText(serializeEntity.getTitle());
         tvSerlContent.setText(Html.fromHtml(serializeEntity.getContent()));
         tvEditor.setText(serializeEntity.getCharge_edit());

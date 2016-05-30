@@ -15,6 +15,7 @@ import com.example.entity.CommentEntity;
 import com.example.entity.QuestionEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+import com.example.utils.DateFormatUtil;
 import com.example.utils.PariseUtil;
 
 import org.json.JSONArray;
@@ -172,7 +173,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         tvQuestionContent.setText(questionEntity.getQuestion_content());
         tvAnswerTitle.setText(questionEntity.getAnswer_title());
         tvAnswerContent.setText(Html.fromHtml(questionEntity.getAnswer_content()));
-        tvDate.setText(questionEntity.getQuestion_makettime());
+        tvDate.setText(new DateFormatUtil().setDataFormat(questionEntity.getQuestion_makettime()));
         tvEditor.setText(questionEntity.getCharge_edit());
         tvPraise.setText(String.valueOf(questionEntity.getPraisenum()));
         tvComment.setText(String.valueOf(questionEntity.getCommentnum()));

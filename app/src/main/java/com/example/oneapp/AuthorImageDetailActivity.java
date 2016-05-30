@@ -127,7 +127,7 @@ public class AuthorImageDetailActivity extends BaseActivity {
                 entity.setTitle(object.getString("title"));
                 entity.setIntroduction(object.getString("introduction"));
                 entity.setAuthor(object.getString("author"));
-                entity.setWeb_url(object.getString("web_url"));
+                //entity.setWeb_url(object.getString("web_url"));
                 entity.setNumber(object.getString("number"));
                 entity.setType(object.getString("type"));
                 detailList.add(entity);

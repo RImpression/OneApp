@@ -23,6 +23,7 @@ import com.example.entity.MusicEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
 import com.example.oneapp.R;
+import com.example.utils.DateFormatUtil;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -132,7 +133,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
         tvAuthorName.setText(musicEntity.getUser_name());
         tvAuthorInfo.setText(musicEntity.getDesc());
         tvMusicTitle.setText(musicEntity.getTitle());
-        tvMusicTime.setText(musicEntity.getMaketime());
+        tvMusicTime.setText(new DateFormatUtil().setDataFormat(musicEntity.getMaketime()));
         tvStoryTitle.setText(musicEntity.getStory_title());
         tvStoryAuthor.setText(musicEntity.getStory_author_name());
         tvStoryContent.setText(Html.fromHtml(musicEntity.getStory()));

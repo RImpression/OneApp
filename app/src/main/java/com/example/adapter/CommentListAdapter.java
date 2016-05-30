@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.entity.CommentEntity;
 import com.example.oneapp.R;
+import com.example.utils.DateFormatUtil;
 import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
 
@@ -66,7 +67,7 @@ public class CommentListAdapter extends BaseAdapter {
         }
         Picasso.with(mContext).load(entity.getWeb_url()).into(holder.imgAuthor);
         holder.tvAuthorName.setText(entity.getUser_name());
-        holder.tvAuthorTime.setText(entity.getInput_date());
+        holder.tvAuthorTime.setText(new DateFormatUtil().setDataFormat(entity.getInput_date()));
         holder.tvAuthorPraise.setText(String.valueOf(entity.getPraisenum()));
         holder.tvAuthorComment.setText(entity.getContent());
         //电影评论有影评分数

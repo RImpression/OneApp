@@ -18,6 +18,7 @@ import com.example.entity.MovieDetailEntity;
 import com.example.entity.MovieStoryEntity;
 import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
+import com.example.utils.DateFormatUtil;
 import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
 
@@ -90,7 +91,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
     private void loadStoryView() {
         Picasso.with(this).load(movieStoryEntity.getWeb_url()).into(imgAuthor);
         tvAuthorName.setText(movieStoryEntity.getUser_name());
-        tvAuthorTime.setText(movieStoryEntity.getInput_date());
+        tvAuthorTime.setText(new DateFormatUtil().setDataFormat(movieStoryEntity.getInput_date()));
         tvStoryTitle.setText(movieStoryEntity.getTitle());
         tvStoryContent.setText(Html.fromHtml(movieStoryEntity.getContent()));
         tvAuthorPraise.setText(String.valueOf(movieStoryEntity.getPraisenum()));
