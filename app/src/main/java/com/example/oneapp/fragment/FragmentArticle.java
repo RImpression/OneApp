@@ -134,7 +134,7 @@ public class FragmentArticle extends Fragment {
     private void addDynamicView() {
         // 动态添加图片和下面指示的圆点
         // 初始化图片资源
-        for (int i = 0; i < adList.size(); i++) {
+        for (int i = 0; i < 9; i++) {
             ImageView imageView = new ImageView(getContext());
             // 异步加载图片
             Picasso.with(getContext()).load(adList.get(i).getCover()).into(imageView);

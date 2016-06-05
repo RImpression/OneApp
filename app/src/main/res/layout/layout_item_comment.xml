@@ -54,6 +54,7 @@
                 android:drawableLeft="@mipmap/icon_parise_nomal"
                 android:paddingRight="16dp"
                 android:layout_alignParentRight="true"
+                android:textColor="@color/black"
                 android:gravity="center_vertical"
                 android:drawablePadding="5dp"/>
         </RelativeLayout>

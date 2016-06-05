@@ -1,5 +1,7 @@
 package com.example.oneapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
@@ -307,7 +309,8 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imgbVideo:
-                ShowToast("功能未开发");
+                startVideo();
+                //ShowToast("功能未开发");
                 break;
             case R.id.imgbShare:
                 ShowToast("功能未开发");
@@ -322,5 +325,15 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
                 ShowToast("功能未开发");
                 break;
         }
+    }
+
+    /**
+     * 调用系统视频播放器播放网络视屏
+     */
+    private void startVideo() {
+        //new MyRequest(this).getRequest(movieDetailEntity.getVideo());
+        Intent openVideo = new Intent(Intent.ACTION_VIEW);
+        openVideo.setDataAndType(Uri.parse(movieDetailEntity.getVideo()), "video/*");
+        startActivity(openVideo);
     }
 }

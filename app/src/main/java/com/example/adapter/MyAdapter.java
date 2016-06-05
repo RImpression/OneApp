@@ -38,23 +38,26 @@ public class MyAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ImageView iv = imageList.get(position);
-        ((ViewPager) container).addView(iv);
-        final GuideReadingEntity adDomain = DataList.get(position);
-        // 在这个方法里面设置图片的点击事件
-        iv.setOnClickListener(new View.OnClickListener() {
+        if (position != 9) {
+            ImageView iv = imageList.get(position);
+            ((ViewPager) container).addView(iv);
+            final GuideReadingEntity adDomain = DataList.get(position);
+            // 在这个方法里面设置图片的点击事件
+            iv.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                // 处理跳转逻辑
-                //Toast.makeText(mContext,adDomain.getTitle(),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                intent.putExtra("data", adDomain);
-                intent.setClass(mContext, AuthorImageDetailActivity.class);
-                mContext.startActivity(intent);
-            }
-        });
-        return iv;
+                @Override
+                public void onClick(View v) {
+                    // 处理跳转逻辑
+                    //Toast.makeText(mContext,adDomain.getTitle(),Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.putExtra("data", adDomain);
+                    intent.setClass(mContext, AuthorImageDetailActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
+            return iv;
+        }
+        return null;
     }
 
 

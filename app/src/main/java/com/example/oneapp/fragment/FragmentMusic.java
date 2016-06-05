@@ -1,6 +1,11 @@
 package com.example.oneapp.fragment;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,12 +29,14 @@ import com.example.https.MyRequest;
 import com.example.interfaces.HttpListener;
 import com.example.oneapp.R;
 import com.example.utils.DateFormatUtil;
+import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +46,7 @@ import java.util.List;
 public class FragmentMusic extends Fragment implements View.OnClickListener {
 
     private static final String URL_MUSICLIST = "http://v3.wufazhuce.com:8000/api/music/idlist/0?";
-    private static final String URL_COMMENT = "http://v3.wufazhuce.com:8000/api/comment/praiseandtime/music/561/0?";
+    private static final String URL_COMMENT = "http://v3.wufazhuce.com:8000/api/comment/praiseandtime/music/";
     //不完整链接，格式URL_MUSIC+333+?
     private static final String URL_MUSIC = "http://v3.wufazhuce.com:8000/api/music/detail/";
     private  String URL_COMMENT_ALL;
@@ -56,6 +63,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
     private List<CommentEntity> commentList;
     private ListView lvComment;
     private CommentListAdapter commentAdapter;
+    private boolean isClick = false;
     View view;
 
 
@@ -342,7 +350,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.imgbPlay:
-
+                //startMusic();
                 break;
             case R.id.imgbStory:
                 layoutStory.setVisibility(View.VISIBLE);
@@ -369,7 +377,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
                 imgbInfo.setBackground(getResources().getDrawable(R.mipmap.ic_musicinfo_press));
                 break;
             case R.id.tvPraise:
-                Toast.makeText(getContext().getApplicationContext(),"功能未开发",Toast.LENGTH_SHORT).show();
+                isClick = new PariseUtil().PariseClick(getContext(),tvPraise,isClick);
                 break;
             case R.id.tvShare:
                 Toast.makeText(getContext().getApplicationContext(),"功能未开发",Toast.LENGTH_SHORT).show();
@@ -378,5 +386,13 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
                 Toast.makeText(getContext().getApplicationContext(),"功能未开发",Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    private void startMusic() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(musicEntity.getWeb_url()), "audio/mp3");
+        intent.setComponent(new ComponentName("com.android.music","com.android.music.MediaPlaybackActivity"));
+        startActivity(intent);
+        Toast.makeText(getContext().getApplicationContext(),"功能未开发",Toast.LENGTH_SHORT).show();
     }
 }
