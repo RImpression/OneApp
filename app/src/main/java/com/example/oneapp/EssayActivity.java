@@ -125,7 +125,7 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
      */
     private void loadView() {
         tvAuthorName.setText(essayEntity.getUser_name());
-        tvAuthorTime.setText(new DateFormatUtil().setDataFormat(essayEntity.getLast_update_date()));
+        tvAuthorTime.setText(DateFormatUtil.setDataFormat(essayEntity.getLast_update_date()));
         tvEssayTitle.setText(essayEntity.getHp_title());
         tvEssayContent.setText(Html.fromHtml(essayEntity.getHp_content()));
         tvEditor.setText(essayEntity.getHp_author_introduce());
@@ -230,7 +230,7 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
                 ShowToast("功能未开发");
                 break;
             case R.id.tvPraise:
-                isClick = new PariseUtil().PariseClick(this,tvPraise,isClick);
+                isClick = PariseUtil.PariseClick(this,tvPraise,isClick);
                 break;
             case R.id.tvComment:
                 ShowToast("功能未开发");

@@ -170,7 +170,7 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
      */
     private void loadView() {
         tvAuthorName.setText(serializeEntity.getUser_name());
-        tvAuthorTime.setText(new DateFormatUtil().setDataFormat(serializeEntity.getMaketime()));
+        tvAuthorTime.setText(DateFormatUtil.setDataFormat(serializeEntity.getMaketime()));
         tvSerlTitle.setText(serializeEntity.getTitle());
         tvSerlContent.setText(Html.fromHtml(serializeEntity.getContent()));
         tvEditor.setText(serializeEntity.getCharge_edit());
@@ -229,7 +229,7 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
                 ShowToast("功能未开发");
                 break;
             case R.id.tvPraise:
-                isClick = new PariseUtil().PariseClick(this,tvPraise,isClick);
+                isClick = PariseUtil.PariseClick(this,tvPraise,isClick);
                 break;
             case R.id.tvComment:
                 ShowToast("功能未开发");

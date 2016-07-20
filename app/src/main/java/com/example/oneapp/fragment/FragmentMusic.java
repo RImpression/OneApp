@@ -141,7 +141,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
         tvAuthorName.setText(musicEntity.getUser_name());
         tvAuthorInfo.setText(musicEntity.getDesc());
         tvMusicTitle.setText(musicEntity.getTitle());
-        tvMusicTime.setText(new DateFormatUtil().setDataFormat(musicEntity.getMaketime()));
+        tvMusicTime.setText(DateFormatUtil.setDataFormat(musicEntity.getMaketime()));
         tvStoryTitle.setText(musicEntity.getStory_title());
         tvStoryAuthor.setText(musicEntity.getStory_author_name());
         tvStoryContent.setText(Html.fromHtml(musicEntity.getStory()));
@@ -377,7 +377,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
                 imgbInfo.setBackground(getResources().getDrawable(R.mipmap.ic_musicinfo_press));
                 break;
             case R.id.tvPraise:
-                isClick = new PariseUtil().PariseClick(getContext(),tvPraise,isClick);
+                isClick = PariseUtil.PariseClick(getContext(),tvPraise,isClick);
                 break;
             case R.id.tvShare:
                 Toast.makeText(getContext().getApplicationContext(),"功能未开发",Toast.LENGTH_SHORT).show();

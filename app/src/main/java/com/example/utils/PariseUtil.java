@@ -20,7 +20,7 @@ public class PariseUtil {
      * @param isClick 是否已经点赞
      * @return 已经点赞返回true,否则返回false
      */
-    public Boolean PariseClick(Context context, TextView tv, Boolean isClick) {
+    public static Boolean PariseClick(Context context, TextView tv, Boolean isClick) {
         Drawable imgPress = context.getResources().getDrawable(R.mipmap.icon_parise_press);
         Drawable imgNormal = context.getResources().getDrawable(R.mipmap.icon_parise_nomal);
         imgPress.setBounds(0, 0, imgPress.getMinimumWidth(), imgPress.getMinimumHeight());

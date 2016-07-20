@@ -6,7 +6,7 @@ package com.example.utils;
  */
 public class DateFormatUtil {
 
-    public String setDataFormat(String s) {
+    public static String setDataFormat(String s) {
         String year = s.substring(0,4);
         String month = s.substring(5,7);
         String day = s.substring(8,10);
@@ -15,7 +15,7 @@ public class DateFormatUtil {
         return m+" "+day+"."+year;
     }
 
-    private String setMonthFormat(String month) {
+    private static String setMonthFormat(String month) {
         if (month.equals("01")){
             return "Jan";
         } else if (month.equals("02")) {

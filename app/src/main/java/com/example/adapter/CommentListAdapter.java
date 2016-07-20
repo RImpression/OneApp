@@ -67,7 +67,7 @@ public class CommentListAdapter extends BaseAdapter {
         }
         Picasso.with(mContext).load(entity.getWeb_url()).into(holder.imgAuthor);
         holder.tvAuthorName.setText(entity.getUser_name());
-        holder.tvAuthorTime.setText(new DateFormatUtil().setDataFormat(entity.getInput_date()));
+        holder.tvAuthorTime.setText(DateFormatUtil.setDataFormat(entity.getInput_date()));
         holder.tvAuthorPraise.setText(String.valueOf(entity.getPraisenum()));
         holder.tvAuthorComment.setText(entity.getContent());
         //电影评论有影评分数
@@ -82,7 +82,7 @@ public class CommentListAdapter extends BaseAdapter {
         holder.tvAuthorPraise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isClick[0] = new PariseUtil().PariseClick(mContext, finalHolder.tvAuthorPraise, isClick[0]);
+                isClick[0] = PariseUtil.PariseClick(mContext, finalHolder.tvAuthorPraise, isClick[0]);
             }
         });
 

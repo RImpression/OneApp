@@ -93,7 +93,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
     private void loadStoryView() {
         Picasso.with(this).load(movieStoryEntity.getWeb_url()).into(imgAuthor);
         tvAuthorName.setText(movieStoryEntity.getUser_name());
-        tvAuthorTime.setText(new DateFormatUtil().setDataFormat(movieStoryEntity.getInput_date()));
+        tvAuthorTime.setText(DateFormatUtil.setDataFormat(movieStoryEntity.getInput_date()));
         tvStoryTitle.setText(movieStoryEntity.getTitle());
         tvStoryContent.setText(Html.fromHtml(movieStoryEntity.getContent()));
         tvAuthorPraise.setText(String.valueOf(movieStoryEntity.getPraisenum()));
@@ -319,7 +319,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
                 ShowToast("功能未开发");
                 break;
             case R.id.tvAuthorPraise:
-                isClick = new PariseUtil().PariseClick(this,tvAuthorPraise,isClick);
+                isClick = PariseUtil.PariseClick(this,tvAuthorPraise,isClick);
                 break;
             case R.id.imgAuthor:
                 ShowToast("功能未开发");
