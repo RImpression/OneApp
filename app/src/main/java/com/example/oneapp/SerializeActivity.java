@@ -229,7 +229,7 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
                 ShowToast("功能未开发");
                 break;
             case R.id.tvPraise:
-                isClick = PariseUtil.PariseClick(this,tvPraise,isClick);
+                isClick = PariseUtil.PariseClick(this.getApplicationContext(),tvPraise,isClick);
                 break;
             case R.id.tvComment:
                 ShowToast("功能未开发");

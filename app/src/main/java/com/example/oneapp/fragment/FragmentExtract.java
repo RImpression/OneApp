@@ -177,7 +177,7 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.tvZan:
-                isClick = PariseUtil.PariseClick(getContext(),tvZan,isClick);
+                isClick = PariseUtil.PariseClick(getContext().getApplicationContext(),tvZan,isClick);
                 break;
 
             case R.id.tvShare:

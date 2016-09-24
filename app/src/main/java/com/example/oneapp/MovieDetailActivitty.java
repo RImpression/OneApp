@@ -319,7 +319,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
                 ShowToast("功能未开发");
                 break;
             case R.id.tvAuthorPraise:
-                isClick = PariseUtil.PariseClick(this,tvAuthorPraise,isClick);
+                isClick = PariseUtil.PariseClick(this.getApplicationContext(),tvAuthorPraise,isClick);
                 break;
             case R.id.imgAuthor:
                 ShowToast("功能未开发");
