@@ -3,6 +3,7 @@ package com.example.oneapp.fragment;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -65,6 +66,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
     private CommentListAdapter commentAdapter;
     private boolean isClick = false;
     View view;
+
 
 
     @Override
@@ -350,7 +352,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.imgbPlay:
-                //startMusic();
+                startMusic();
                 break;
             case R.id.imgbStory:
                 layoutStory.setVisibility(View.VISIBLE);
@@ -388,11 +390,31 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
         }
     }
 
+    private MediaPlayer mediaPlayer;
+    private int musicType = 0;//音乐的三种状态。0==初始，1==暂停，2==继续
     private void startMusic() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse(musicEntity.getWeb_url()), "audio/mp3");
-        intent.setComponent(new ComponentName("com.android.music","com.android.music.MediaPlaybackActivity"));
-        startActivity(intent);
-        Toast.makeText(getContext().getApplicationContext(),"功能未开发",Toast.LENGTH_SHORT).show();
+        Log.i("musicPlay","music id + " + musicEntity.getMusic_id());
+        if (musicType == 0) {
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            try {
+                mediaPlayer.setDataSource(musicEntity.getMusic_id());
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+                musicType = 1;
+                imgbPlay.setBackground(getResources().getDrawable(R.mipmap.ic_music_pause));
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity().getApplicationContext(),"此歌曲不支持播放！",Toast.LENGTH_SHORT).show();
+            }
+        } else if (musicType == 1) {
+            mediaPlayer.pause();
+            musicType = 2;
+            imgbPlay.setBackground(getResources().getDrawable(R.mipmap.ic_music_player));
+        } else {
+            mediaPlayer.start();
+            musicType = 1;
+            imgbPlay.setBackground(getResources().getDrawable(R.mipmap.ic_music_pause));
+        }
     }
 }
