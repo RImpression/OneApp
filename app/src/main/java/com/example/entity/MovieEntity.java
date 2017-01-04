@@ -1,5 +1,12 @@
 package com.example.entity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by lcr on 16/3/27.
  */
@@ -94,4 +101,39 @@ public class MovieEntity {
     public void setCover(String cover) {
         this.cover = cover;
     }
+
+    /**
+     * 解析电影数据
+     * @param result
+     * @return movieList
+     */
+    public static List<MovieEntity> parse2Json(String result) {
+        List<MovieEntity> movieList = null;
+        MovieEntity movieEntity = null;
+        try {
+            movieList = new ArrayList<>();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                movieEntity = new MovieEntity();
+                JSONObject object = jsonArray.getJSONObject(i);
+                movieEntity.setId(object.getString("id"));
+                movieEntity.setTitle(object.getString("title"));
+                movieEntity.setVerse(object.getString("verse"));
+                movieEntity.setVerse_en(object.getString("verse_en"));
+                movieEntity.setScore(object.getString("score"));
+                movieEntity.setRevisedscore(object.getString("revisedscore"));
+                movieEntity.setReleasetime(object.getString("releasetime"));
+                movieEntity.setScoretime(object.getString("scoretime"));
+                movieEntity.setCover(object.getString("cover"));
+                //Log.i("json",movieEntity.getTitle());
+                movieList.add(movieEntity);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return movieList;
+    }
+
 }

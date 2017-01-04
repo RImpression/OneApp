@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.example.entity.ExtractEntity;
 import com.example.https.MyRequest;
+import com.example.https.OneApi;
 import com.example.interfaces.HttpListener;
 import com.example.oneapp.R;
 import com.example.utils.PariseUtil;
@@ -31,7 +32,6 @@ import java.text.SimpleDateFormat;
 public class FragmentExtract extends Fragment implements View.OnClickListener {
     private String mDate = null;
     private String mNum = "1";
-    private String url = "http://rest.wufazhuce.com/OneForWeb/one/getHp_N";
     private String[] mPara1,mPara2;
     private Boolean isFirst = true;
     private ExtractEntity mExtract = null;
@@ -52,7 +52,7 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
         mPara2 = new String[]{mDate,mNum};
         if (isFirst == true) {
             Log.i("lifeResult","onCreat");
-            getExtractRequest(url,mPara1,mPara2);
+            getExtractRequest(OneApi.URL_EXTRACT,mPara1,mPara2);
         }
     }
 
@@ -97,10 +97,10 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
      * @param param2 POST参数的值
      */
     private void getExtractRequest(String Url, String[] param1, String[] param2) {
-        new MyRequest(getContext().getApplicationContext()).postRequest(Url, param1, param2, new HttpListener() {
+        MyRequest.postRequest(getContext().getApplicationContext(),Url, param1, param2, new HttpListener() {
             @Override
             public void onSuccess(String result) {
-                mExtract = parse2Jason(result);
+                mExtract = ExtractEntity.parse2Jason(result);
                 isFirst = false;
                 setDataWithView();
                 //Log.i("lifeRestlt", result);
@@ -119,36 +119,12 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
         tvHpTitle.setText(mExtract.getHpTitle());
         tvAuthor.setText(mExtract.getStrAuthor());
         tvContent.setText(mExtract.getStrContent());
-        Picasso.with(getContext()).load(mExtract.getStrThumbnailUrl()).into(imgShow);
+        Picasso.with(getContext()).load(mExtract.getStrThumbnailUrl()).fit().centerCrop().into(imgShow);
 
     }
 
 
-    /**
-     * json解析
-     * @param result
-     */
-    public ExtractEntity parse2Jason(String result){
-        try {
-            ExtractEntity extractEntity = new ExtractEntity();
-            JSONObject jsonObject = new JSONObject(result);
-            JSONObject object = jsonObject.getJSONObject("hpEntity");
-            extractEntity.setStrLastUpdateDate(object.getString("strLastUpdateDate"));
-            extractEntity.setStrHpId(object.getString("strHpId"));
-            extractEntity.setHpTitle(object.getString("strHpTitle"));
-            extractEntity.setStrThumbnailUrl(object.getString("strThumbnailUrl"));
-            extractEntity.setStrAuthor(object.getString("strAuthor"));
-            extractEntity.setStrContent(object.getString("strContent"));
-            extractEntity.setStrMarketTime(object.getString("strMarketTime"));
-            extractEntity.setStrPn(object.getString("strPn"));
-            return extractEntity;
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
 
     @Override

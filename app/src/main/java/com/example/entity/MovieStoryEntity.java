@@ -1,5 +1,11 @@
 package com.example.entity;
 
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by lcr on 16/4/13.
  */
@@ -11,7 +17,7 @@ public class MovieStoryEntity {
     private String title;
     private String content;
     //作者I，无用
-    private String user_id1;
+    //private String user_id1;
     //分类
     private String sort;
     private int praisenum;
@@ -61,13 +67,6 @@ public class MovieStoryEntity {
         this.content = content;
     }
 
-    public String getUser_id1() {
-        return user_id1;
-    }
-
-    public void setUser_id1(String user_id1) {
-        this.user_id1 = user_id1;
-    }
 
     public String getSort() {
         return sort;
@@ -123,5 +122,48 @@ public class MovieStoryEntity {
 
     public void setWeb_url(String web_url) {
         this.web_url = web_url;
+    }
+
+    /**
+     * 解析电影故事数据
+     * @param result
+     * @return movieStoryEntity
+     */
+    public static MovieStoryEntity parseStory2Json(String result) {
+        MovieStoryEntity storyEntity = null;
+        try {
+            storyEntity = new MovieStoryEntity();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject object= jsonObject.getJSONObject("data");
+            storyEntity.setCount(object.getString("count"));
+            JSONArray jsonArray = object.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                JSONObject storyObject = jsonArray.getJSONObject(i);
+                storyEntity.setId(storyObject.getString("id"));
+                storyEntity.setMovie_id(storyObject.getString("movie_id"));
+                storyEntity.setTitle(storyObject.getString("title"));
+                storyEntity.setContent(storyObject.getString("content"));
+                //storyEntity.setUser_id(storyObject.getString("user_id1"));
+                storyEntity.setSort(storyObject.getString("sort"));
+                storyEntity.setPraisenum(storyObject.getInt("praisenum"));
+                storyEntity.setInput_date(storyObject.getString("input_date"));
+                storyEntity.setStory_type(storyObject.getString("story_type"));
+                JSONObject userObject = storyObject.getJSONObject("user");
+                storyEntity.setUser_id(userObject.getString("user_id"));
+                storyEntity.setUser_name(userObject.getString("user_name"));
+                storyEntity.setWeb_url(userObject.getString("web_url"));
+                Log.i("info",storyEntity.getWeb_url() + "222");
+                if (storyEntity.getWeb_url().equals("")) {
+                    storyEntity.setWeb_url("http://image.wufazhuce.com/FvNnsE2f_tS6BI0XnwsYYEPe-5U5");
+                }
+            }
+            Log.i("json",storyEntity.toString());
+            return storyEntity;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return storyEntity;
     }
 }

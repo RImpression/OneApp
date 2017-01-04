@@ -1,5 +1,8 @@
 package com.example.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by lcr on 16/4/9.
  * 连载实体类
@@ -205,4 +208,47 @@ public class SerializeEntity {
     public void setCommentnum(int commentnum) {
         this.commentnum = commentnum;
     }
+
+    /**
+     * 解析连载数据
+     * @param result
+     * @return serializeEntity
+     */
+    public static SerializeEntity parse2Json(String result) {
+        try {
+            SerializeEntity serializeEntity = new SerializeEntity();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject object = jsonObject.getJSONObject("data");
+            serializeEntity.setId(object.getString("id"));
+            serializeEntity.setSerial_id(object.getString("serial_id"));
+            serializeEntity.setNumber(object.getString("number"));
+            serializeEntity.setTitle(object.getString("title"));
+            serializeEntity.setExcerpt(object.getString("excerpt"));
+            serializeEntity.setContent(object.getString("content"));
+            serializeEntity.setCharge_edit(object.getString("charge_edt"));
+            serializeEntity.setRead_num(object.getInt("read_num"));
+            serializeEntity.setMaketime(object.getString("maketime"));
+            serializeEntity.setLast_update_date(object.getString("last_update_date"));
+            serializeEntity.setAudio(object.getString("audio"));
+            serializeEntity.setInput_name(object.getString("input_name"));
+            serializeEntity.setLast_update_name(object.getString("last_update_name"));
+            serializeEntity.setPraisenum(object.getInt("praisenum"));
+            serializeEntity.setSharenum(object.getInt("sharenum"));
+            serializeEntity.setCommentnum(object.getInt("commentnum"));
+            JSONObject authorObject = object.getJSONObject("author");
+            serializeEntity.setUser_id(authorObject.getString("user_id"));
+            serializeEntity.setUser_name(authorObject.getString("user_name"));
+            serializeEntity.setWeb_url(authorObject.getString("web_url"));
+            serializeEntity.setDesc(authorObject.getString("desc"));
+
+            //Log.i("json",serializeEntity.toString());
+            return serializeEntity;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }

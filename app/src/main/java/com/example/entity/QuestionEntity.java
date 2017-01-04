@@ -1,5 +1,8 @@
 package com.example.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by lcr on 16/4/9.
  * 问题实体类
@@ -135,4 +138,37 @@ public class QuestionEntity {
     public void setCommentnum(int commentnum) {
         this.commentnum = commentnum;
     }
+
+    /**
+     * 解析问题数据
+     * @param result
+     */
+    public static QuestionEntity parse2Json(String result) {
+        try {
+            QuestionEntity questionEntity = new QuestionEntity();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject object = jsonObject.getJSONObject("data");
+            questionEntity.setQuestion_id(object.getString("question_id"));
+            questionEntity.setQuestion_title(object.getString("question_title"));
+            questionEntity.setQuestion_content(object.getString("question_content"));
+            questionEntity.setAnswer_title(object.getString("answer_title"));
+            questionEntity.setAnswer_content(object.getString("answer_content"));
+            questionEntity.setQuestion_makettime(object.getString("question_makettime"));
+            questionEntity.setRecommend_flag(object.getString("recommend_flag"));
+            questionEntity.setCharge_edit(object.getString("charge_edt"));
+            questionEntity.setLast_update_date(object.getString("last_update_date"));
+            questionEntity.setReadnum(object.getInt("read_num"));
+            questionEntity.setPraisenum(object.getInt("praisenum"));
+            questionEntity.setSharenum(object.getInt("sharenum"));
+            questionEntity.setCommentnum(object.getInt("commentnum"));
+            return questionEntity;
+            //Log.i("json",questionEntity.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }

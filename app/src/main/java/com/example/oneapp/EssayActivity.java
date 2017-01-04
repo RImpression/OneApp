@@ -15,7 +15,9 @@ import com.example.adapter.CommentListAdapter;
 import com.example.entity.CommentEntity;
 import com.example.entity.EssayEntity;
 import com.example.https.MyRequest;
+import com.example.https.OneApi;
 import com.example.interfaces.HttpListener;
+import com.example.utils.CircleTransform;
 import com.example.utils.DateFormatUtil;
 import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
@@ -31,8 +33,6 @@ import java.util.List;
  * Created by lcr on 16/4/9.
  */
 public class EssayActivity extends BaseActivity implements View.OnClickListener {
-    private static final String URL_ESSAY = "http://v3.wufazhuce.com:8000/api/essay/";
-    private static final String URL_COMMENT = "http://v3.wufazhuce.com:8000/api/comment/praiseandtime/essay/";
     private String URL_ESSAY_CONTENT;
     private String URL_COMMENT_ALL;
     private String ID;
@@ -53,8 +53,8 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
         setContentView(R.layout.activity_essay);
         initToolbar(R.string.essay,true);
         ID = getIntent().getStringExtra("ID");
-        URL_ESSAY_CONTENT = URL_ESSAY+ID+"?";
-        URL_COMMENT_ALL = URL_COMMENT+ID+"/0?";
+        URL_ESSAY_CONTENT = OneApi.URL_ESSAY +ID+ "?";
+        URL_COMMENT_ALL = OneApi.URL_ESSAY_COMMENT +ID+ "/0?";
         requestEssayData();
         requestCommentData(URL_COMMENT_ALL);
         initViews();
@@ -85,11 +85,11 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
      * 请求短篇数据
      */
     private void requestEssayData() {
-        new MyRequest(this).getRequest(URL_ESSAY_CONTENT, new HttpListener() {
+        MyRequest.getRequest(this.getApplicationContext(),URL_ESSAY_CONTENT, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("result",result.toString());
-                parse2Json(result);
+                essayEntity = EssayEntity.parse2Json(result);
                 loadView();
             }
 
@@ -103,11 +103,11 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void requestCommentData(String url_comment_all) {
-        new MyRequest(this).getRequest(url_comment_all, new HttpListener() {
+        MyRequest.getRequest(this.getApplicationContext(),url_comment_all, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("result",result);
-                commentList = parse2Json4Comment(result);
+                commentList = CommentEntity.parse2Json4Comment(result);
                 loadCommentListView(commentList);
 
             }
@@ -132,7 +132,7 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
         tvPraise.setText(String.valueOf(essayEntity.getPraisenum()));
         tvComment.setText(String.valueOf(essayEntity.getCommentnum()));
         tvShare.setText(String.valueOf(essayEntity.getSharenum()));
-        Picasso.with(this).load(essayEntity.getWeb_url()).into(imgAuthor);
+        Picasso.with(this).load(essayEntity.getWeb_url()).transform(new CircleTransform()).fit().centerCrop().into(imgAuthor);
     }
 
 
@@ -142,86 +142,6 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
         lvComment.setAdapter(commentAdapter);
     }
 
-    /**
-     * 解析短篇数据
-     * @param result
-     * @return essayEntity
-     */
-    private EssayEntity parse2Json(String result) {
-        try {
-            essayEntity = new EssayEntity();
-            JSONObject jsonObject = new JSONObject(result);
-            JSONObject object = jsonObject.getJSONObject("data");
-            essayEntity.setContent_id(object.getString("content_id"));
-            essayEntity.setHp_title(object.getString("hp_title"));
-            essayEntity.setSub_title(object.getString("sub_title"));
-            essayEntity.setHp_author(object.getString("hp_author"));
-            essayEntity.setAuth_it(object.getString("auth_it"));
-            essayEntity.setHp_author_introduce(object.getString("hp_author_introduce"));
-            essayEntity.setHp_content(object.getString("hp_content"));
-            essayEntity.setLast_update_date(object.getString("last_update_date"));
-            essayEntity.setGuide_word(object.getString("guide_word"));
-            essayEntity.setAudio(object.getString("audio"));
-            essayEntity.setPraisenum(object.getInt("praisenum"));
-            essayEntity.setSharenum(object.getInt("sharenum"));
-            essayEntity.setCommentnum(object.getInt("commentnum"));
-            JSONArray jsonArray = object.getJSONArray("author");
-            for (int i=0;i<jsonArray.length();i++){
-                JSONObject authorObject = jsonArray.getJSONObject(i);
-                essayEntity.setUser_id(authorObject.getString("user_id"));
-                essayEntity.setUser_name(authorObject.getString("user_name"));
-                essayEntity.setWeb_url(authorObject.getString("web_url"));
-                essayEntity.setDesc(authorObject.getString("desc"));
-                essayEntity.setWb_name(authorObject.getString("wb_name"));
-            }
-            Log.i("json",essayEntity.toString());
-            return essayEntity;
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    /**
-     * 解析评论数据
-     * @param result
-     * @return commentList
-     */
-    private List<CommentEntity> parse2Json4Comment(String result) {
-        List<CommentEntity> commentList = null;
-        CommentEntity entity = null;
-        try {
-            commentList = new ArrayList<>();
-
-            JSONObject jsonObject = new JSONObject(result);
-            JSONObject object = jsonObject.getJSONObject("data");
-            JSONArray jsonArray = object.getJSONArray("data");
-            for (int i=0;i<jsonArray.length();i++) {
-                entity = new CommentEntity();
-                entity.setCount(object.getInt("count"));
-                JSONObject commentObject = jsonArray.getJSONObject(i);
-                entity.setId(commentObject.getString("id"));
-                entity.setQuote(commentObject.getString("quote"));
-                entity.setContent(commentObject.getString("content"));
-                entity.setPraisenum(commentObject.getInt("praisenum"));
-                entity.setInput_date(commentObject.getString("input_date"));
-                entity.setTouser(commentObject.getString("touser"));
-                entity.setType(commentObject.getString("type"));
-                JSONObject userObject = commentObject.getJSONObject("user");
-                entity.setUser_id(userObject.getString("user_id"));
-                entity.setUser_name(userObject.getString("user_name"));
-                entity.setWeb_url(userObject.getString("web_url"));
-                //Log.i("json",entity.getUser_name());
-                commentList.add(entity);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return commentList;
-    }
 
     @Override
     public void onClick(View v) {

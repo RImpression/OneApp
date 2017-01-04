@@ -43,7 +43,7 @@ public class RecyclerAdapter2Movie extends RecyclerView.Adapter<RecyclerAdapter2
     @Override
     public void onBindViewHolder(RecyclerViewHoder holder, int position) {
         final MovieEntity entity = movieList.get(position);
-        Picasso.with(mContext).load(entity.getCover()).resize(500,350).into(holder.imgMovie);
+        Picasso.with(mContext).load(entity.getCover()).fit().centerCrop().into(holder.imgMovie);
         if (entity.getScore() == "null") {
             holder.tvScore.setVisibility(View.GONE);
             holder.tvText.setVisibility(View.VISIBLE);

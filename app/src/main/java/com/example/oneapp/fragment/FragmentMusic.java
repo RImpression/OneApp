@@ -1,12 +1,8 @@
 package com.example.oneapp.fragment;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,10 +23,13 @@ import com.example.adapter.CommentListAdapter;
 import com.example.entity.CommentEntity;
 import com.example.entity.MusicEntity;
 import com.example.https.MyRequest;
+import com.example.https.OneApi;
 import com.example.interfaces.HttpListener;
 import com.example.oneapp.R;
+import com.example.utils.CircleTransform;
 import com.example.utils.DateFormatUtil;
 import com.example.utils.PariseUtil;
+import com.example.utils.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -46,10 +45,6 @@ import java.util.List;
  */
 public class FragmentMusic extends Fragment implements View.OnClickListener {
 
-    private static final String URL_MUSICLIST = "http://v3.wufazhuce.com:8000/api/music/idlist/0?";
-    private static final String URL_COMMENT = "http://v3.wufazhuce.com:8000/api/comment/praiseandtime/music/";
-    //不完整链接，格式URL_MUSIC+333+?
-    private static final String URL_MUSIC = "http://v3.wufazhuce.com:8000/api/music/detail/";
     private  String URL_COMMENT_ALL;
     private Context mContext;
     private ImageView imgMusic,imgAuthor;
@@ -138,8 +133,8 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
     }
 
     private void loadMusicView(MusicEntity musicEntity) {
-        Picasso.with(mContext).load(musicEntity.getCover()).into(imgMusic);
-        Picasso.with(mContext).load(musicEntity.getAuthor_url()).into(imgAuthor);
+        Picasso.with(mContext).load(musicEntity.getCover()).fit().centerCrop().into(imgMusic);
+        Picasso.with(mContext).load(musicEntity.getAuthor_url()).transform(new CircleTransform()).fit().centerCrop().into(imgAuthor);
         tvAuthorName.setText(musicEntity.getUser_name());
         tvAuthorInfo.setText(musicEntity.getDesc());
         tvMusicTitle.setText(musicEntity.getTitle());
@@ -162,16 +157,16 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
 
 
 
-
     /**
      * 请求音乐数据
      * @param s
      */
     private void getMusicRequest(String s) {
-        new MyRequest(getContext().getApplicationContext()).getRequest(URL_MUSIC+s+"?", new HttpListener() {
+        String URL_MUSIC = OneApi.URL_MUSIC +s+ "?";
+        MyRequest.getRequest(getContext().getApplicationContext(),URL_MUSIC, new HttpListener() {
             @Override
             public void onSuccess(String result) {
-                musicEntity = parse2JsonMusic(result);
+                musicEntity = MusicEntity.parse2JsonMusic(result);
                 loadMusicView(musicEntity);
             }
 
@@ -184,71 +179,20 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
     }
 
 
-    /**
-     * 解析音乐数据
-     * @param result
-     * @return musicEntity
-     */
-    private MusicEntity parse2JsonMusic(String result) {
-        MusicEntity musicEntity = null;
-        try {
-            musicEntity = new MusicEntity();
-            JSONObject jsonObject = new JSONObject(result);
-            JSONObject joData = jsonObject.getJSONObject("data");
-            musicEntity.setId(joData.getString("id"));
-            musicEntity.setTitle(joData.getString("title"));
-            musicEntity.setCover(joData.getString("cover"));
-            musicEntity.setIsfirst(joData.getString("isfirst"));
-            musicEntity.setStory_title(joData.getString("story_title"));
-            musicEntity.setStory(joData.getString("story"));
-            musicEntity.setLyric(joData.getString("lyric"));
-            musicEntity.setInfo(joData.getString("info"));
-            musicEntity.setPlatform(joData.getString("platform"));
-            musicEntity.setMusic_id(joData.getString("music_id"));
-            musicEntity.setCharge_edit(joData.getString("charge_edt"));
-            musicEntity.setRelated_to(joData.getString("related_to"));
-            musicEntity.setWeb_url(joData.getString("web_url"));
-            musicEntity.setPraisenum(joData.getString("praisenum"));
-            musicEntity.setSort(joData.getString("sort"));
-            musicEntity.setMaketime(joData.getString("maketime"));
-            musicEntity.setLast_update_date(joData.getString("last_update_date"));
-            musicEntity.setRead_num(joData.getString("read_num"));
-            musicEntity.setSharenum(joData.getString("sharenum"));
-            musicEntity.setCommentnum(joData.getString("commentnum"));
 
-            JSONObject joAuthor = joData.getJSONObject("author");
-            musicEntity.setUser_id(joAuthor.getString("user_id"));
-            musicEntity.setUser_name(joAuthor.getString("user_name"));
-            musicEntity.setAuthor_url(joAuthor.getString("web_url"));
-            musicEntity.setDesc(joAuthor.getString("desc"));
 
-            if (!joData.getString("story_author").equals("null")) {
-                //Log.i("joData","ddddd"+joData.getString("story_author"));
-                JSONObject joStoryAuthor = joData.getJSONObject("story_author");
-                musicEntity.setStory_author_id(joStoryAuthor.getString("user_id"));
-                musicEntity.setStory_author_name(joStoryAuthor.getString("user_name"));
-                musicEntity.setStory_author_url(joStoryAuthor.getString("web_url"));
-            }
-            //Log.i("json",musicEntity.getStory_title());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return musicEntity;
-
-    }
 
 
     /**
      * 请求音乐列表ID数据
      */
     private void getMusicList() {
-        new MyRequest(getContext().getApplicationContext()).getRequest(URL_MUSICLIST, new HttpListener() {
+        MyRequest.getRequest(getContext().getApplicationContext(),OneApi.URL_MUSIC_LIST, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 parse2JsonMusicList(result);
                 getMusicRequest(musicList.get(0));
-                URL_COMMENT_ALL = URL_COMMENT+musicList.get(0)+"/0?";
+                URL_COMMENT_ALL = OneApi.URL_MUSIC_COMMENT+musicList.get(0)+"/0?";
                 requestCommentData(URL_COMMENT_ALL);
             }
 
@@ -264,11 +208,11 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
      * @param urlComment API
      */
     private void requestCommentData(String urlComment) {
-        new MyRequest(mContext).getRequest(urlComment, new HttpListener() {
+        MyRequest.getRequest(getContext().getApplicationContext(),urlComment, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("result",result);
-                commentList = parse2Json4Comment(result);
+                commentList = CommentEntity.parse2Json4Comment(result);
                 loadCommentListView(commentList);
             }
 
@@ -286,44 +230,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
         lvComment.setAdapter(commentAdapter);
     }
 
-    /**
-     * 解析评论数据
-     * @param result
-     * @return commentList
-     */
-    private List<CommentEntity> parse2Json4Comment(String result) {
-        List<CommentEntity> commentList = null;
-        CommentEntity entity = null;
-        try {
-            commentList = new ArrayList<>();
 
-            JSONObject jsonObject = new JSONObject(result);
-            JSONObject object = jsonObject.getJSONObject("data");
-            JSONArray jsonArray = object.getJSONArray("data");
-            for (int i=0;i<jsonArray.length();i++) {
-                entity = new CommentEntity();
-                entity.setCount(object.getInt("count"));
-                JSONObject commentObject = jsonArray.getJSONObject(i);
-                entity.setId(commentObject.getString("id"));
-                entity.setQuote(commentObject.getString("quote"));
-                entity.setContent(commentObject.getString("content"));
-                entity.setPraisenum(commentObject.getInt("praisenum"));
-                entity.setInput_date(commentObject.getString("input_date"));
-                entity.setTouser(commentObject.getString("touser"));
-                entity.setType(commentObject.getString("type"));
-                JSONObject userObject = commentObject.getJSONObject("user");
-                entity.setUser_id(userObject.getString("user_id"));
-                entity.setUser_name(userObject.getString("user_name"));
-                entity.setWeb_url(userObject.getString("web_url"));
-                //Log.i("json",entity.getUser_name());
-                commentList.add(entity);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return commentList;
-    }
 
     /**
      * 解析音乐列表并添加到MUSUCLIST中
@@ -379,7 +286,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
                 imgbInfo.setBackground(getResources().getDrawable(R.mipmap.ic_musicinfo_press));
                 break;
             case R.id.tvPraise:
-                isClick = PariseUtil.PariseClick(getContext(),tvPraise,isClick);
+                isClick = PariseUtil.PariseClick(getContext().getApplicationContext(),tvPraise,isClick);
                 break;
             case R.id.tvShare:
                 Toast.makeText(getContext().getApplicationContext(),"功能未开发",Toast.LENGTH_SHORT).show();
@@ -390,15 +297,16 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
         }
     }
 
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer = null;
     private int musicType = 0;//音乐的三种状态。0==初始，1==暂停，2==继续
+    String musicUrl = "http://music.wufazhuce.com/lsObPs5v_KBby0Oe5Uq_eUoWYOYt";
     private void startMusic() {
         Log.i("musicPlay","music id + " + musicEntity.getMusic_id());
         if (musicType == 0) {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             try {
-                mediaPlayer.setDataSource(musicEntity.getMusic_id());
+                mediaPlayer.setDataSource(musicUrl);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
                 musicType = 1;
@@ -415,6 +323,15 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
             mediaPlayer.start();
             musicType = 1;
             imgbPlay.setBackground(getResources().getDrawable(R.mipmap.ic_music_pause));
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroyView();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
         }
     }
 }

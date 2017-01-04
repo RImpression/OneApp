@@ -38,7 +38,7 @@ public class MyAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        if (position != 9) {
+        if (position != 6) {
             ImageView iv = imageList.get(position);
             ((ViewPager) container).addView(iv);
             final GuideReadingEntity adDomain = DataList.get(position);

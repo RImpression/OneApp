@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.example.adapter.RecyclerAdapter2Movie;
 import com.example.entity.MovieEntity;
 import com.example.https.MyRequest;
+import com.example.https.OneApi;
 import com.example.interfaces.HttpListener;
 import com.example.oneapp.R;
 
@@ -32,7 +33,6 @@ import java.util.List;
 public class FragmentMovie extends Fragment {
 
     private View view;
-    private static final String URL_MOVIE = "http://v3.wufazhuce.com:8000/api/movie/list/0?";
     private boolean isFirst = true;
     private RecyclerView movieRecycleView = null;
     private List<MovieEntity> mDataList = null;
@@ -76,11 +76,11 @@ public class FragmentMovie extends Fragment {
     }
 
     private void getMovieRequest() {
-        new MyRequest(getContext().getApplicationContext()).getRequest(URL_MOVIE, new HttpListener() {
+        MyRequest.getRequest(getContext().getApplicationContext(),OneApi.URL_MOVIE_LIST, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("movieResult",result);
-                mDataList = parse2Json(result);
+                mDataList = MovieEntity.parse2Json(result);
                 loadRecyclerView(mDataList);
             }
 
@@ -101,37 +101,5 @@ public class FragmentMovie extends Fragment {
         movieRecycleView.setAdapter(adapter2Movie);
     }
 
-    /**
-     * 解析电影数据
-     * @param result
-     * @return movieList
-     */
-    private List<MovieEntity> parse2Json(String result) {
-        List<MovieEntity> movieList = null;
-        MovieEntity movieEntity = null;
-        try {
-            movieList = new ArrayList<>();
-            JSONObject jsonObject = new JSONObject(result);
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (int i=0;i<jsonArray.length();i++) {
-                movieEntity = new MovieEntity();
-                JSONObject object = jsonArray.getJSONObject(i);
-                movieEntity.setId(object.getString("id"));
-                movieEntity.setTitle(object.getString("title"));
-                movieEntity.setVerse(object.getString("verse"));
-                movieEntity.setVerse_en(object.getString("verse_en"));
-                movieEntity.setScore(object.getString("score"));
-                movieEntity.setRevisedscore(object.getString("revisedscore"));
-                movieEntity.setReleasetime(object.getString("releasetime"));
-                movieEntity.setScoretime(object.getString("scoretime"));
-                movieEntity.setCover(object.getString("cover"));
-                //Log.i("json",movieEntity.getTitle());
-                movieList.add(movieEntity);
-            }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return movieList;
-    }
 }

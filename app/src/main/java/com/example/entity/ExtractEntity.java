@@ -1,5 +1,8 @@
 package com.example.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by RImpression on 2016/3/25 0025.
  * 摘录实体
@@ -86,4 +89,33 @@ public class ExtractEntity {
     public void setStrMarketTime(String strMarketTime) {
         this.strMarketTime = strMarketTime;
     }
+
+
+
+    /**
+     * json解析
+     * @param result
+     */
+    public static ExtractEntity parse2Jason(String result){
+        try {
+            ExtractEntity extractEntity = new ExtractEntity();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject object = jsonObject.getJSONObject("hpEntity");
+            extractEntity.setStrLastUpdateDate(object.getString("strLastUpdateDate"));
+            extractEntity.setStrHpId(object.getString("strHpId"));
+            extractEntity.setHpTitle(object.getString("strHpTitle"));
+            extractEntity.setStrThumbnailUrl(object.getString("strThumbnailUrl"));
+            extractEntity.setStrAuthor(object.getString("strAuthor"));
+            extractEntity.setStrContent(object.getString("strContent"));
+            extractEntity.setStrMarketTime(object.getString("strMarketTime"));
+            extractEntity.setStrPn(object.getString("strPn"));
+            return extractEntity;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }

@@ -14,7 +14,9 @@ import com.example.adapter.CommentListAdapter;
 import com.example.entity.CommentEntity;
 import com.example.entity.SerializeEntity;
 import com.example.https.MyRequest;
+import com.example.https.OneApi;
 import com.example.interfaces.HttpListener;
+import com.example.utils.CircleTransform;
 import com.example.utils.DateFormatUtil;
 import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
@@ -31,8 +33,6 @@ import java.util.List;
  */
 public class SerializeActivity extends BaseActivity implements View.OnClickListener {
 
-    private static final String URL_SERIALIZE = "http://v3.wufazhuce.com:8000/api/serialcontent/";
-    private static final String URL_COMMENT = "http://v3.wufazhuce.com:8000/api/comment/praiseandtime/serial/113/0?";
     private String URL_SERIALIZE_CONTENT;
     private String URL_COMMENT_ALL;
     private String ID;
@@ -51,8 +51,8 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_serialize);
         initToolbar(R.string.serialize,true);
         ID = getIntent().getStringExtra("ID");
-        URL_SERIALIZE_CONTENT = URL_SERIALIZE+ID+"?";
-        URL_COMMENT_ALL = URL_COMMENT+ID+"/0?";
+        URL_SERIALIZE_CONTENT = OneApi.URL_SERIALIZE +ID+ "?";
+        URL_COMMENT_ALL = OneApi.URL_SERIALIZE_COMMENT +ID+ "/0?";
         requestSerializeData();
         requestCommentData(URL_COMMENT_ALL);
         initViews();
@@ -82,12 +82,12 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
      * 请求连载数据
      */
     private void requestSerializeData() {
-        new MyRequest(this).getRequest(URL_SERIALIZE_CONTENT, new HttpListener() {
+        MyRequest.getRequest(this.getApplicationContext(),URL_SERIALIZE_CONTENT, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("result",result);
-                parse2Json(result);
-                loadView();
+                serializeEntity = SerializeEntity.parse2Json(result);
+                loadView(serializeEntity);
             }
 
             @Override
@@ -104,11 +104,11 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
      * @param urlComment API
      */
     private void requestCommentData(String urlComment) {
-        new MyRequest(this).getRequest(urlComment, new HttpListener() {
+        MyRequest.getRequest(this.getApplicationContext(),urlComment, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("result",result);
-                commentList = parse2Json4Comment(result);
+                commentList = CommentEntity.parse2Json4Comment(result);
                 loadCommentListView(commentList);
             }
 
@@ -126,49 +126,12 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
         lvComment.setAdapter(commentAdapter);
     }
 
-    /**
-     * 解析评论数据
-     * @param result
-     * @return commentList
-     */
-    private List<CommentEntity> parse2Json4Comment(String result) {
-        List<CommentEntity> commentList = null;
-        CommentEntity entity = null;
-        try {
-            commentList = new ArrayList<>();
 
-            JSONObject jsonObject = new JSONObject(result);
-            JSONObject object = jsonObject.getJSONObject("data");
-            JSONArray jsonArray = object.getJSONArray("data");
-            for (int i=0;i<jsonArray.length();i++) {
-                entity = new CommentEntity();
-                entity.setCount(object.getInt("count"));
-                JSONObject commentObject = jsonArray.getJSONObject(i);
-                entity.setId(commentObject.getString("id"));
-                entity.setQuote(commentObject.getString("quote"));
-                entity.setContent(commentObject.getString("content"));
-                entity.setPraisenum(commentObject.getInt("praisenum"));
-                entity.setInput_date(commentObject.getString("input_date"));
-                entity.setTouser(commentObject.getString("touser"));
-                entity.setType(commentObject.getString("type"));
-                JSONObject userObject = commentObject.getJSONObject("user");
-                entity.setUser_id(userObject.getString("user_id"));
-                entity.setUser_name(userObject.getString("user_name"));
-                entity.setWeb_url(userObject.getString("web_url"));
-                //Log.i("json",entity.getUser_name());
-                commentList.add(entity);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return commentList;
-    }
 
     /**
      * 加载布局
      */
-    private void loadView() {
+    private void loadView(SerializeEntity serializeEntity) {
         tvAuthorName.setText(serializeEntity.getUser_name());
         tvAuthorTime.setText(DateFormatUtil.setDataFormat(serializeEntity.getMaketime()));
         tvSerlTitle.setText(serializeEntity.getTitle());
@@ -177,50 +140,10 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
         tvPraise.setText(String.valueOf(serializeEntity.getPraisenum()));
         tvComment.setText(String.valueOf(serializeEntity.getCommentnum()));
         tvShare.setText(String.valueOf(serializeEntity.getSharenum()));
-        Picasso.with(this).load(serializeEntity.getWeb_url()).into(imgAuthor);
+        Picasso.with(this).load(serializeEntity.getWeb_url()).transform(new CircleTransform()).fit().centerCrop().into(imgAuthor);
     }
 
-    /**
-     * 解析连载数据
-     * @param result
-     * @return serializeEntity
-     */
-    private SerializeEntity parse2Json(String result) {
-        try {
-            serializeEntity = new SerializeEntity();
-            JSONObject jsonObject = new JSONObject(result);
-            JSONObject object = jsonObject.getJSONObject("data");
-            serializeEntity.setId(object.getString("id"));
-            serializeEntity.setSerial_id(object.getString("serial_id"));
-            serializeEntity.setNumber(object.getString("number"));
-            serializeEntity.setTitle(object.getString("title"));
-            serializeEntity.setExcerpt(object.getString("excerpt"));
-            serializeEntity.setContent(object.getString("content"));
-            serializeEntity.setCharge_edit(object.getString("charge_edt"));
-            serializeEntity.setRead_num(object.getInt("read_num"));
-            serializeEntity.setMaketime(object.getString("maketime"));
-            serializeEntity.setLast_update_date(object.getString("last_update_date"));
-            serializeEntity.setAudio(object.getString("audio"));
-            serializeEntity.setInput_name(object.getString("input_name"));
-            serializeEntity.setLast_update_name(object.getString("last_update_name"));
-            serializeEntity.setPraisenum(object.getInt("praisenum"));
-            serializeEntity.setSharenum(object.getInt("sharenum"));
-            serializeEntity.setCommentnum(object.getInt("commentnum"));
-            JSONObject authorObject = object.getJSONObject("author");
-            serializeEntity.setUser_id(authorObject.getString("user_id"));
-            serializeEntity.setUser_name(authorObject.getString("user_name"));
-            serializeEntity.setWeb_url(authorObject.getString("web_url"));
-            serializeEntity.setDesc(authorObject.getString("desc"));
 
-            //Log.i("json",serializeEntity.toString());
-            return serializeEntity;
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     @Override
     public void onClick(View v) {

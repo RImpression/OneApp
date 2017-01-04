@@ -14,6 +14,7 @@ import com.example.adapter.CommentListAdapter;
 import com.example.entity.CommentEntity;
 import com.example.entity.QuestionEntity;
 import com.example.https.MyRequest;
+import com.example.https.OneApi;
 import com.example.interfaces.HttpListener;
 import com.example.utils.DateFormatUtil;
 import com.example.utils.PariseUtil;
@@ -30,8 +31,6 @@ import java.util.List;
  * Created by lcr on 16/4/9.
  */
 public class QuestionActivity extends BaseActivity implements View.OnClickListener {
-    private static final String URL_QUESTION = "http://v3.wufazhuce.com:8000/api/question/";
-    private static final String URL_COMMENT = "http://v3.wufazhuce.com:8000/api/comment/praiseandtime/question/";
     private String URL_QUESTION_CONTENT;
     private String URL_COMMENT_ALL;
     private QuestionEntity questionEntity = null;
@@ -50,8 +49,8 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_question);
         initToolbar(R.string.question,true);
         ID = getIntent().getStringExtra("ID");
-        URL_QUESTION_CONTENT = URL_QUESTION+ID+"?";
-        URL_COMMENT_ALL = URL_COMMENT+ID+"/0?";
+        URL_QUESTION_CONTENT = OneApi.URL_QUESTION+ID+"?";
+        URL_COMMENT_ALL = OneApi.URL_QUESTION_COMMMENT+ID+"/0?";
         //Log.i("ID",ID);
         //请求问答数据
         requestQuestionData(URL_QUESTION_CONTENT);
@@ -84,11 +83,11 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
      * @param URL
      */
     private void requestQuestionData(String URL) {
-        new MyRequest(this).getRequest(URL, new HttpListener() {
+        MyRequest.getRequest(this.getApplicationContext(),URL, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("result",result);
-                parse2Json(result);
+                questionEntity = QuestionEntity.parse2Json(result);
                 loadView();
             }
 
@@ -106,11 +105,11 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
      * @param urlComment API
      */
     private void requestCommentData(String urlComment) {
-        new MyRequest(this).getRequest(urlComment, new HttpListener() {
+        MyRequest.getRequest(this.getApplicationContext(),urlComment, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("result",result);
-                commentList = parse2Json4Comment(result);
+                commentList = CommentEntity.parse2Json4Comment(result);
                 loadCommentListView(commentList);
             }
 
@@ -128,44 +127,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         lvComment.setAdapter(commentAdapter);
     }
 
-    /**
-     * 解析评论数据
-     * @param result
-     * @return commentList
-     */
-    private List<CommentEntity> parse2Json4Comment(String result) {
-        List<CommentEntity> commentList = null;
-        CommentEntity entity = null;
-        try {
-            commentList = new ArrayList<>();
 
-            JSONObject jsonObject = new JSONObject(result);
-            JSONObject object = jsonObject.getJSONObject("data");
-            JSONArray jsonArray = object.getJSONArray("data");
-            for (int i=0;i<jsonArray.length();i++) {
-                entity = new CommentEntity();
-                entity.setCount(object.getInt("count"));
-                JSONObject commentObject = jsonArray.getJSONObject(i);
-                entity.setId(commentObject.getString("id"));
-                entity.setQuote(commentObject.getString("quote"));
-                entity.setContent(commentObject.getString("content"));
-                entity.setPraisenum(commentObject.getInt("praisenum"));
-                entity.setInput_date(commentObject.getString("input_date"));
-                entity.setTouser(commentObject.getString("touser"));
-                entity.setType(commentObject.getString("type"));
-                JSONObject userObject = commentObject.getJSONObject("user");
-                entity.setUser_id(userObject.getString("user_id"));
-                entity.setUser_name(userObject.getString("user_name"));
-                entity.setWeb_url(userObject.getString("web_url"));
-                //Log.i("json",entity.getUser_name());
-                commentList.add(entity);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return commentList;
-    }
 
     //加载布局
     private void loadView() {
@@ -181,37 +143,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    /**
-     * 解析问题数据
-     * @param result
-     */
-    private QuestionEntity parse2Json(String result) {
-        try {
-            questionEntity = new QuestionEntity();
-            JSONObject jsonObject = new JSONObject(result);
-            JSONObject object = jsonObject.getJSONObject("data");
-            questionEntity.setQuestion_id(object.getString("question_id"));
-            questionEntity.setQuestion_title(object.getString("question_title"));
-            questionEntity.setQuestion_content(object.getString("question_content"));
-            questionEntity.setAnswer_title(object.getString("answer_title"));
-            questionEntity.setAnswer_content(object.getString("answer_content"));
-            questionEntity.setQuestion_makettime(object.getString("question_makettime"));
-            questionEntity.setRecommend_flag(object.getString("recommend_flag"));
-            questionEntity.setCharge_edit(object.getString("charge_edt"));
-            questionEntity.setLast_update_date(object.getString("last_update_date"));
-            questionEntity.setReadnum(object.getInt("read_num"));
-            questionEntity.setPraisenum(object.getInt("praisenum"));
-            questionEntity.setSharenum(object.getInt("sharenum"));
-            questionEntity.setCommentnum(object.getInt("commentnum"));
-            return questionEntity;
-            //Log.i("json",questionEntity.toString());
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     @Override
     public void onClick(View v) {

@@ -6,7 +6,6 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,6 +14,7 @@ import com.example.adapter.AuthorImageAdapter;
 import com.example.entity.GuideDetailEntity;
 import com.example.entity.GuideReadingEntity;
 import com.example.https.MyRequest;
+import com.example.https.OneApi;
 import com.example.interfaces.HttpListener;
 
 import org.json.JSONArray;
@@ -24,12 +24,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 轮播图片详情界面
+ */
 public class AuthorImageDetailActivity extends BaseActivity {
-    private static final String URL_AUTHOR = "http://v3.wufazhuce.com:8000/api/reading/carousel/";
     private String URL_AUTHOR_ALL;
     private GuideReadingEntity guideEntity;
     private List<GuideDetailEntity> detailList;
-    //private LinearLayout layoutDetail;
     private TextView tvGuide;
     private ListView lvArticle;
     private AuthorImageAdapter imageAdapter;
@@ -39,15 +40,13 @@ public class AuthorImageDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_image_detail);
         guideEntity = (GuideReadingEntity) getIntent().getSerializableExtra("data");
-        //Log.i("data",guideEntity.getTitle());
-        URL_AUTHOR_ALL = URL_AUTHOR+guideEntity.getId()+"?";
+        URL_AUTHOR_ALL = OneApi.URL_BANNER_DETAIL+guideEntity.getId()+"?";
         initToolbar(guideEntity.getTitle(),true);
         requestDetailData(URL_AUTHOR_ALL);
         initViews();
     }
 
     private void initViews() {
-        //layoutDetail = (LinearLayout) findViewById(R.id.layoutDetail);
         tvGuide = (TextView) findViewById(R.id.tvGuide);
         lvArticle = (ListView) findViewById(R.id.lvArticle);
         lvArticle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,11 +84,11 @@ public class AuthorImageDetailActivity extends BaseActivity {
      * @param url_author_all
      */
     private void requestDetailData(String url_author_all) {
-        new MyRequest(this).getRequest(url_author_all, new HttpListener() {
+        MyRequest.getRequest(this.getApplicationContext(),url_author_all, new HttpListener() {
             @Override
             public void onSuccess(String result) {
                 //Log.i("result",result);
-                detailList = parse2Json(result);
+                detailList = GuideDetailEntity.parse2Json(result);
                 loadListView(detailList);
             }
 
@@ -108,35 +107,6 @@ public class AuthorImageDetailActivity extends BaseActivity {
         tvGuide.setText(Html.fromHtml(guideEntity.getBottom_text()));
     }
 
-    /**
-     * 解析轮播图片对应详情数据
-     * @param result
-     * @return
-     */
-    private List<GuideDetailEntity> parse2Json(String result) {
-        List<GuideDetailEntity> detailList = null;
-        GuideDetailEntity entity = null;
-        try {
-            detailList = new ArrayList<>();
-            JSONObject jsonObject = new JSONObject(result);
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (int i=0;i<jsonArray.length();i++) {
-                entity = new GuideDetailEntity();
-                JSONObject object = jsonArray.getJSONObject(i);
-                entity.setItem_id(object.getString("item_id"));
-                entity.setTitle(object.getString("title"));
-                entity.setIntroduction(object.getString("introduction"));
-                entity.setAuthor(object.getString("author"));
-                //entity.setWeb_url(object.getString("web_url"));
-                entity.setNumber(object.getString("number"));
-                entity.setType(object.getString("type"));
-                detailList.add(entity);
-            }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return detailList;
-    }
 
 }

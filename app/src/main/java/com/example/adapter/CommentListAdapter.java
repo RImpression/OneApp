@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.entity.CommentEntity;
 import com.example.oneapp.R;
+import com.example.utils.CircleTransform;
 import com.example.utils.DateFormatUtil;
 import com.example.utils.PariseUtil;
 import com.squareup.picasso.Picasso;
@@ -65,7 +66,7 @@ public class CommentListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Picasso.with(mContext).load(entity.getWeb_url()).into(holder.imgAuthor);
+        Picasso.with(mContext).load(entity.getWeb_url()).transform(new CircleTransform()).fit().centerCrop().into(holder.imgAuthor);
         holder.tvAuthorName.setText(entity.getUser_name());
         holder.tvAuthorTime.setText(DateFormatUtil.setDataFormat(entity.getInput_date()));
         holder.tvAuthorPraise.setText(String.valueOf(entity.getPraisenum()));

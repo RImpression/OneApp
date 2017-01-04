@@ -1,5 +1,12 @@
 package com.example.entity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 各个评论实体类
  * Created by RImpression on 2016/5/23 0023.
@@ -116,5 +123,47 @@ public class CommentEntity {
 
     public void setPraisenum(int praisenum) {
         this.praisenum = praisenum;
+    }
+
+    /**
+     * 解析评论数据
+     * @param result
+     * @return commentList
+     */
+    public static List<CommentEntity> parse2Json4Comment(String result) {
+        List<CommentEntity> commentList = null;
+        CommentEntity entity = null;
+        try {
+            commentList = new ArrayList<>();
+
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject object = jsonObject.getJSONObject("data");
+            JSONArray jsonArray = object.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                entity = new CommentEntity();
+                entity.setCount(object.getInt("count"));
+                JSONObject commentObject = jsonArray.getJSONObject(i);
+                entity.setId(commentObject.getString("id"));
+                entity.setQuote(commentObject.getString("quote"));
+                entity.setContent(commentObject.getString("content"));
+                entity.setPraisenum(commentObject.getInt("praisenum"));
+                entity.setInput_date(commentObject.getString("input_date"));
+                entity.setTouser(commentObject.getString("touser"));
+                entity.setType(commentObject.getString("type"));
+                JSONObject userObject = commentObject.getJSONObject("user");
+                entity.setUser_id(userObject.getString("user_id"));
+                entity.setUser_name(userObject.getString("user_name"));
+                entity.setWeb_url(userObject.getString("web_url"));
+                if (entity.getWeb_url().equals("")) {
+                    entity.setWeb_url("http://image.wufazhuce.com/FvNnsE2f_tS6BI0XnwsYYEPe-5U5");
+                }
+                //Log.i("json",entity.getUser_name());
+                commentList.add(entity);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return commentList;
     }
 }

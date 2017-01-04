@@ -1,5 +1,9 @@
 package com.example.entity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -257,4 +261,56 @@ public class MovieDetailEntity {
     public void setCommentnum(int commentnum) {
         this.commentnum = commentnum;
     }
+
+    /**
+     * 解析电影详情数据
+     * @param result
+     * @return movieDetailEntity
+     */
+    public static MovieDetailEntity parseDetail2Json(String result) {
+        MovieDetailEntity detailEntity = null;
+        try {
+            detailEntity = new MovieDetailEntity();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject object = jsonObject.getJSONObject("data");
+            detailEntity.setId(object.getString("id"));
+            detailEntity.setTitle(object.getString("title"));
+            detailEntity.setIndexcover(object.getString("indexcover"));
+            detailEntity.setDetailcover(object.getString("detailcover"));
+            detailEntity.setVideo(object.getString("video"));
+            detailEntity.setVerse(object.getString("verse"));
+            detailEntity.setVerse_en(object.getString("verse_en"));
+            detailEntity.setScore(object.getString("score"));
+            detailEntity.setRevisedscore(object.getString("revisedscore"));
+            detailEntity.setReview(object.getString("review"));
+            detailEntity.setKeywords(object.getString("keywords"));
+            detailEntity.setMovie_id(object.getString("movie_id"));
+            detailEntity.setInfo(object.getString("info"));
+            detailEntity.setOfficialstory(object.getString("officialstory"));
+            detailEntity.setCharge_edt(object.getString("charge_edt"));
+            detailEntity.setPraisenum(object.getInt("praisenum"));
+            detailEntity.setSort(object.getString("sort"));
+            detailEntity.setReleasetime(object.getString("releasetime"));
+            detailEntity.setScoretime(object.getString("scoretime"));
+            detailEntity.setMaketime(object.getString("maketime"));
+            detailEntity.setLast_update_date(object.getString("last_update_date"));
+            detailEntity.setRead_num(object.getString("read_num"));
+            detailEntity.setSharenum(object.getInt("sharenum"));
+            detailEntity.setCommentnum(object.getInt("commentnum"));
+            JSONArray jsonArray = object.getJSONArray("photo");
+            for (int i=0;i<jsonArray.length();i++) {
+                //JSONObject photoObject = jsonArray.getJSONObject(i);
+                detailEntity.setPhoto(String.valueOf(jsonArray.get(i)));
+            }
+            //Log.i("jsonphoto",detailEntity.getPhoto().toString());
+            //Log.i("json",detailEntity.toString());
+            return detailEntity;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return detailEntity;
+    }
+
+
 }

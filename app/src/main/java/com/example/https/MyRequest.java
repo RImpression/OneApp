@@ -18,13 +18,7 @@ import java.util.Map;
  */
 public class MyRequest {
 
-    RequestQueue mQueue;
-    Context mContext;
-    HttpListener httpListener;
-
-    public MyRequest(Context context){
-        this.mContext = context;
-    }
+    static RequestQueue mQueue;
 
 
     /**
@@ -32,7 +26,7 @@ public class MyRequest {
      * @param url  API链接
      * @param httpListener 自定义接口
      */
-    public void getRequest(String url, final HttpListener httpListener){
+    public static void getRequest(Context mContext,String url, final HttpListener httpListener){
         if (mQueue == null){
             mQueue = new Volley().newRequestQueue(mContext);
         }
@@ -58,7 +52,7 @@ public class MyRequest {
      * @param param2 post参数的值
      * @param httpListener 返回接口回调
      */
-    public void postRequest(String url, final String[] param1, final String[] param2, final HttpListener httpListener){
+    public static void postRequest(Context mContext,String url, final String[] param1, final String[] param2, final HttpListener httpListener){
         if (mQueue == null) {
             mQueue = new Volley().newRequestQueue(mContext);
         }
@@ -91,7 +85,7 @@ public class MyRequest {
      * @param url
      * @param httpListener
      */
-    public void postRequest(String url, final HttpListener httpListener){
+    public static void postRequest(Context mContext,String url, final HttpListener httpListener){
         if (mQueue == null) {
             mQueue = new Volley().newRequestQueue(mContext);
         }

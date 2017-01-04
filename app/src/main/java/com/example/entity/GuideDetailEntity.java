@@ -1,5 +1,12 @@
 package com.example.entity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 点击轮播图片返回的作者文章推荐实体类
  * Created by RImpression on 2016/5/28 0028.
@@ -68,4 +75,36 @@ public class GuideDetailEntity {
     public void setType(String type) {
         this.type = type;
     }
+
+    /**
+     * 解析轮播图片对应详情数据
+     * @param result
+     * @return
+     */
+    public static List<GuideDetailEntity> parse2Json(String result) {
+        List<GuideDetailEntity> detailList = null;
+        GuideDetailEntity entity = null;
+        try {
+            detailList = new ArrayList<>();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                entity = new GuideDetailEntity();
+                JSONObject object = jsonArray.getJSONObject(i);
+                entity.setItem_id(object.getString("item_id"));
+                entity.setTitle(object.getString("title"));
+                entity.setIntroduction(object.getString("introduction"));
+                entity.setAuthor(object.getString("author"));
+                //entity.setWeb_url(object.getString("web_url"));
+                entity.setNumber(object.getString("number"));
+                entity.setType(object.getString("type"));
+                detailList.add(entity);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return detailList;
+    }
+
 }

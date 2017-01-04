@@ -1,5 +1,8 @@
 package com.example.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by lcr on 16/3/27.
  * 音乐实体类
@@ -277,4 +280,60 @@ public class MusicEntity {
     public void setCommentnum(String commentnum) {
         this.commentnum = commentnum;
     }
+
+    /**
+     * 解析音乐数据
+     * @param result
+     * @return musicEntity
+     */
+    public static MusicEntity parse2JsonMusic(String result) {
+        MusicEntity musicEntity = null;
+        try {
+            musicEntity = new MusicEntity();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject joData = jsonObject.getJSONObject("data");
+            musicEntity.setId(joData.getString("id"));
+            musicEntity.setTitle(joData.getString("title"));
+            musicEntity.setCover(joData.getString("cover"));
+            musicEntity.setIsfirst(joData.getString("isfirst"));
+            musicEntity.setStory_title(joData.getString("story_title"));
+            musicEntity.setStory(joData.getString("story"));
+            musicEntity.setLyric(joData.getString("lyric"));
+            musicEntity.setInfo(joData.getString("info"));
+            musicEntity.setPlatform(joData.getString("platform"));
+            musicEntity.setMusic_id(joData.getString("music_id"));
+            musicEntity.setCharge_edit(joData.getString("charge_edt"));
+            musicEntity.setRelated_to(joData.getString("related_to"));
+            musicEntity.setWeb_url(joData.getString("web_url"));
+            musicEntity.setPraisenum(joData.getString("praisenum"));
+            musicEntity.setSort(joData.getString("sort"));
+            musicEntity.setMaketime(joData.getString("maketime"));
+            musicEntity.setLast_update_date(joData.getString("last_update_date"));
+            musicEntity.setRead_num(joData.getString("read_num"));
+            musicEntity.setSharenum(joData.getString("sharenum"));
+            musicEntity.setCommentnum(joData.getString("commentnum"));
+
+            JSONObject joAuthor = joData.getJSONObject("author");
+            musicEntity.setUser_id(joAuthor.getString("user_id"));
+            musicEntity.setUser_name(joAuthor.getString("user_name"));
+            musicEntity.setAuthor_url(joAuthor.getString("web_url"));
+            musicEntity.setDesc(joAuthor.getString("desc"));
+
+            if (!joData.getString("story_author").equals("null")) {
+                //Log.i("joData","ddddd"+joData.getString("story_author"));
+                JSONObject joStoryAuthor = joData.getJSONObject("story_author");
+                musicEntity.setStory_author_id(joStoryAuthor.getString("user_id"));
+                musicEntity.setStory_author_name(joStoryAuthor.getString("user_name"));
+                musicEntity.setStory_author_url(joStoryAuthor.getString("web_url"));
+            }
+            //Log.i("json",musicEntity.getStory_title());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return musicEntity;
+
+    }
+
+
 }

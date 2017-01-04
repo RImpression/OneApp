@@ -1,7 +1,13 @@
 package com.example.entity;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lcr on 16/3/27.
@@ -69,5 +75,37 @@ public class GuideReadingEntity implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    /**
+     * 解析轮播图片数据
+     * @param result
+     */
+    public static List<GuideReadingEntity> parse2PhotoJson(String result) {
+        List<GuideReadingEntity> entitiyList = null;
+        GuideReadingEntity guideEntity = null;
+        try {
+            entitiyList = new ArrayList<>();
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for (int i=0;i<jsonArray.length();i++) {
+                guideEntity = new GuideReadingEntity();
+                JSONObject object = jsonArray.getJSONObject(i);
+                guideEntity.setId(object.getString("id"));
+                guideEntity.setTitle(object.getString("title"));
+                guideEntity.setCover(object.getString("cover"));
+                guideEntity.setBottom_text(object.getString("bottom_text"));
+                guideEntity.setBgcolor(object.getString("bgcolor"));
+                guideEntity.setPv_url(object.getString("pv_url"));
+                //Log.i("json",guideEntity.getTitle());
+                entitiyList.add(guideEntity);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return entitiyList;
+    }
+
 
 }
