@@ -1,167 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/write">
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+
+        <RelativeLayout
+            android:id="@+id/layoutContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/write"
-            android:orientation="vertical">
+            android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/imgMusic"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/music_image_height"
-                android:scaleType="fitXY"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/music_icon_bar_height"
+                android:layout_height="match_parent"
                 android:background="@color/write"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
-                <LinearLayout
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgMusic"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/music_icon_height"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="horizontal">
+                    android:layout_height="@dimen/music_image_height"
+                    android:scaleType="fitXY" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/music_icon_bar_height"
+                    android:background="@color/write"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/music_icon_height"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvWord"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:gravity="bottom"
+                            android:paddingBottom="5dp"
+                            android:paddingLeft="5dp"
+                            android:text="@string/music_story"
+                            android:textColor="@color/text_gray"
+                            android:textSize="@dimen/music_text_musicstory" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="3"
+                            android:padding="5dp">
+
+                            <ImageButton
+                                android:id="@+id/imgbStory"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:background="@mipmap/ic_music_story_press" />
+
+                            <ImageButton
+                                android:id="@+id/imgbLyric"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerInParent="true"
+                                android:background="@mipmap/ic_lyric_normal" />
+
+                            <ImageButton
+                                android:id="@+id/imgbInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:background="@mipmap/ic_musicinfo_normal" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/text_gray" />
+
+                <LinearLayout
+                    android:id="@+id/layoutStory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/write"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
                     <TextView
-                        android:id="@+id/tvWord"
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:layout_height="match_parent"
-                        android:text="@string/music_story"
-                        android:textColor="@color/text_gray"
-                        android:gravity="bottom"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="5dp"
-                        android:textSize="@dimen/music_text_musicstory"/>
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:layout_marginRight="10dp">
-                        <ImageButton
-                            android:id="@+id/imgbStory"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentBottom="true"
-                            android:background="@mipmap/ic_music_story_press"/>
-                        <ImageButton
-                            android:id="@+id/imgbLyric"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:background="@mipmap/ic_lyric_normal"
-                            android:layout_centerInParent="true"/>
-                        <ImageButton
-                            android:id="@+id/imgbInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@mipmap/ic_musicinfo_normal"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
+                        android:id="@+id/tvStoryTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvStoryAuthor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/primaryblue" />
+
+                    <TextView
+                        android:id="@+id/tvStoryContent"
+                        style="@style/text_content"
+                        android:layout_marginTop="10dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                    <TextView
+                        android:id="@+id/tvEditor1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/text_gray" />
                 </LinearLayout>
 
-            </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/text_gray"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"/>
-            <LinearLayout
-                android:id="@+id/layoutStory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/write"
-                android:padding="16dp"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tvStoryTitle"
+                <LinearLayout
+                    android:id="@+id/layoutLyric"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textSize="18sp"/>
-                <TextView
-                    android:id="@+id/tvStoryAuthor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primaryblue"
-                    android:layout_marginTop="10dp"/>
-                <TextView
-                    android:id="@+id/tvStoryContent"
-                    style="@style/text_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_marginTop="10dp"/>
-                <TextView
-                    android:id="@+id/tvEditor1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_gray"
-                    android:layout_marginTop="20dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layoutLyric"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="vertical"
-                android:background="@color/write"
-                android:visibility="gone">
-                <TextView
-                    android:id="@+id/tvLyric"
-                    style="@style/text_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-                <TextView
-                    android:id="@+id/tvEditor2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_gray"
-                    android:layout_marginTop="20dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layoutInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="vertical"
-                android:background="@color/write"
-                android:visibility="gone">
-                <TextView
-                    android:id="@+id/tvMusicInfo"
-                    style="@style/text_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-                <TextView
-                    android:id="@+id/tvEditor3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_gray"
-                    android:layout_marginTop="20dp"/>
-            </LinearLayout>
-            <include layout="@layout/layout_bottom"/>
-            <!--Comment List -->
-            <include layout="@layout/listview_comment" />
-        </LinearLayout>
+                    android:background="@color/write"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:visibility="gone">
 
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/music_card"
-            layout="@layout/layout_music_card"
-            android:layout_marginTop="340dp"/>
+                    <TextView
+                        android:id="@+id/tvLyric"
+                        style="@style/text_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tvEditor2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/text_gray" />
+                </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layoutInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/write"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tvMusicInfo"
+                        style="@style/text_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                    <TextView
+                        android:id="@+id/tvEditor3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/text_gray" />
+                </LinearLayout>
+
+                <include layout="@layout/layout_bottom" />
+                <!--Comment List -->
+                <include layout="@layout/listview_comment" />
+            </LinearLayout>
+
+            <include
+                layout="@layout/layout_music_card"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/music_card"
+                android:layout_marginTop="340dp" />
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Large"
+        android:indeterminateTint="@color/primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

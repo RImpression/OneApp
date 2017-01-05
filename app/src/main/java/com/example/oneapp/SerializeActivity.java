@@ -2,11 +2,13 @@ package com.example.oneapp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -43,6 +45,8 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
     private ListView lvComment;
     private CommentListAdapter commentAdapter;
     private Boolean isClick = false;
+    private RelativeLayout layoutContent;
+    private ContentLoadingProgressBar progressBar;
 
 
     @Override
@@ -71,6 +75,9 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
         tvShare = (TextView) findViewById(R.id.tvShare);
         imgAuthor = (ImageView) findViewById(R.id.imgAuthor);
         lvComment = (ListView) findViewById(R.id.lvComment);
+        layoutContent = (RelativeLayout) findViewById(R.id.layoutContent);
+        progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
+        progressBar.show();
 
         tvPraise.setOnClickListener(this);
         tvComment.setOnClickListener(this);
@@ -94,6 +101,7 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
             public void onError(VolleyError volleyError) {
                 Log.i("result",volleyError.toString());
                 ShowToast("请求数据错误");
+                progressBar.hide();
             }
         });
 
@@ -132,6 +140,8 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
      * 加载布局
      */
     private void loadView(SerializeEntity serializeEntity) {
+        layoutContent.setVisibility(View.VISIBLE);
+        progressBar.hide();
         tvAuthorName.setText(serializeEntity.getUser_name());
         tvAuthorTime.setText(DateFormatUtil.setDataFormat(serializeEntity.getMaketime()));
         tvSerlTitle.setText(serializeEntity.getTitle());

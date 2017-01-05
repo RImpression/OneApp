@@ -1,5 +1,6 @@
 package com.example.oneapp;
 
+import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.example.adapter.FragmentAdapter;
 import com.example.oneapp.fragment.FragmentArticle;

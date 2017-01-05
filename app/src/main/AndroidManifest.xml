@@ -23,7 +23,8 @@
         <activity android:name=".SerializeActivity"></activity>
         <activity
             android:name=".AboutAuthorActivity"
-            android:label="@string/title_activity_about_author"></activity>
+            android:label="@string/title_activity_about_author">
+        </activity>
         <activity android:name=".MovieDetailActivitty"></activity>
         <activity android:name=".AuthorImageDetailActivity"></activity>
     </application>

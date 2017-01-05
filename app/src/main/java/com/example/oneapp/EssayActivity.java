@@ -2,12 +2,14 @@ package com.example.oneapp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -44,7 +46,8 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
     private ListView lvComment;
     private CommentListAdapter commentAdapter;
     private Boolean isClick = false;
-
+    private RelativeLayout layoutContent;
+    private ContentLoadingProgressBar progressBar;
 
 
     @Override
@@ -73,11 +76,14 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
         tvEditor = (TextView) findViewById(R.id.tvEditor);
         imgAuthor = (ImageView) findViewById(R.id.imgAuthor);
         lvComment = (ListView) findViewById(R.id.lvComment);
+        layoutContent = (RelativeLayout) findViewById(R.id.layoutContent);
+        progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
 
         imgAuthor.setOnClickListener(this);
         tvPraise.setOnClickListener(this);
         tvComment.setOnClickListener(this);
         tvShare.setOnClickListener(this);
+        progressBar.show();
 
     }
 
@@ -97,6 +103,7 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
             public void onError(VolleyError volleyError) {
                 Log.i("result",volleyError.toString());
                 ShowToast("请求数据错误");
+                progressBar.hide();
             }
         });
 
@@ -124,6 +131,8 @@ public class EssayActivity extends BaseActivity implements View.OnClickListener 
      * 加载布局
      */
     private void loadView() {
+        layoutContent.setVisibility(View.VISIBLE);
+        progressBar.hide();
         tvAuthorName.setText(essayEntity.getUser_name());
         tvAuthorTime.setText(DateFormatUtil.setDataFormat(essayEntity.getLast_update_date()));
         tvEssayTitle.setText(essayEntity.getHp_title());

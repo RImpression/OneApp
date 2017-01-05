@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +63,8 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
     private CommentListAdapter commentAdapter;
     private boolean isClick = false;
     View view;
+    private RelativeLayout layoutContent;
+    private ContentLoadingProgressBar progressBar;
 
 
 
@@ -120,6 +124,10 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
         tvComment = (TextView) getView().findViewById(R.id.tvComment);
         tvPraise = (TextView) getView().findViewById(R.id.tvPraise);
         lvComment = (ListView) getView().findViewById(R.id.lvComment);
+        layoutContent = (RelativeLayout) getView().findViewById(R.id.layoutContent);
+        progressBar = (ContentLoadingProgressBar) getView().findViewById(R.id.progressBar);
+        progressBar.show();
+
         tvShare.setOnClickListener(this);
         tvComment.setOnClickListener(this);
         tvPraise.setOnClickListener(this);
@@ -133,6 +141,8 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
     }
 
     private void loadMusicView(MusicEntity musicEntity) {
+        layoutContent.setVisibility(View.VISIBLE);
+        progressBar.hide();
         Picasso.with(mContext).load(musicEntity.getCover()).fit().centerCrop().into(imgMusic);
         Picasso.with(mContext).load(musicEntity.getAuthor_url()).transform(new CircleTransform()).fit().centerCrop().into(imgAuthor);
         tvAuthorName.setText(musicEntity.getUser_name());
@@ -174,6 +184,7 @@ public class FragmentMusic extends Fragment implements View.OnClickListener {
             public void onError(VolleyError volleyError) {
                 Toast.makeText(mContext,"数据请求失败",Toast.LENGTH_SHORT).show();
                 Log.i("musicRequest",volleyError.toString());
+                progressBar.hide();
             }
         });
     }

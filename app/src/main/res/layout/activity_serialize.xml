@@ -10,63 +10,78 @@
         android:layout_alignParentTop="true">
         <include layout="@layout/toolbar"/>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/idBottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-        <include layout="@layout/layout_bottom"/>
-    </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/layoutContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/idTop"
-        android:layout_above="@id/idBottom"
-        android:background="@color/write"
-        android:orientation="vertical">
-        <ScrollView
+        android:layout_below="@+id/idTop"
+        android:visibility="gone">
+        <LinearLayout
+            android:id="@+id/idBottom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <include layout="@layout/layout_bottom"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/idBottom"
+            android:background="@color/write"
+            android:orientation="vertical">
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <include layout="@layout/layout_author_info"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/text_gray"/>
-
+                android:layout_height="match_parent">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-                    <TextView
-                        android:id="@+id/tvSerlTtile"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/layout_author_info"/>
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:paddingBottom="5dp"/>
-                    <TextView
-                        android:id="@+id/tvSerlContent"
-                        style="@style/text_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-                    <TextView
-                        android:id="@+id/tvEditor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_gray"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="15dp"/>
+                        android:layout_height="1dp"
+                        android:background="@color/text_gray"/>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+                        <TextView
+                            android:id="@+id/tvSerlTtile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:paddingBottom="5dp"/>
+                        <TextView
+                            android:id="@+id/tvSerlContent"
+                            style="@style/text_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                        <TextView
+                            android:id="@+id/tvEditor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_gray"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="15dp"/>
+
+                    </LinearLayout>
+
+                    <include layout="@layout/listview_comment"/>
                 </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </RelativeLayout>
 
-                <include layout="@layout/listview_comment"/>
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Large"
+        android:indeterminateTint="@color/primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

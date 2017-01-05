@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -59,6 +61,8 @@ public class FragmentArticle extends Fragment {
     // 轮播banner的数据
     private List<GuideReadingEntity> adList = null;
     private View view;
+    private RelativeLayout layoutContent;
+    private ContentLoadingProgressBar progressBar;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -100,6 +104,9 @@ public class FragmentArticle extends Fragment {
 
     private void initView() {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
+        layoutContent = (RelativeLayout) getView().findViewById(R.id.layoutContent);
+        progressBar = (ContentLoadingProgressBar) getView().findViewById(R.id.progressBar);
+        progressBar.show();
         imageViews = new ArrayList<ImageView>();
         // 点
         dots = new ArrayList<View>();
@@ -239,11 +246,14 @@ public class FragmentArticle extends Fragment {
                 isFirst = true;
                 Toast.makeText(getContext().getApplicationContext(), "Request Error", Toast.LENGTH_SHORT).show();
                 Log.i("articleData", volleyError.toString());
+                progressBar.hide();
             }
         });
     }
 
     private void loadRecycleView(List<ArticleEntity> mDataList) {
+        layoutContent.setVisibility(View.VISIBLE);
+        progressBar.hide();
         linearLayoutManager = new MyLinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.setSmoothScrollbarEnabled(false);

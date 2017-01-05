@@ -1,13 +1,20 @@
 package com.example.oneapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Html;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.adapter.CommentListAdapter;
@@ -42,6 +49,10 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
     private ListView lvComment;
     private CommentListAdapter commentAdapter;
     private Boolean isClick = false;
+    private ContentLoadingProgressBar progressBar;
+    private RelativeLayout layoutContent;
+    private FloatingActionButton fabTob;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,8 +70,9 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         initViews();
     }
 
-
-
+    //用于监听屏幕滑动Y坐标
+    float y1 = 0;
+    float y2 = 0;
     private void initViews() {
         tvQuestionTitle = (TextView) findViewById(R.id.tvQuestionTitle);
         tvQuestionContent = (TextView) findViewById(R.id.tvQuestionContent);
@@ -72,9 +84,35 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         tvComment = (TextView) findViewById(R.id.tvComment);
         tvShare = (TextView) findViewById(R.id.tvShare);
         lvComment = (ListView) findViewById(R.id.lvComment);
+        progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
+        layoutContent = (RelativeLayout) findViewById(R.id.layoutContent);
+        fabTob = (FloatingActionButton) findViewById(R.id.fabTob);
+        scrollView = (ScrollView) findViewById(R.id.myScrollView);
+        fabTob.setOnClickListener(this);
         tvPraise.setOnClickListener(this);
         tvComment.setOnClickListener(this);
         tvShare.setOnClickListener(this);
+        progressBar.show();
+
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    y1 = event.getY();
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    y2 = event.getY();
+                    if(y1 - y2 > 20) {
+                        fabTob.setVisibility(View.GONE);
+//                        Log.i("state","向上滑");
+                    } else if(y2 - y1 > 50) {
+                        fabTob.setVisibility(View.VISIBLE);
+//                        Log.i("state","向下滑");
+                    }
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -95,6 +133,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
             public void onError(VolleyError volleyError) {
                 ShowToast("数据请求错误");
                 Log.i("result",volleyError.toString());
+                progressBar.hide();
             }
         });
 
@@ -131,6 +170,9 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
 
     //加载布局
     private void loadView() {
+        //布局可见
+        layoutContent.setVisibility(View.VISIBLE);
+        progressBar.hide();
         tvQuestionTitle.setText(questionEntity.getQuestion_title());
         tvQuestionContent.setText(questionEntity.getQuestion_content());
         tvAnswerTitle.setText(questionEntity.getAnswer_title());
@@ -142,8 +184,6 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         tvShare.setText(String.valueOf(questionEntity.getSharenum()));
 
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -157,7 +197,20 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
             case R.id.tvShare:
                 ShowToast("功能未开发");
                 break;
+            case R.id.fabTob:
+                comeBackTob();
+                break;
         }
 
+    }
+
+    private void comeBackTob() {
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
+        fabTob.setVisibility(View.GONE);
     }
 }

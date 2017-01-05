@@ -3,11 +3,13 @@ package com.example.oneapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,8 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
     private ImageView imgShow;
     private View view;
     private Boolean isClick = false;
+    private LinearLayout layoutContent;
+    private ContentLoadingProgressBar progressBar;
 
 
 
@@ -85,6 +89,9 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
         tvBook = (TextView) getView().findViewById(R.id.tvBook);
         tvZan = (TextView) getView().findViewById(R.id.tvZan);
         tvShare = (TextView) getView().findViewById(R.id.tvShare);
+        layoutContent = (LinearLayout) getView().findViewById(R.id.layoutContent);
+        progressBar = (ContentLoadingProgressBar) getView().findViewById(R.id.progressBar);
+        progressBar.show();
         tvBook.setOnClickListener(this);
         tvZan.setOnClickListener(this);
         tvShare.setOnClickListener(this);
@@ -110,12 +117,15 @@ public class FragmentExtract extends Fragment implements View.OnClickListener {
             public void onError(VolleyError volleyError) {
                 Toast.makeText(getContext().getApplicationContext(), "数据请求失败", Toast.LENGTH_SHORT).show();
                 Log.i("ExtractResult", volleyError.toString());
+                progressBar.hide();
                 isFirst = true;
             }
         });
     }
 
     private void setDataWithView() {
+        layoutContent.setVisibility(View.VISIBLE);
+        progressBar.hide();
         tvHpTitle.setText(mExtract.getHpTitle());
         tvAuthor.setText(mExtract.getStrAuthor());
         tvContent.setText(mExtract.getStrContent());

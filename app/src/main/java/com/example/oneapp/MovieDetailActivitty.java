@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,6 +45,8 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
     private ListView lvComment;
     private CommentListAdapter commentAdapter;
     private Boolean isClick = false;
+    private LinearLayout layoutContent;
+    private ContentLoadingProgressBar progressBar;
 
 
     @Override
@@ -75,6 +79,9 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
         tvStoryContent = (TextView) findViewById(R.id.tvStoryContent);
         tvAuthorPraise = (TextView) findViewById(R.id.tvAuthorPraise);
         lvComment = (ListView) findViewById(R.id.lvComment);
+        layoutContent = (LinearLayout) findViewById(R.id.layoutContent);
+        progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
+        progressBar.show();
         imgAuthor.setOnClickListener(this);
         imgbVideo.setOnClickListener(this);
         imgbShare.setOnClickListener(this);
@@ -84,6 +91,8 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
 
 
     private void loadStoryView(MovieStoryEntity movieStoryEntity) {
+        layoutContent.setVisibility(View.VISIBLE);
+        progressBar.hide();
         Picasso.with(this).load(movieStoryEntity.getWeb_url()).transform(new CircleTransform()).fit().centerCrop().into(imgAuthor);
         tvAuthorName.setText(movieStoryEntity.getUser_name());
         tvAuthorTime.setText(DateFormatUtil.setDataFormat(movieStoryEntity.getInput_date()));
@@ -116,6 +125,7 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
             public void onError(VolleyError volleyError) {
                 Log.i("result",volleyError.toString());
                 ShowToast("数据请求出错");
+                progressBar.hide();
             }
         });
     }

@@ -1,91 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/write"
-    android:orientation="vertical">
-
+    android:layout_height="match_parent">
     <LinearLayout
+        android:id="@+id/layoutContent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:layout_margin="10dp"
-        android:background="@drawable/extract_shape_card"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@color/write"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/imgShow"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4"
-            android:scaleType="fitXY"/>
+            android:layout_weight="8"
+            android:layout_margin="10dp"
+            android:background="@drawable/extract_shape_card"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgShow"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:scaleType="fitXY"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/tvHpTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/extract_text_hptitle"/>
+                <TextView
+                    android:id="@+id/tvAuthor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/extract_text_author"/>
+                <TextView
+                    android:id="@+id/tvContent"
+                    style="@style/text_content"
+                    android:layout_below="@id/tvHpTitle"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"/>
+            </RelativeLayout>
+
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
-            android:padding="10dp">
-
+            android:layout_weight="1"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
             <TextView
-                android:id="@+id/tvHpTitle"
+                android:id="@+id/tvBook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/extract_book"
+                android:textSize="@dimen/extract_text_icon"
+                android:gravity="center"
                 android:layout_alignParentLeft="true"
-                android:textColor="@color/text_gray"
-                android:textSize="@dimen/extract_text_hptitle"/>
+                android:drawableLeft="@mipmap/icon_book"/>
             <TextView
-                android:id="@+id/tvAuthor"
+                android:id="@+id/tvZan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/text_gray"
-                android:textSize="@dimen/extract_text_author"/>
+                android:textSize="@dimen/extract_text_icon"
+                android:layout_centerInParent="true"
+                android:layout_alignBottom="@id/tvBook"
+                android:gravity="center"
+                android:drawableLeft="@mipmap/icon_parise_nomal"/>
             <TextView
-                android:id="@+id/tvContent"
-                style="@style/text_content"
-                android:layout_below="@id/tvHpTitle"
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/black"/>
-        </RelativeLayout>
+                android:id="@+id/tvShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/extract_share"
+                android:textSize="@dimen/extract_text_icon"
+                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:drawableLeft="@mipmap/icon_share"/>
 
+        </RelativeLayout>
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp">
-        <TextView
-            android:id="@+id/tvBook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/extract_book"
-            android:textSize="@dimen/extract_text_icon"
-            android:gravity="center"
-            android:layout_alignParentLeft="true"
-            android:drawableLeft="@mipmap/icon_book"/>
-        <TextView
-            android:id="@+id/tvZan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/extract_text_icon"
-            android:layout_centerInParent="true"
-            android:layout_alignBottom="@id/tvBook"
-            android:gravity="center"
-            android:drawableLeft="@mipmap/icon_parise_nomal"/>
-        <TextView
-            android:id="@+id/tvShare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/extract_share"
-            android:textSize="@dimen/extract_text_icon"
-            android:gravity="center"
-            android:layout_alignParentRight="true"
-            android:drawableLeft="@mipmap/icon_share"/>
-
-    </RelativeLayout>
-
-</LinearLayout>
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Large"
+        android:indeterminateTint="@color/primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

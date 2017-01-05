@@ -3,6 +3,7 @@ package com.example.oneapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -38,6 +39,7 @@ public class FragmentMovie extends Fragment {
     private List<MovieEntity> mDataList = null;
     private LinearLayoutManager linearLayoutManager;
     private RecyclerAdapter2Movie adapter2Movie;
+    private ContentLoadingProgressBar progressBar;
 
 
     @Override
@@ -73,6 +75,8 @@ public class FragmentMovie extends Fragment {
 
     private void initViews() {
         movieRecycleView = (RecyclerView) getView().findViewById(R.id.movieRecycle);
+        progressBar = (ContentLoadingProgressBar) getView().findViewById(R.id.progressBar);
+        progressBar.show();
     }
 
     private void getMovieRequest() {
@@ -88,11 +92,14 @@ public class FragmentMovie extends Fragment {
             public void onError(VolleyError volleyError) {
                 Toast.makeText(getContext().getApplicationContext(),"请求数据失败",Toast.LENGTH_SHORT).show();
                 Log.i("movieResult",volleyError.toString());
+                progressBar.hide();
             }
         });
     }
 
     private void loadRecyclerView(List<MovieEntity> mDataList) {
+        movieRecycleView.setVisibility(View.VISIBLE);
+        progressBar.hide();
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.setSmoothScrollbarEnabled(false);
