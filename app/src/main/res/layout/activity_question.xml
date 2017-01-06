@@ -17,7 +17,8 @@
         android:id="@+id/layoutContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/idTop">
+        android:layout_below="@+id/idTop"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/idBottom"
@@ -125,7 +126,7 @@
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabTob"
+            android:id="@+id/fabTop"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:src="@mipmap/icon_top"

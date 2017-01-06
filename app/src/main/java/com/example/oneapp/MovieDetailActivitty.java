@@ -1,17 +1,23 @@
 package com.example.oneapp;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -47,6 +53,8 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
     private Boolean isClick = false;
     private LinearLayout layoutContent;
     private ContentLoadingProgressBar progressBar;
+    private FloatingActionButton fabTop;
+    private ScrollView scrollView;
 
 
     @Override
@@ -66,6 +74,10 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
         initViews();
     }
 
+
+    //用于监听屏幕滑动Y坐标
+    float y1 = 0;
+    float y2 = 0;
     private void initViews() {
         imgMovie = (ImageView) findViewById(R.id.imgMovie);
         imgAuthor = (ImageView) findViewById(R.id.imgAuthor);
@@ -82,11 +94,42 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
         layoutContent = (LinearLayout) findViewById(R.id.layoutContent);
         progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
         progressBar.show();
+        fabTop = (FloatingActionButton) findViewById(R.id.fabTop);
+        scrollView = (ScrollView) findViewById(R.id.myScrollView);
+
+        fabTop.setOnClickListener(this);
         imgAuthor.setOnClickListener(this);
         imgbVideo.setOnClickListener(this);
         imgbShare.setOnClickListener(this);
         tvUserScore.setOnClickListener(this);
         tvAuthorPraise.setOnClickListener(this);
+
+        //初始化缩放动画
+        final ObjectAnimator animator1 = ObjectAnimator.ofFloat(fabTop,"scaleX",0.0f,1.0f);
+        final ObjectAnimator animator2 = ObjectAnimator.ofFloat(fabTop,"scaleY",0.0f,1.0f);
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    y1 = event.getY();
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    y2 = event.getY();
+                    if(y1 - y2 > 20 || scrollView.getScrollY() == 0) {
+                        fabTop.setVisibility(View.GONE);
+//                        Log.i("state","向上滑");
+                    } else if(y2 - y1 > 50  && fabTop.getVisibility() == View.GONE) {
+                        fabTop.setVisibility(View.VISIBLE);
+//                        Log.i("state","向下滑");
+                        AnimatorSet animatorSet = new AnimatorSet();
+                        animatorSet.play(animator1).with(animator2);
+                        animatorSet.setDuration(200);
+                        animatorSet.start();
+                    }
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -201,7 +244,20 @@ public class MovieDetailActivitty extends BaseActivity implements View.OnClickLi
             case R.id.imgAuthor:
                 ShowToast("功能未开发");
                 break;
+            case R.id.fabTop:
+                comeBackTob();
+                break;
         }
+    }
+
+    private void comeBackTob() {
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
+        fabTop.setVisibility(View.GONE);
     }
 
     /**

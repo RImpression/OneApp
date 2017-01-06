@@ -1,5 +1,7 @@
 package com.example.oneapp;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -51,7 +53,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
     private Boolean isClick = false;
     private ContentLoadingProgressBar progressBar;
     private RelativeLayout layoutContent;
-    private FloatingActionButton fabTob;
+    private FloatingActionButton fabTop;
     private ScrollView scrollView;
 
     @Override
@@ -86,14 +88,16 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
         lvComment = (ListView) findViewById(R.id.lvComment);
         progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
         layoutContent = (RelativeLayout) findViewById(R.id.layoutContent);
-        fabTob = (FloatingActionButton) findViewById(R.id.fabTob);
+        fabTop = (FloatingActionButton) findViewById(R.id.fabTop);
         scrollView = (ScrollView) findViewById(R.id.myScrollView);
-        fabTob.setOnClickListener(this);
+        fabTop.setOnClickListener(this);
         tvPraise.setOnClickListener(this);
         tvComment.setOnClickListener(this);
         tvShare.setOnClickListener(this);
         progressBar.show();
-
+        //初始化缩放动画
+        final ObjectAnimator animator1 = ObjectAnimator.ofFloat(fabTop,"scaleX",0.0f,1.0f);
+        final ObjectAnimator animator2 = ObjectAnimator.ofFloat(fabTop,"scaleY",0.0f,1.0f);
         scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -102,18 +106,24 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     y2 = event.getY();
-                    if(y1 - y2 > 20) {
-                        fabTob.setVisibility(View.GONE);
+                    if(y1 - y2 > 20 || scrollView.getScrollY() == 0) {
+                        fabTop.setVisibility(View.GONE);
 //                        Log.i("state","向上滑");
-                    } else if(y2 - y1 > 50) {
-                        fabTob.setVisibility(View.VISIBLE);
+                    } else if(y2 - y1 > 50  && fabTop.getVisibility() == View.GONE) {
+                        fabTop.setVisibility(View.VISIBLE);
 //                        Log.i("state","向下滑");
+                        AnimatorSet animatorSet = new AnimatorSet();
+                        animatorSet.play(animator1).with(animator2);
+                        animatorSet.setDuration(200);
+                        animatorSet.start();
                     }
                 }
                 return false;
             }
         });
     }
+
+
 
 
     /**
@@ -197,7 +207,7 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
             case R.id.tvShare:
                 ShowToast("功能未开发");
                 break;
-            case R.id.fabTob:
+            case R.id.fabTop:
                 comeBackTob();
                 break;
         }
@@ -211,6 +221,8 @@ public class QuestionActivity extends BaseActivity implements View.OnClickListen
                 scrollView.fullScroll(ScrollView.FOCUS_UP);
             }
         });
-        fabTob.setVisibility(View.GONE);
+        fabTop.setVisibility(View.GONE);
     }
+
+
 }

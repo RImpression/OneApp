@@ -254,6 +254,7 @@ public class FragmentArticle extends Fragment {
     private void loadRecycleView(List<ArticleEntity> mDataList) {
         layoutContent.setVisibility(View.VISIBLE);
         progressBar.hide();
+//        mRecyclerView.setNestedScrollingEnabled(false);
         linearLayoutManager = new MyLinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.setSmoothScrollbarEnabled(false);

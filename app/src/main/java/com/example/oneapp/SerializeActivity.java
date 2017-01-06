@@ -1,14 +1,19 @@
 package com.example.oneapp;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Html;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -47,6 +52,8 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
     private Boolean isClick = false;
     private RelativeLayout layoutContent;
     private ContentLoadingProgressBar progressBar;
+    private ScrollView scrollView;
+    private FloatingActionButton fabTop;
 
 
     @Override
@@ -63,7 +70,9 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
     }
 
 
-
+    //用于监听屏幕滑动Y坐标
+    float y1 = 0;
+    float y2 = 0;
     private void initViews() {
         tvAuthorName = (TextView) findViewById(R.id.tvAuthorname);
         tvAuthorTime = (TextView) findViewById(R.id.tvAuthorTime);
@@ -78,11 +87,41 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
         layoutContent = (RelativeLayout) findViewById(R.id.layoutContent);
         progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
         progressBar.show();
+        scrollView = (ScrollView) findViewById(R.id.myScrollView);
+        fabTop = (FloatingActionButton) findViewById(R.id.fabTop);
 
+        fabTop.setOnClickListener(this);
         tvPraise.setOnClickListener(this);
         tvComment.setOnClickListener(this);
         tvShare.setOnClickListener(this);
         imgAuthor.setOnClickListener(this);
+
+        //初始化缩放动画
+        final ObjectAnimator animator1 = ObjectAnimator.ofFloat(fabTop,"scaleX",0.0f,1.0f);
+        final ObjectAnimator animator2 = ObjectAnimator.ofFloat(fabTop,"scaleY",0.0f,1.0f);
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    y1 = event.getY();
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    y2 = event.getY();
+                    if(y1 - y2 > 20 || scrollView.getScrollY() == 0) {
+                        fabTop.setVisibility(View.GONE);
+//                        Log.i("state","向上滑");
+                    } else if(y2 - y1 > 50  && fabTop.getVisibility() == View.GONE) {
+                        fabTop.setVisibility(View.VISIBLE);
+//                        Log.i("state","向下滑");
+                        AnimatorSet animatorSet = new AnimatorSet();
+                        animatorSet.play(animator1).with(animator2);
+                        animatorSet.setDuration(200);
+                        animatorSet.start();
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     /**
@@ -170,7 +209,19 @@ public class SerializeActivity extends BaseActivity implements View.OnClickListe
             case R.id.tvShare:
                 ShowToast("功能未开发");
                 break;
+            case R.id.fabTop:
+                comeBackTob();
+                break;
         }
+    }
 
+    private void comeBackTob() {
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
+        fabTop.setVisibility(View.GONE);
     }
 }
